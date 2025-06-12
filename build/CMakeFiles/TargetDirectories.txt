@@ -1,0 +1,3 @@
+/home/zgyx/my-Chatroom/build/CMakeFiles/my-Chatroom.dir
+/home/zgyx/my-Chatroom/build/CMakeFiles/edit_cache.dir
+/home/zgyx/my-Chatroom/build/CMakeFiles/rebuild_cache.dir
