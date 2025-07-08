@@ -11,7 +11,7 @@ include_directories(/usr/local/include)
 link_directories(/usr/local/lib)
 
 # 添加可执行文件
-add_executable(my-Chatroom main.cpp)
+add_executable(my-Chatroom LogOn/main.cc)
 
 # 链接 cpp_redis 和 tacopie
 target_link_libraries(my-Chatroom
