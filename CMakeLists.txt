@@ -11,12 +11,9 @@ include_directories(/usr/local/include)
 link_directories(/usr/local/lib)
 
 # 添加可执行文件
-add_executable(my-Chatroom LogOn/main.cc)
-
-# 链接 cpp_redis 和 tacopie
-target_link_libraries(my-Chatroom
-    PRIVATE
-    cpp_redis
-    tacopie
-    pthread
+include_directories(
+    ${CMAKE_SOURCE_DIR}/server
+    ${CMAKE_SOURCE_DIR}/netlib
 )
+add_subdirectory(netlib)
+add_subdirectory(server)

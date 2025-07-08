@@ -1,1 +1,0 @@
-/usr/bin/c++ "CMakeFiles/my-Chatroom.dir/main.cpp.o" -o my-Chatroom   -L/usr/local/lib  -Wl,-rpath,/usr/local/lib -lcpp_redis -ltacopie -lpthread 

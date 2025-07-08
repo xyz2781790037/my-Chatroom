@@ -60,23 +60,7 @@ set(NET_HEADERS
     net/TcpClient.h
 )
 
-# test 源文件
-set(TEST_SOURCES
-    test/server.cc
-)
-
-# 汇总所有参与编译的源文件
-add_executable(netlib_test
+add_library(netlib STATIC
     ${BASE_SOURCES}
     ${NET_SOURCES}
-    ${TEST_SOURCES}
-)
-
-# 添加头文件用于 IDE 提示
-target_sources(netlib_test PRIVATE ${BASE_HEADERS} ${NET_HEADERS})
-
-# 头文件搜索路径
-target_include_directories(netlib_test PRIVATE
-    ${CMAKE_SOURCE_DIR}/base
-    ${CMAKE_SOURCE_DIR}/net
 )

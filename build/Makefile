@@ -117,41 +117,30 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named my-Chatroom
+# Target rules for targets named netlib
 
 # Build rule for target.
-my-Chatroom: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 my-Chatroom
-.PHONY : my-Chatroom
+netlib: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 netlib
+.PHONY : netlib
 
 # fast build rule for target.
-my-Chatroom/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/my-Chatroom.dir/build.make CMakeFiles/my-Chatroom.dir/build
-.PHONY : my-Chatroom/fast
+netlib/fast:
+	$(MAKE) $(MAKESILENT) -f netlib/CMakeFiles/netlib.dir/build.make netlib/CMakeFiles/netlib.dir/build
+.PHONY : netlib/fast
 
-main.o: main.cpp.o
-.PHONY : main.o
+#=============================================================================
+# Target rules for targets named server
 
-# target to build an object file
-main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/my-Chatroom.dir/build.make CMakeFiles/my-Chatroom.dir/main.cpp.o
-.PHONY : main.cpp.o
+# Build rule for target.
+server: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 server
+.PHONY : server
 
-main.i: main.cpp.i
-.PHONY : main.i
-
-# target to preprocess a source file
-main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/my-Chatroom.dir/build.make CMakeFiles/my-Chatroom.dir/main.cpp.i
-.PHONY : main.cpp.i
-
-main.s: main.cpp.s
-.PHONY : main.s
-
-# target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/my-Chatroom.dir/build.make CMakeFiles/my-Chatroom.dir/main.cpp.s
-.PHONY : main.cpp.s
+# fast build rule for target.
+server/fast:
+	$(MAKE) $(MAKESILENT) -f server/CMakeFiles/server.dir/build.make server/CMakeFiles/server.dir/build
+.PHONY : server/fast
 
 # Help Target
 help:
@@ -161,10 +150,8 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... my-Chatroom"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... netlib"
+	@echo "... server"
 .PHONY : help
 
 

@@ -1,3 +1,8 @@
-/home/zgyx/my-Chatroom/build/CMakeFiles/my-Chatroom.dir
 /home/zgyx/my-Chatroom/build/CMakeFiles/edit_cache.dir
 /home/zgyx/my-Chatroom/build/CMakeFiles/rebuild_cache.dir
+/home/zgyx/my-Chatroom/build/netlib/CMakeFiles/netlib.dir
+/home/zgyx/my-Chatroom/build/netlib/CMakeFiles/edit_cache.dir
+/home/zgyx/my-Chatroom/build/netlib/CMakeFiles/rebuild_cache.dir
+/home/zgyx/my-Chatroom/build/server/CMakeFiles/server.dir
+/home/zgyx/my-Chatroom/build/server/CMakeFiles/edit_cache.dir
+/home/zgyx/my-Chatroom/build/server/CMakeFiles/rebuild_cache.dir
