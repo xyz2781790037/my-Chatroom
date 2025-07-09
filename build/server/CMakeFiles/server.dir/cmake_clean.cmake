@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/server.dir/redisCmd.cc.o"
+  "CMakeFiles/server.dir/redisCmd.cc.o.d"
   "CMakeFiles/server.dir/server.cc.o"
   "CMakeFiles/server.dir/server.cc.o.d"
   "server"

@@ -14,6 +14,8 @@ link_directories(/usr/local/lib)
 include_directories(
     ${CMAKE_SOURCE_DIR}/server
     ${CMAKE_SOURCE_DIR}/netlib
+    ${CMAKE_SOURCE_DIR}/client
 )
 add_subdirectory(netlib)
 add_subdirectory(server)
+add_subdirectory(client)

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.13)
-project(MyCppRedisProject)
+project(MychatroomProject)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -9,11 +9,15 @@ include_directories(/usr/local/include)
 
 # 链接库路径
 link_directories(/usr/local/lib)
-
+# 查找库
+find_package(nlohmann_json 3.2.0 REQUIRED)
 # 添加可执行文件
+set(SERVER_HEADERS
+    redisCmd.h
+)
 set(SERVER_SOURCES
     server.cc
-
+    redisCmd.cc
 )
 add_executable(server ${SERVER_SOURCES})
 # 链接 cpp_redis 和 tacopie
@@ -23,6 +27,7 @@ target_link_libraries(server
     cpp_redis
     tacopie
     pthread
+    nlohmann_json::nlohmann_json
 )
 target_include_directories(server PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}

@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/zgyx/my-Chatroom/server/redisCmd.cc" "server/CMakeFiles/server.dir/redisCmd.cc.o" "gcc" "server/CMakeFiles/server.dir/redisCmd.cc.o.d"
   "/home/zgyx/my-Chatroom/server/server.cc" "server/CMakeFiles/server.dir/server.cc.o" "gcc" "server/CMakeFiles/server.dir/server.cc.o.d"
   )
 

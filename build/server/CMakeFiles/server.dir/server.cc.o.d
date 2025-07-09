@@ -249,6 +249,12 @@ server/CMakeFiles/server.dir/server.cc.o: \
  /home/zgyx/my-Chatroom/server/../netlib/net/EventLoopThreadpool.h \
  /home/zgyx/my-Chatroom/server/../netlib/net/EventLoopThread.h \
  /usr/include/c++/13/condition_variable \
+ /home/zgyx/my-Chatroom/server/../netlib/base/logger.h \
+ /home/zgyx/my-Chatroom/server/../netlib/base/logStream.h \
+ /usr/include/c++/13/sstream /usr/include/c++/13/bits/sstream.tcc \
+ /home/zgyx/my-Chatroom/server/../netlib/base/noncopyable.h \
+ /home/zgyx/my-Chatroom/server/../netlib/base/Timestamp.h \
+ /usr/include/c++/13/cstring /home/zgyx/my-Chatroom/server/redisCmd.h \
  /usr/local/include/cpp_redis/cpp_redis \
  /usr/local/include/cpp_redis/core/client.hpp /usr/include/c++/13/future \
  /usr/include/c++/13/bits/atomic_futex.h /usr/include/c++/13/queue \

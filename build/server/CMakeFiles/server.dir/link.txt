@@ -1,1 +1,1 @@
-/usr/bin/c++ CMakeFiles/server.dir/server.cc.o -o server   -L/usr/local/lib  -Wl,-rpath,/usr/local/lib ../netlib/libnetlib.a -lcpp_redis -ltacopie -lpthread 
+/usr/bin/c++ CMakeFiles/server.dir/server.cc.o CMakeFiles/server.dir/redisCmd.cc.o -o server   -L/usr/local/lib  -Wl,-rpath,/usr/local/lib ../netlib/libnetlib.a -lcpp_redis -ltacopie -lpthread 

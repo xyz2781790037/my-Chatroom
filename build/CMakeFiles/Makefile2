@@ -65,17 +65,35 @@ CMAKE_BINARY_DIR = /home/zgyx/my-Chatroom/build
 # The main recursive "all" target.
 all: netlib/all
 all: server/all
+all: client/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
 preinstall: netlib/preinstall
 preinstall: server/preinstall
+preinstall: client/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
 clean: netlib/clean
 clean: server/clean
+clean: client/clean
 .PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory client
+
+# Recursive "all" directory target.
+client/all: client/CMakeFiles/client.dir/all
+.PHONY : client/all
+
+# Recursive "preinstall" directory target.
+client/preinstall:
+.PHONY : client/preinstall
+
+# Recursive "clean" directory target.
+client/clean: client/CMakeFiles/client.dir/clean
+.PHONY : client/clean
 
 #=============================================================================
 # Directory level rules for directory netlib
@@ -114,7 +132,7 @@ server/clean: server/CMakeFiles/server.dir/clean
 netlib/CMakeFiles/netlib.dir/all:
 	$(MAKE) $(MAKESILENT) -f netlib/CMakeFiles/netlib.dir/build.make netlib/CMakeFiles/netlib.dir/depend
 	$(MAKE) $(MAKESILENT) -f netlib/CMakeFiles/netlib.dir/build.make netlib/CMakeFiles/netlib.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/zgyx/my-Chatroom/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18 "Built target netlib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/zgyx/my-Chatroom/build/CMakeFiles --progress-num=3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 "Built target netlib"
 .PHONY : netlib/CMakeFiles/netlib.dir/all
 
 # Build rule for subdir invocation for target.
@@ -140,12 +158,12 @@ netlib/CMakeFiles/netlib.dir/clean:
 server/CMakeFiles/server.dir/all: netlib/CMakeFiles/netlib.dir/all
 	$(MAKE) $(MAKESILENT) -f server/CMakeFiles/server.dir/build.make server/CMakeFiles/server.dir/depend
 	$(MAKE) $(MAKESILENT) -f server/CMakeFiles/server.dir/build.make server/CMakeFiles/server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/zgyx/my-Chatroom/build/CMakeFiles --progress-num=19,20 "Built target server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/zgyx/my-Chatroom/build/CMakeFiles --progress-num=21,22,23 "Built target server"
 .PHONY : server/CMakeFiles/server.dir/all
 
 # Build rule for subdir invocation for target.
 server/CMakeFiles/server.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/zgyx/my-Chatroom/build/CMakeFiles 20
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/zgyx/my-Chatroom/build/CMakeFiles 21
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 server/CMakeFiles/server.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/zgyx/my-Chatroom/build/CMakeFiles 0
 .PHONY : server/CMakeFiles/server.dir/rule
@@ -158,6 +176,32 @@ server: server/CMakeFiles/server.dir/rule
 server/CMakeFiles/server.dir/clean:
 	$(MAKE) $(MAKESILENT) -f server/CMakeFiles/server.dir/build.make server/CMakeFiles/server.dir/clean
 .PHONY : server/CMakeFiles/server.dir/clean
+
+#=============================================================================
+# Target rules for target client/CMakeFiles/client.dir
+
+# All Build rule for target.
+client/CMakeFiles/client.dir/all: netlib/CMakeFiles/netlib.dir/all
+	$(MAKE) $(MAKESILENT) -f client/CMakeFiles/client.dir/build.make client/CMakeFiles/client.dir/depend
+	$(MAKE) $(MAKESILENT) -f client/CMakeFiles/client.dir/build.make client/CMakeFiles/client.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/zgyx/my-Chatroom/build/CMakeFiles --progress-num=1,2 "Built target client"
+.PHONY : client/CMakeFiles/client.dir/all
+
+# Build rule for subdir invocation for target.
+client/CMakeFiles/client.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/zgyx/my-Chatroom/build/CMakeFiles 20
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 client/CMakeFiles/client.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/zgyx/my-Chatroom/build/CMakeFiles 0
+.PHONY : client/CMakeFiles/client.dir/rule
+
+# Convenience name for target.
+client: client/CMakeFiles/client.dir/rule
+.PHONY : client
+
+# clean rule for target.
+client/CMakeFiles/client.dir/clean:
+	$(MAKE) $(MAKESILENT) -f client/CMakeFiles/client.dir/build.make client/CMakeFiles/client.dir/clean
+.PHONY : client/CMakeFiles/client.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

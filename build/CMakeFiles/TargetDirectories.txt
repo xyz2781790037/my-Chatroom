@@ -6,3 +6,6 @@
 /home/zgyx/my-Chatroom/build/server/CMakeFiles/server.dir
 /home/zgyx/my-Chatroom/build/server/CMakeFiles/edit_cache.dir
 /home/zgyx/my-Chatroom/build/server/CMakeFiles/rebuild_cache.dir
+/home/zgyx/my-Chatroom/build/client/CMakeFiles/client.dir
+/home/zgyx/my-Chatroom/build/client/CMakeFiles/edit_cache.dir
+/home/zgyx/my-Chatroom/build/client/CMakeFiles/rebuild_cache.dir

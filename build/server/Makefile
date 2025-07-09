@@ -130,6 +130,30 @@ server/fast:
 	cd /home/zgyx/my-Chatroom/build && $(MAKE) $(MAKESILENT) -f server/CMakeFiles/server.dir/build.make server/CMakeFiles/server.dir/build
 .PHONY : server/fast
 
+redisCmd.o: redisCmd.cc.o
+.PHONY : redisCmd.o
+
+# target to build an object file
+redisCmd.cc.o:
+	cd /home/zgyx/my-Chatroom/build && $(MAKE) $(MAKESILENT) -f server/CMakeFiles/server.dir/build.make server/CMakeFiles/server.dir/redisCmd.cc.o
+.PHONY : redisCmd.cc.o
+
+redisCmd.i: redisCmd.cc.i
+.PHONY : redisCmd.i
+
+# target to preprocess a source file
+redisCmd.cc.i:
+	cd /home/zgyx/my-Chatroom/build && $(MAKE) $(MAKESILENT) -f server/CMakeFiles/server.dir/build.make server/CMakeFiles/server.dir/redisCmd.cc.i
+.PHONY : redisCmd.cc.i
+
+redisCmd.s: redisCmd.cc.s
+.PHONY : redisCmd.s
+
+# target to generate assembly for a file
+redisCmd.cc.s:
+	cd /home/zgyx/my-Chatroom/build && $(MAKE) $(MAKESILENT) -f server/CMakeFiles/server.dir/build.make server/CMakeFiles/server.dir/redisCmd.cc.s
+.PHONY : redisCmd.cc.s
+
 server.o: server.cc.o
 .PHONY : server.o
 
@@ -163,6 +187,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... server"
+	@echo "... redisCmd.o"
+	@echo "... redisCmd.i"
+	@echo "... redisCmd.s"
 	@echo "... server.o"
 	@echo "... server.i"
 	@echo "... server.s"

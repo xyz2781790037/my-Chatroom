@@ -216,13 +216,22 @@ CMAKE_TAPI:FILEPATH=CMAKE_TAPI-NOTFOUND
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
 //Value Computed by CMake
-MyCppRedisProject_BINARY_DIR:STATIC=/home/zgyx/my-Chatroom/build/server
+MyCppRedisProject_BINARY_DIR:STATIC=/home/zgyx/my-Chatroom/build
 
 //Value Computed by CMake
-MyCppRedisProject_IS_TOP_LEVEL:STATIC=OFF
+MyCppRedisProject_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
-MyCppRedisProject_SOURCE_DIR:STATIC=/home/zgyx/my-Chatroom/server
+MyCppRedisProject_SOURCE_DIR:STATIC=/home/zgyx/my-Chatroom
+
+//Value Computed by CMake
+MychatroomProject_BINARY_DIR:STATIC=/home/zgyx/my-Chatroom/build/client
+
+//Value Computed by CMake
+MychatroomProject_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+MychatroomProject_SOURCE_DIR:STATIC=/home/zgyx/my-Chatroom/client
 
 //Value Computed by CMake
 NetLib_BINARY_DIR:STATIC=/home/zgyx/my-Chatroom/build/netlib
@@ -232,6 +241,9 @@ NetLib_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
 NetLib_SOURCE_DIR:STATIC=/home/zgyx/my-Chatroom/netlib
+
+//The directory containing a CMake configuration file for nlohmann_json.
+nlohmann_json_DIR:PATH=/usr/share/cmake/nlohmann_json
 
 
 ########################
@@ -338,7 +350,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=3
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=4
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
@@ -383,6 +395,8 @@ CMAKE_TAPI-ADVANCED:INTERNAL=1
 CMAKE_UNAME:INTERNAL=/usr/bin/uname
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
+//Details about finding nlohmann_json
+FIND_PACKAGE_MESSAGE_DETAILS_nlohmann_json:INTERNAL=[/usr/share/cmake/nlohmann_json/nlohmann_jsonConfig.cmake][v3.11.3(3.2.0)]
 //linker supports push/pop state
 _CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED:INTERNAL=TRUE
 

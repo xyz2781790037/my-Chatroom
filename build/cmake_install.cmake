@@ -46,6 +46,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/zgyx/my-Chatroom/build/netlib/cmake_install.cmake")
   include("/home/zgyx/my-Chatroom/build/server/cmake_install.cmake")
+  include("/home/zgyx/my-Chatroom/build/client/cmake_install.cmake")
 
 endif()
 
