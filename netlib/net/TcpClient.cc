@@ -89,15 +89,17 @@ TcpClient::~TcpClient(){
         unique = connection_.unique();
         conn = connection_;
     }
-    if (conn)
-    {
+    if (conn){
         assert(loop_ == conn->getLoop());
         loop_->runInLoop([conn, loop = loop_, this]()
                          { conn->setCloseCallback([loop, this](const TcpConnectionPtr &conn) { this->removeConnection(conn);  }); });
         if (unique)
         {
-            conn->close();
+            conn->forceClose();
         }
     }
-    
+    else{
+        connector_->stop();
+        loop_->runAfter(1.0, [connector = connector_]() {});
+    }
 }
