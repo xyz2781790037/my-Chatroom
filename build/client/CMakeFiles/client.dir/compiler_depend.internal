@@ -9,6 +9,7 @@ client/CMakeFiles/client.dir/client.cc.o
  /home/zgyx/my-Chatroom/netlib/base/noncopyable.h
  /home/zgyx/my-Chatroom/base/logOn.h
  /home/zgyx/my-Chatroom/base/user.h
+ /home/zgyx/my-Chatroom/netlib/base/logger.h
  /home/zgyx/my-Chatroom/netlib/base/Timestamp.h
  /home/zgyx/my-Chatroom/netlib/base/noncopyable.h
  /home/zgyx/my-Chatroom/netlib/net/Buffer.h

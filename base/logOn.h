@@ -10,16 +10,18 @@
 #include "user.h"
 class logon{
 public:
-    void ui(mulib::net::TcpClient &client);
+    logon(mulib::net::TcpClient &client) : client_(client){}
+    void ui();
 
 private:
-    void selectFunc(int funcnum, mulib::net::TcpClient &client);
+    void selectFunc(int funcnum);
     void login();
-    void Register(mulib::net::TcpClient &client);
+    void Register();
     void exitSystem();
     void sendPerson(int fd, std::string personinformation);
+    mulib::net::TcpClient &client_;
 };
-inline void logon::ui(mulib::net::TcpClient &client)
+inline void logon::ui()
 {
     while(1){
         std::cout << "   chatroom" << std::endl;
@@ -28,10 +30,10 @@ inline void logon::ui(mulib::net::TcpClient &client)
         std::cout << "   3.退出" << std::endl;
         int funcNum;
         std::cin >> funcNum;
-        selectFunc(funcNum,client);
+        selectFunc(funcNum);
     }
 }
-inline void logon::selectFunc(int funcnum, mulib::net::TcpClient &client)
+inline void logon::selectFunc(int funcnum)
 {
     switch (funcnum){
     case 1:
@@ -59,7 +61,7 @@ inline void logon::login(){
     getline(std::cin, passWord);
     //
 }
-inline void logon::Register(mulib::net::TcpClient &client)
+inline void logon::Register()
 {
 
     std::string registerAccount, registerPassword1, registerPassword2;
@@ -78,14 +80,10 @@ inline void logon::Register(mulib::net::TcpClient &client)
     }
     std::cout << "请绑定qq邮箱: ";
     getline(std::cin, qqEmail);
-    User person = User(registerAccount, registerPassword1, qqEmail);
-    if (client.connect() && client.connect())
-    {
-        User user;
-        user.sendUserInformation(client.connection()); //  获取连接，传入你的函数
-    }
-    const mulib::net::TcpClient::TcpConnectionPtr conn;
-    person.sendUserInformation(conn);
+    LOG_WARN << "111";
+    User person(registerAccount, registerPassword1, qqEmail);
+    
+    person.sendUserInformation(client_.connection());
     std::cout << "注册成功！" << std::endl;
 }
 inline void logon::exitSystem(){

@@ -103,3 +103,7 @@ TcpClient::~TcpClient(){
         loop_->runAfter(1.0, [connector = connector_]() {});
     }
 }
+TcpClient::TcpConnectionPtr TcpClient::connection(){
+    std::unique_lock<std::mutex> lock(mutex_);
+    return connection_;
+}

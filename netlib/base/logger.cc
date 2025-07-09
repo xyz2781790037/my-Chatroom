@@ -74,7 +74,7 @@ void Logger::setLogLevel(Logger::LogLevel level)
 }
 Logger::~Logger()
 {
-    // 有问题
+    //有问题
     impl_.finish(); // 补充文件名、行号等结尾信息
 
     const std::string &msg = impl_.stream_.str();
@@ -85,19 +85,19 @@ Logger::~Logger()
     // }
     // else
     // {
-        fwrite(msg.c_str(), 1, msg.size(), stdout);
+    fwrite(msg.c_str(), 1, msg.size(), stdout);
     // }
 
     if (impl_.level_ == FATAL)
     {
-    //     if (FlushFunc())
-    //     {
-    //         FlushFunc();
-    //     }
-    //     else
-    //     {
-            fflush(stdout);
-    //     }
+        //     if (FlushFunc())
+        //     {
+        //         FlushFunc();
+        //     }
+        //     else
+        //     {
+        fflush(stdout);
+        //     }
         abort(); // FATAL 日志：程序终止
     }
 }

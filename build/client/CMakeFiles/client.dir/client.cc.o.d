@@ -1,6 +1,6 @@
 client/CMakeFiles/client.dir/client.cc.o: \
  /home/zgyx/my-Chatroom/client/client.cc /usr/include/stdc-predef.h \
- /home/zgyx/my-Chatroom/server/../base/logOn.h \
+ /home/zgyx/my-Chatroom/client/../base/logOn.h \
  /usr/include/c++/13/iostream /usr/include/c++/13/bits/requires_hosted.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \
@@ -244,12 +244,12 @@ client/CMakeFiles/client.dir/client.cc.o: \
  /usr/include/netinet/tcp.h \
  /home/zgyx/my-Chatroom/server/../netlib/net/Buffer.h \
  /home/zgyx/my-Chatroom/server/../netlib/net/Connector.h \
- /home/zgyx/my-Chatroom/server/../base/../netlib/base/logger.h \
- /home/zgyx/my-Chatroom/server/../base/../netlib/base/logStream.h \
+ /home/zgyx/my-Chatroom/client/../base/../netlib/base/logger.h \
+ /home/zgyx/my-Chatroom/client/../base/../netlib/base/logStream.h \
  /usr/include/c++/13/sstream /usr/include/c++/13/bits/sstream.tcc \
- /home/zgyx/my-Chatroom/server/../base/../netlib/base/noncopyable.h \
- /home/zgyx/my-Chatroom/server/../base/../netlib/base/Timestamp.h \
- /usr/include/c++/13/cstring /home/zgyx/my-Chatroom/server/../base/user.h \
+ /home/zgyx/my-Chatroom/client/../base/../netlib/base/noncopyable.h \
+ /home/zgyx/my-Chatroom/client/../base/../netlib/base/Timestamp.h \
+ /usr/include/c++/13/cstring /home/zgyx/my-Chatroom/client/../base/user.h \
  /usr/include/nlohmann/json.hpp /usr/include/c++/13/algorithm \
  /usr/include/c++/13/bits/stl_algo.h \
  /usr/include/c++/13/bits/algorithmfwd.h \
