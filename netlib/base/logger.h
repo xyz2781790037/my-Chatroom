@@ -53,7 +53,7 @@ namespace mulib
             Logger(SourceFile file, int line, bool toAbort); // SYSFATAL 日志
             LogStream &stream(); // 获取流式日志输入
             static LogLevel logLevel();
-            void setLogLevel(LogLevel level);
+            static void setLogLevel(LogLevel level);
 
             // typedef void (*OutputFunc)(const char *msg, int len);
             // typedef void (*FlushFunc)();

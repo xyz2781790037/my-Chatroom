@@ -10,7 +10,7 @@
 #include "user.h"
 class logon{
 public:
-    logon(mulib::net::TcpClient &client) : client_(client){}
+    logon(std::shared_ptr<mulib::net::TcpClient> client) : client_(client) {}
     void ui();
 
 private:
@@ -18,8 +18,8 @@ private:
     void login();
     void Register();
     void exitSystem();
-    void sendPerson(int fd, std::string personinformation);
-    mulib::net::TcpClient &client_;
+    // void sendPerson(int fd, std::string personinformation);
+    std::shared_ptr<mulib::net::TcpClient> client_;
 };
 inline void logon::ui()
 {
@@ -46,7 +46,7 @@ inline void logon::selectFunc(int funcnum)
         exitSystem();
         break;
         default:
-        std::cout << "输入错误,请重新输入";
+        std::cout << "输入错误,请重新输入" << std::endl;
         sleep(1);
         system("clear");
         break;
@@ -54,19 +54,28 @@ inline void logon::selectFunc(int funcnum)
 }
 inline void logon::login(){
     std::string Account, passWord;
-    getchar();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cout << "账号: ";
     getline(std::cin, Account);
     std::cout << "密码: ";
     getline(std::cin, passWord);
-    //
+    User user(Account,passWord);
+    auto conn = client_->connection();
+    if (conn)
+    {
+        user.sendLogin(conn);
+    }
+    else
+    {
+        std::cout << "服务器未运行，无法发送登陆信息。\n";
+    }
 }
 inline void logon::Register()
 {
 
     std::string registerAccount, registerPassword1, registerPassword2;
     std::string qqEmail;
-    getchar();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cout << "账号: ";
     getline(std::cin, registerAccount);
     std::cout << "密码: ";
@@ -74,22 +83,27 @@ inline void logon::Register()
     std::cout << "再输入一次密码: ";
     getline(std::cin, registerPassword2);
     while(registerPassword2 != registerPassword1){
-        std::cout << "与密码不符，请重新输入";
+        std::cout << "与密码不符，请重新输入" << std::endl;
         std::cout << "再输入一次密码: ";
         getline(std::cin, registerPassword2);
     }
     std::cout << "请绑定qq邮箱: ";
     getline(std::cin, qqEmail);
-    LOG_WARN << "111";
     User person(registerAccount, registerPassword1, qqEmail);
-    
-    person.sendUserInformation(client_.connection());
-    std::cout << "注册成功！" << std::endl;
+    auto conn = client_->connection();
+    if (conn)
+    {
+        person.sendUserInformation(conn);
+    }
+    else
+    {
+        std::cout << "服务器未运行，无法发送注册信息。\n";
+    }
 }
 inline void logon::exitSystem(){
+    client_->disconnect();
+    client_->stop();
     exit(0);
 }
-inline void logon::sendPerson(int fd,std::string personinformation){
-    int i = 1;
-}
+
 #endif

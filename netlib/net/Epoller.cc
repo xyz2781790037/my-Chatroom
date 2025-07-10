@@ -47,15 +47,26 @@ void Epoller::fillActiveChannels(int numEvents, ChannelList &activeChannels) con
 void Epoller::updateChannel(Channel *channel){
     assertInLoopThread();
     int index = channel->index();
-    if(index == _knew || index == _kdelete){
-        int fd = channel->fd();
-        if(index == _knew){
+    int fd = channel->fd();
+    if (index == _knew || index == _kdelete){
+        if (index == _knew)
+        {
             channels_[fd] = channel;
         }
         channel->set_index(_kadded);
         update(EPOLL_CTL_ADD, channel);
     }
+    else{
+        if (channel->isNoneEvent()){
+            update(EPOLL_CTL_DEL, channel);
+            channel->set_index(_kdelete);
+        }
+        else{
+            update(EPOLL_CTL_MOD, channel);
+        }
+    }
 }
+
 void Epoller::removeChannel(Channel *channel)
 {
     assertInLoopThread();
@@ -79,7 +90,7 @@ void Epoller::update(int opt, Channel *channel){
             LOG_ERROR << "Epoller::epoll : delete error";
         }
         else{
-            LOG_ERROR << "Epoller::epoll : add / mod error";
+            LOG_ERROR << "Epoller::epoll : add / mod error" << strerror(errno);
         }
     }
 }

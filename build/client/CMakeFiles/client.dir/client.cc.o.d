@@ -339,4 +339,5 @@ client/CMakeFiles/client.dir/client.cc.o: \
  /usr/include/nlohmann/ordered_map.hpp \
  /usr/include/nlohmann/detail/macro_unscope.hpp \
  /usr/include/nlohmann/thirdparty/hedley/hedley_undef.hpp \
- /home/zgyx/my-Chatroom/server/../netlib/net/EventLoop.h
+ /home/zgyx/my-Chatroom/server/../netlib/net/EventLoop.h \
+ /home/zgyx/my-Chatroom/client/../netlib/base/logger.h
