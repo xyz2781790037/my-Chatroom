@@ -8,7 +8,7 @@ public:
     int assignId();
     void setNewUser(nlohmann::json data);
     int handleLogin(nlohmann::json data);
-    void returnUser(std::string account, std::string qqemail);
+    void returnUser(nlohmann::json &data);
 
 private: 
     void connect();

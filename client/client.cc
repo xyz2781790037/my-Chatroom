@@ -23,8 +23,8 @@ int main(){
     } });
 
     clientPtr->setMessageCallback([&clientLog](const mulib::net::TcpClient::TcpConnectionPtr &conn, Buffer *buf, mulib::base::Timestamp){
-        std::string msg = buf->retrieveAllAsString();  
-        std::cout << "收到服务器消息: " << msg << std::endl; 
+        auto jsonData = nlohmann::json::parse(buf->retrieveAllAsString());
+        
     });
     mainLoop.loop(-1);
     return 0;

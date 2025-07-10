@@ -1,5 +1,5 @@
 #include "redisCmd.h"
-
+#include "../netlib/base/logger.h"
 redisCmd::redisCmd(){
     connect();
 }
@@ -43,14 +43,17 @@ void redisCmd::connect(){
 int redisCmd::handleLogin(nlohmann::json data){
     connect();
     
-    if(isAccount(data["account"])){
+    if(!isAccount(data["account"])){
+        LOG_INFO << "账号：" << data["account"] << "不存在";
         return -1;
     }
     else{
         if(data["password"] == getPassward(data["account"])){
+            LOG_INFO << "账号：" << data["account"] << "存在";
             return 1;
         }
         else{
+            LOG_INFO << "密码错误";
             return 0;
         }
     }
@@ -59,6 +62,7 @@ bool redisCmd::isAccount(std::string account){
     auto reply = redisClient.get(account);
     redisClient.sync_commit();
     auto result = reply.get();
+    LOG_INFO << "account is " << result.is_null();
     return !result.is_null();
 }
 std::string redisCmd::getQQEmail(std::string account){
@@ -83,4 +87,11 @@ std::string redisCmd::getField(const std::string &account, const std::string &fi
     else{
         return "";
     }
+}
+void redisCmd::returnUser(nlohmann::json &data){
+    std::string account = data["account"];
+    data["ID"] = getID(account);
+    data["email"] = getQQEmail(account);
+    data["myname"] = getMyname(account);
+    data["password"] = getPassward(account);
 }

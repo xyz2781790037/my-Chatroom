@@ -294,4 +294,10 @@ server/CMakeFiles/server.dir/redisCmd.cc.o: \
  /usr/include/nlohmann/detail/conversions/to_chars.hpp \
  /usr/include/nlohmann/ordered_map.hpp \
  /usr/include/nlohmann/detail/macro_unscope.hpp \
- /usr/include/nlohmann/thirdparty/hedley/hedley_undef.hpp
+ /usr/include/nlohmann/thirdparty/hedley/hedley_undef.hpp \
+ /home/zgyx/my-Chatroom/server/../netlib/base/logger.h \
+ /home/zgyx/my-Chatroom/server/../netlib/base/logStream.h \
+ /usr/include/c++/13/sstream /usr/include/c++/13/bits/sstream.tcc \
+ /home/zgyx/my-Chatroom/server/../netlib/base/noncopyable.h \
+ /home/zgyx/my-Chatroom/server/../netlib/base/Timestamp.h \
+ /usr/include/x86_64-linux-gnu/sys/time.h

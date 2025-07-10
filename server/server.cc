@@ -45,7 +45,15 @@ int main(){
             else if(type == 1){
                 int result = redis.handleLogin(jsonData);
                 if(result == 1){
-                    jsonData["email"];
+                    redis.returnUser(jsonData);
+                    conn->send(jsonData.dump());
+                    conn->send("成功登陆");
+                }
+                else if(result == 0){
+                    conn->send("密码错误");
+                }
+                else{
+                    conn->send("账号不存在");
                 }
             }
         }
