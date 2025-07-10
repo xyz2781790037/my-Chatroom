@@ -28,7 +28,7 @@ private:
 };
 inline void logon::ui()
 {
-    while(1){
+    while(true){
         if(currentState_ == EXECUTE){
             std::cout << "   chatroom" << std::endl;
             std::cout << "   1.登陆" << std::endl;
