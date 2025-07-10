@@ -39,6 +39,9 @@ int main(){
                 LOG_INFO << "state: " << jsonData["state"];
                 clientLog.updataState(jsonData["state"]);
             }
+            else if(type == handleData::GETPWD){
+                
+            }
         }
     });
     mainLoop.loop(-1);

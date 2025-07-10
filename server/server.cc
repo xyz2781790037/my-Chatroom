@@ -1,6 +1,7 @@
 #include "../netlib/net/TcpServer.h"
 #include <nlohmann/json.hpp>
 #include "../base/handleData.h"
+#include "../base/MessageSplitter.h"
 void onConnection(const mulib::net::TcpConnectionPtr &conn)
 {
     if (conn->connected())
@@ -8,22 +9,16 @@ void onConnection(const mulib::net::TcpConnectionPtr &conn)
         std::cout << "new conncetion" << std::endl;
     }
 }
-nlohmann::json onMessage(const TcpConnectionPtr&conn ,Buffer *buf,mulib::base::Timestamp recviveTime){
+void onMessage(const TcpConnectionPtr&conn ,Buffer *buf,mulib::base::Timestamp recviveTime){
+    handleData handledata_;
+    redisCmd redis;
+    MessageSplitter megser;
     std::string json_str = buf->retrieveAllAsString();
     LOG_INFO << "收到数据 :" << json_str;
-    return nlohmann::json::parse(json_str);
-}
-int main(){
-    redisCmd redis;
-    handleData handledata_;
-    mulib::net::EventLoop mainLoop;
-    mulib::net::InetAddress addr(8080);
-    mulib::net::TcpServer server(&mainLoop, "G", addr);
-    server.setThreadNum(32);
-    server.start();
-    server.setConnectionCallback(onConnection);
-    server.setMessageCallback([&redis,&handledata_](const TcpConnectionPtr &conn, Buffer *buf, mulib::base::Timestamp recviveTime){
-        nlohmann::json jsonData = onMessage(conn,buf,recviveTime);
+    megser.append(buf);
+    std::string jsondata;
+    while(megser.nextMessage(jsondata)){
+        auto jsonData = nlohmann::json::parse(jsondata);
         if (jsonData.contains("type")){
             LOG_DEBUG << "JSON 正常";
             int type = handledata_.getDataType(jsonData["type"]);
@@ -39,7 +34,16 @@ int main(){
         {
             LOG_ERROR << "JSON 数据缺少必要字段，忽略";
         }
-    });
+    }
+}
+int main(){
+    mulib::net::EventLoop mainLoop;
+    mulib::net::InetAddress addr(8080);
+    mulib::net::TcpServer server(&mainLoop, "G", addr);
+    server.setThreadNum(32);
+    server.start();
+    server.setConnectionCallback(onConnection);
+    server.setMessageCallback(onMessage);
     mainLoop.loop(-1);
     return 0;
 }

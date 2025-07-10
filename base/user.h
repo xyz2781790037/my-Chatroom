@@ -9,6 +9,7 @@ public:
     User(std::string usrname, std::string usrpassword);
     void sendUserInformation(const mulib::net::TcpClient::TcpConnectionPtr &conn);
     void sendLogin(const mulib::net::TcpClient::TcpConnectionPtr &conn);
+    void sendPassword(std::string account, std::string email, const mulib::net::TcpClient::TcpConnectionPtr &conn);
 
 private:
     std::string usrName;
@@ -31,13 +32,20 @@ inline void User::sendUserInformation(const mulib::net::TcpClient::TcpConnection
     user["password"] = usrPassword;
     user["qqEmail"] = usrqqEmail;
     user["myname"] = myname;
-    conn->send(user.dump());
+    conn->send(user.dump() + "\n");
 }
 void User::sendLogin(const mulib::net::TcpClient::TcpConnectionPtr &conn){
     nlohmann::json user;
     user["type"] = "login";
     user["account"] = usrName;
     user["password"] = usrPassword;
-    conn->send(user.dump());
+    conn->send(user.dump() + "\n");
+}
+void User::sendPassword(std::string account, std::string email, const mulib::net::TcpClient::TcpConnectionPtr &conn){
+    nlohmann::json user;
+    user["type"] = "getpassword";
+    user["email"] = email;
+    user["account"] = account;
+    conn->send(user.dump() + "\n");
 }
 #endif

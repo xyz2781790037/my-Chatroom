@@ -23,6 +23,7 @@ private:
     void login();
     void Register();
     void exitSystem();
+    void getPassword();
     std::shared_ptr<mulib::net::TcpClient> client_;
     Status currentState_ = EXECUTE;
 };
@@ -34,6 +35,7 @@ inline void logon::ui()
             std::cout << "   1.登陆" << std::endl;
             std::cout << "   2.注册" << std::endl;
             std::cout << "   3.退出" << std::endl;
+            std::cout << "   4.找回密码 " << std::endl;
             int funcNum;
             std::cin >> funcNum;
             selectFunc(funcNum);
@@ -49,10 +51,13 @@ inline void logon::selectFunc(int funcnum)
     case 2:
         Register();
         break;
-        case 3:
+    case 3:
         exitSystem();
         break;
-        default:
+    case 4:
+        getPassword();
+        break;
+    default:
         std::cout << "输入错误,请重新输入" << std::endl;
         sleep(1);
         system("clear");
@@ -115,5 +120,17 @@ inline void logon::exitSystem(){
 }
 inline void logon::updataState(Status state){
     currentState_ = state;
+}
+inline void logon::getPassword(){
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::string account, qqemail,Vcode;
+    std::cout << "输入你的账号：";
+    getline(std::cin,account);
+    std::cout << "输入你的邮箱：";
+    getline(std::cin, qqemail);
+    
+    std::cout << "请输入验证码：";
+    getline(std::cin, Vcode);
+
 }
 #endif

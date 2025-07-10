@@ -17,7 +17,7 @@ public:
     {
         REGISTER,
         LOGIN,
-        RETRIEVE_PWD,
+        GETPWD,
         PRINT,
         INFOEMATION
     };
@@ -33,8 +33,8 @@ inline handleData::type handleData::getDataType(std::string datatype){
     else if(datatype == "login"){
         return LOGIN;
     }
-    else if(datatype == "retrieve_pwd"){
-        return RETRIEVE_PWD;
+    else if(datatype == "getpwd"){
+        return GETPWD;
     }
     else if(datatype == "print"){
         return PRINT;
@@ -46,13 +46,11 @@ inline handleData::type handleData::getDataType(std::string datatype){
 inline void handleData::handleRegister(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
     redis.setNewUser(jsonData);
     LOG_INFO << "准备发送注册成功消息给客户端";
-    if (conn && conn->connected())
-    {
+    if (conn && conn->connected()){
         conn->send(sendMeg("注册成功！", logon::EXECUTE).dump() + "\n");
         LOG_INFO << "handleData::handleRegister: end";
     }
-    else
-    {
+    else{
         std::cout << "连接尚未建立，无法发送注册信息。\n";
     }
 }
