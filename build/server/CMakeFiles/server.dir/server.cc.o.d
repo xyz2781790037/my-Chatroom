@@ -372,4 +372,8 @@ server/CMakeFiles/server.dir/server.cc.o: \
  /usr/include/c++/13/sstream /usr/include/c++/13/bits/sstream.tcc \
  /home/zgyx/my-Chatroom/server/../base/../netlib/base/noncopyable.h \
  /home/zgyx/my-Chatroom/server/../base/../netlib/base/Timestamp.h \
- /home/zgyx/my-Chatroom/server/../base/../netlib/net/TcpConnection.h
+ /home/zgyx/my-Chatroom/server/../base/../netlib/net/TcpConnection.h \
+ /home/zgyx/my-Chatroom/server/../base/logOn.h \
+ /home/zgyx/my-Chatroom/server/../netlib/net/TcpClient.h \
+ /home/zgyx/my-Chatroom/server/../netlib/net/Connector.h \
+ /home/zgyx/my-Chatroom/server/../base/user.h

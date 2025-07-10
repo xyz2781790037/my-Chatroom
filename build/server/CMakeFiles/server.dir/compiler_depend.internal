@@ -380,17 +380,21 @@ server/CMakeFiles/server.dir/server.cc.o
  /home/zgyx/my-Chatroom/netlib/base/noncopyable.h
  /home/zgyx/my-Chatroom/netlib/net/TcpConnection.h
  /home/zgyx/my-Chatroom/base/handleData.h
+ /home/zgyx/my-Chatroom/base/logOn.h
+ /home/zgyx/my-Chatroom/base/user.h
  /home/zgyx/my-Chatroom/netlib/base/Timestamp.h
  /home/zgyx/my-Chatroom/netlib/base/noncopyable.h
  /home/zgyx/my-Chatroom/netlib/net/Acceptor.h
  /home/zgyx/my-Chatroom/netlib/net/Buffer.h
  /home/zgyx/my-Chatroom/netlib/net/Channel.h
+ /home/zgyx/my-Chatroom/netlib/net/Connector.h
  /home/zgyx/my-Chatroom/netlib/net/EventLoop.h
  /home/zgyx/my-Chatroom/netlib/net/EventLoopThread.h
  /home/zgyx/my-Chatroom/netlib/net/EventLoopThreadpool.h
  /home/zgyx/my-Chatroom/netlib/net/InetAddress.h
  /home/zgyx/my-Chatroom/netlib/net/Socket.h
  /home/zgyx/my-Chatroom/netlib/net/SocketOps.h
+ /home/zgyx/my-Chatroom/netlib/net/TcpClient.h
  /home/zgyx/my-Chatroom/netlib/net/TcpConnection.h
  /home/zgyx/my-Chatroom/netlib/net/TcpServer.h
  /home/zgyx/my-Chatroom/netlib/net/Timer.h

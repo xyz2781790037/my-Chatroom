@@ -375,5 +375,6 @@ client/CMakeFiles/client.dir/client.cc.o: \
  /usr/local/include/tacopie/network/tcp_server.hpp \
  /usr/local/include/tacopie/network/tcp_client.hpp \
  /home/zgyx/my-Chatroom/client/../base/../netlib/net/TcpConnection.h \
+ /home/zgyx/my-Chatroom/client/../base/logOn.h \
  /home/zgyx/my-Chatroom/client/../base/MessageSplitter.h \
  /home/zgyx/my-Chatroom/client/../base/../netlib/net/Buffer.h

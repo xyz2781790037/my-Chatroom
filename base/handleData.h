@@ -4,6 +4,7 @@
 #include "redisCmd.h"
 #include "../netlib/base/logger.h"
 #include "../netlib/net/TcpConnection.h"
+#include "logOn.h"
 namespace mulib{
     namespace net{
         using TcpConnectionPtr = std::shared_ptr<TcpConnection>;
@@ -23,8 +24,7 @@ public:
     type getDataType(std::string datatype);
     void handleRegister(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
     void handleLogin(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
-    nlohmann::json sendMeg(std::string message);
-    
+    nlohmann::json sendMeg(std::string message, logon::Status state);
 };
 inline handleData::type handleData::getDataType(std::string datatype){
     if(datatype == "register"){
@@ -48,8 +48,8 @@ inline void handleData::handleRegister(const TcpConnectionPtr &conn, nlohmann::j
     LOG_INFO << "准备发送注册成功消息给客户端";
     if (conn && conn->connected())
     {
-        conn->send("注册成功！");
-        LOG_INFO << "end";
+        conn->send(sendMeg("注册成功！", logon::EXECUTE).dump() + "\n");
+        LOG_INFO << "handleData::handleRegister: end";
     }
     else
     {
@@ -65,19 +65,21 @@ inline void handleData::handleLogin(const TcpConnectionPtr &conn, nlohmann::json
         redis.returnUser(jdata);
         LOG_INFO << "准备发送 :" << jdata.dump();
         conn->send(jdata.dump() + "\n");
-        conn->send(sendMeg("成功登陆").dump() + "\n");
+        conn->send(sendMeg("成功登陆", logon::EXECUTE).dump() + "\n");
     }
     else if(result == 0){
-        conn->send(sendMeg("密码错误").dump() + "\n");
+        conn->send(sendMeg("密码错误", logon::EXECUTE).dump() + "\n");
     }
     else{
-        conn->send(sendMeg("账号不存在").dump() + "\n");
+        conn->send(sendMeg("账号不存在",logon::EXECUTE).dump() + "\n");
     }
+    LOG_INFO << "handleData::handleLogin: end";
 }
-inline nlohmann::json handleData::sendMeg(std::string message){
+inline nlohmann::json handleData::sendMeg(std::string message,logon::Status state){
     nlohmann::json j;
     j["type"] = "print";
     j["meg"] = message;
+    j["state"] = state;
     return j;
 }
 #endif

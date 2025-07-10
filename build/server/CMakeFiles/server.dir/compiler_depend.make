@@ -378,17 +378,21 @@ server/CMakeFiles/server.dir/server.cc.o: /home/zgyx/my-Chatroom/server/server.c
   /home/zgyx/my-Chatroom/netlib/base/noncopyable.h \
   /home/zgyx/my-Chatroom/netlib/net/TcpConnection.h \
   /home/zgyx/my-Chatroom/base/handleData.h \
+  /home/zgyx/my-Chatroom/base/logOn.h \
+  /home/zgyx/my-Chatroom/base/user.h \
   /home/zgyx/my-Chatroom/netlib/base/Timestamp.h \
   /home/zgyx/my-Chatroom/netlib/base/noncopyable.h \
   /home/zgyx/my-Chatroom/netlib/net/Acceptor.h \
   /home/zgyx/my-Chatroom/netlib/net/Buffer.h \
   /home/zgyx/my-Chatroom/netlib/net/Channel.h \
+  /home/zgyx/my-Chatroom/netlib/net/Connector.h \
   /home/zgyx/my-Chatroom/netlib/net/EventLoop.h \
   /home/zgyx/my-Chatroom/netlib/net/EventLoopThread.h \
   /home/zgyx/my-Chatroom/netlib/net/EventLoopThreadpool.h \
   /home/zgyx/my-Chatroom/netlib/net/InetAddress.h \
   /home/zgyx/my-Chatroom/netlib/net/Socket.h \
   /home/zgyx/my-Chatroom/netlib/net/SocketOps.h \
+  /home/zgyx/my-Chatroom/netlib/net/TcpClient.h \
   /home/zgyx/my-Chatroom/netlib/net/TcpConnection.h \
   /home/zgyx/my-Chatroom/netlib/net/TcpServer.h \
   /home/zgyx/my-Chatroom/netlib/net/Timer.h \
@@ -878,6 +882,8 @@ server/CMakeFiles/server.dir/server.cc.o: /home/zgyx/my-Chatroom/server/server.c
 
 /home/zgyx/my-Chatroom/netlib/net/EventLoop.h:
 
+/home/zgyx/my-Chatroom/netlib/net/Connector.h:
+
 /home/zgyx/my-Chatroom/netlib/net/Channel.h:
 
 /home/zgyx/my-Chatroom/netlib/net/Acceptor.h:
@@ -1041,6 +1047,8 @@ server/CMakeFiles/server.dir/server.cc.o: /home/zgyx/my-Chatroom/server/server.c
 /usr/include/x86_64-linux-gnu/bits/math-vector.h:
 
 /usr/include/x86_64-linux-gnu/bits/locale.h:
+
+/home/zgyx/my-Chatroom/netlib/net/TcpClient.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h:
 
@@ -1332,6 +1340,8 @@ server/CMakeFiles/server.dir/server.cc.o: /home/zgyx/my-Chatroom/server/server.c
 
 /usr/include/c++/13/backward/auto_ptr.h:
 
+/home/zgyx/my-Chatroom/base/logOn.h:
+
 /usr/include/assert.h:
 
 /usr/include/x86_64-linux-gnu/sys/socket.h:
@@ -1467,6 +1477,8 @@ server/CMakeFiles/server.dir/server.cc.o: /home/zgyx/my-Chatroom/server/server.c
 /usr/include/c++/13/bits/locale_classes.tcc:
 
 /usr/include/c++/13/cerrno:
+
+/home/zgyx/my-Chatroom/base/user.h:
 
 /usr/include/c++/13/cmath:
 

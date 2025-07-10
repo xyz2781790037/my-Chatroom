@@ -17,7 +17,6 @@ int main(){
                                  {
     if (conn->connected()) {
         std::cout << "连接成功，可以开始交互" << std::endl;
-
         std::thread uiThread([clientLog]() mutable
                              { clientLog.ui(); });
         uiThread.detach();
@@ -37,6 +36,7 @@ int main(){
             if (type == handleData::PRINT)
             {
                 std::cout << "收到服务器消息：" << jsonData["meg"] << std::endl;
+                clientLog.updataState(jsonData["state"]);
             }
         }
     });

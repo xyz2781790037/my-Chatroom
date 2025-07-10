@@ -12,25 +12,32 @@ class logon{
 public:
     logon(std::shared_ptr<mulib::net::TcpClient> client) : client_(client) {}
     void ui();
+    enum Status{
+        WAIT,
+        EXECUTE
+    };
+    void updataState(Status state);
 
 private:
     void selectFunc(int funcnum);
     void login();
     void Register();
     void exitSystem();
-    // void sendPerson(int fd, std::string personinformation);
     std::shared_ptr<mulib::net::TcpClient> client_;
+    Status currentState_ = EXECUTE;
 };
 inline void logon::ui()
 {
     while(1){
-        std::cout << "   chatroom" << std::endl;
-        std::cout << "   1.登陆" << std::endl;
-        std::cout << "   2.注册" << std::endl;
-        std::cout << "   3.退出" << std::endl;
-        int funcNum;
-        std::cin >> funcNum;
-        selectFunc(funcNum);
+        if(currentState_ == EXECUTE){
+            std::cout << "   chatroom" << std::endl;
+            std::cout << "   1.登陆" << std::endl;
+            std::cout << "   2.注册" << std::endl;
+            std::cout << "   3.退出" << std::endl;
+            int funcNum;
+            std::cin >> funcNum;
+            selectFunc(funcNum);
+        }
     }
 }
 inline void logon::selectFunc(int funcnum)
@@ -53,6 +60,7 @@ inline void logon::selectFunc(int funcnum)
     }
 }
 inline void logon::login(){
+    currentState_ = WAIT;
     std::string Account, passWord;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cout << "账号: ";
@@ -72,7 +80,7 @@ inline void logon::login(){
 }
 inline void logon::Register()
 {
-
+    currentState_ = WAIT;
     std::string registerAccount, registerPassword1, registerPassword2;
     std::string qqEmail;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -105,5 +113,7 @@ inline void logon::exitSystem(){
     client_->stop();
     exit(0);
 }
-
+inline void logon::updataState(Status state){
+    currentState_ = state;
+}
 #endif
