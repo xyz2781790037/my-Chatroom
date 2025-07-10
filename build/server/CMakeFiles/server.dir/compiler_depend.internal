@@ -378,6 +378,8 @@ server/CMakeFiles/server.dir/server.cc.o
  /home/zgyx/my-Chatroom/netlib/base/logStream.h
  /home/zgyx/my-Chatroom/netlib/base/logger.h
  /home/zgyx/my-Chatroom/netlib/base/noncopyable.h
+ /home/zgyx/my-Chatroom/netlib/net/TcpConnection.h
+ /home/zgyx/my-Chatroom/base/handleData.h
  /home/zgyx/my-Chatroom/netlib/base/Timestamp.h
  /home/zgyx/my-Chatroom/netlib/base/noncopyable.h
  /home/zgyx/my-Chatroom/netlib/net/Acceptor.h
@@ -395,7 +397,6 @@ server/CMakeFiles/server.dir/server.cc.o
  /home/zgyx/my-Chatroom/netlib/net/TimerId.h
  /home/zgyx/my-Chatroom/netlib/net/TimerQueue.h
  /home/zgyx/my-Chatroom/netlib/net/sigpipe.h
- /home/zgyx/my-Chatroom/server/handleData.h
  /home/zgyx/my-Chatroom/server/redisCmd.h
  /usr/include/alloca.h
  /usr/include/arpa/inet.h

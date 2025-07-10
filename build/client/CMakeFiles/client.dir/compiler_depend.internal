@@ -7,9 +7,14 @@ client/CMakeFiles/client.dir/client.cc.o
  /home/zgyx/my-Chatroom/netlib/base/logStream.h
  /home/zgyx/my-Chatroom/netlib/base/logger.h
  /home/zgyx/my-Chatroom/netlib/base/noncopyable.h
+ /home/zgyx/my-Chatroom/netlib/net/Buffer.h
+ /home/zgyx/my-Chatroom/netlib/net/TcpConnection.h
+ /home/zgyx/my-Chatroom/base/MessageSplitter.h
+ /home/zgyx/my-Chatroom/base/handleData.h
  /home/zgyx/my-Chatroom/base/logOn.h
  /home/zgyx/my-Chatroom/base/user.h
  /home/zgyx/my-Chatroom/netlib/base/logger.h
+ /home/zgyx/my-Chatroom/netlib/net/TcpConnection.h
  /home/zgyx/my-Chatroom/netlib/base/Timestamp.h
  /home/zgyx/my-Chatroom/netlib/base/noncopyable.h
  /home/zgyx/my-Chatroom/netlib/net/Buffer.h
@@ -25,6 +30,7 @@ client/CMakeFiles/client.dir/client.cc.o
  /home/zgyx/my-Chatroom/netlib/net/TimerId.h
  /home/zgyx/my-Chatroom/netlib/net/TimerQueue.h
  /home/zgyx/my-Chatroom/netlib/net/sigpipe.h
+ /home/zgyx/my-Chatroom/server/redisCmd.h
  /usr/include/alloca.h
  /usr/include/arpa/inet.h
  /usr/include/asm-generic/bitsperlong.h
@@ -46,6 +52,7 @@ client/CMakeFiles/client.dir/client.cc.o
  /usr/include/c++/13/bits/allocated_ptr.h
  /usr/include/c++/13/bits/allocator.h
  /usr/include/c++/13/bits/atomic_base.h
+ /usr/include/c++/13/bits/atomic_futex.h
  /usr/include/c++/13/bits/atomic_lockfree_defines.h
  /usr/include/c++/13/bits/basic_ios.h
  /usr/include/c++/13/bits/basic_ios.tcc
@@ -59,6 +66,7 @@ client/CMakeFiles/client.dir/client.cc.o
  /usr/include/c++/13/bits/cpp_type_traits.h
  /usr/include/c++/13/bits/cxxabi_forced.h
  /usr/include/c++/13/bits/cxxabi_init_exception.h
+ /usr/include/c++/13/bits/deque.tcc
  /usr/include/c++/13/bits/enable_special_members.h
  /usr/include/c++/13/bits/erase_if.h
  /usr/include/c++/13/bits/exception.h
@@ -77,6 +85,7 @@ client/CMakeFiles/client.dir/client.cc.o
  /usr/include/c++/13/bits/invoke.h
  /usr/include/c++/13/bits/ios_base.h
  /usr/include/c++/13/bits/istream.tcc
+ /usr/include/c++/13/bits/list.tcc
  /usr/include/c++/13/bits/locale_classes.h
  /usr/include/c++/13/bits/locale_classes.tcc
  /usr/include/c++/13/bits/locale_conv.h
@@ -112,16 +121,19 @@ client/CMakeFiles/client.dir/client.cc.o
  /usr/include/c++/13/bits/stl_algobase.h
  /usr/include/c++/13/bits/stl_bvector.h
  /usr/include/c++/13/bits/stl_construct.h
+ /usr/include/c++/13/bits/stl_deque.h
  /usr/include/c++/13/bits/stl_function.h
  /usr/include/c++/13/bits/stl_heap.h
  /usr/include/c++/13/bits/stl_iterator.h
  /usr/include/c++/13/bits/stl_iterator_base_funcs.h
  /usr/include/c++/13/bits/stl_iterator_base_types.h
+ /usr/include/c++/13/bits/stl_list.h
  /usr/include/c++/13/bits/stl_map.h
  /usr/include/c++/13/bits/stl_multimap.h
  /usr/include/c++/13/bits/stl_multiset.h
  /usr/include/c++/13/bits/stl_numeric.h
  /usr/include/c++/13/bits/stl_pair.h
+ /usr/include/c++/13/bits/stl_queue.h
  /usr/include/c++/13/bits/stl_raw_storage_iter.h
  /usr/include/c++/13/bits/stl_relops.h
  /usr/include/c++/13/bits/stl_set.h
@@ -151,6 +163,7 @@ client/CMakeFiles/client.dir/client.cc.o
  /usr/include/c++/13/clocale
  /usr/include/c++/13/cmath
  /usr/include/c++/13/compare
+ /usr/include/c++/13/condition_variable
  /usr/include/c++/13/cstddef
  /usr/include/c++/13/cstdint
  /usr/include/c++/13/cstdio
@@ -161,6 +174,7 @@ client/CMakeFiles/client.dir/client.cc.o
  /usr/include/c++/13/cwctype
  /usr/include/c++/13/debug/assertions.h
  /usr/include/c++/13/debug/debug.h
+ /usr/include/c++/13/deque
  /usr/include/c++/13/exception
  /usr/include/c++/13/ext/aligned_buffer.h
  /usr/include/c++/13/ext/alloc_traits.h
@@ -171,6 +185,7 @@ client/CMakeFiles/client.dir/client.cc.o
  /usr/include/c++/13/ext/type_traits.h
  /usr/include/c++/13/forward_list
  /usr/include/c++/13/functional
+ /usr/include/c++/13/future
  /usr/include/c++/13/initializer_list
  /usr/include/c++/13/iomanip
  /usr/include/c++/13/ios
@@ -179,6 +194,7 @@ client/CMakeFiles/client.dir/client.cc.o
  /usr/include/c++/13/istream
  /usr/include/c++/13/iterator
  /usr/include/c++/13/limits
+ /usr/include/c++/13/list
  /usr/include/c++/13/locale
  /usr/include/c++/13/map
  /usr/include/c++/13/memory
@@ -186,6 +202,7 @@ client/CMakeFiles/client.dir/client.cc.o
  /usr/include/c++/13/new
  /usr/include/c++/13/numeric
  /usr/include/c++/13/ostream
+ /usr/include/c++/13/queue
  /usr/include/c++/13/ratio
  /usr/include/c++/13/set
  /usr/include/c++/13/sstream
@@ -408,4 +425,28 @@ client/CMakeFiles/client.dir/client.cc.o
  /usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h
  /usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h
  /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h
+ /usr/local/include/cpp_redis/builders/builder_iface.hpp
+ /usr/local/include/cpp_redis/builders/reply_builder.hpp
+ /usr/local/include/cpp_redis/core/client.hpp
+ /usr/local/include/cpp_redis/core/reply.hpp
+ /usr/local/include/cpp_redis/core/sentinel.hpp
+ /usr/local/include/cpp_redis/core/subscriber.hpp
+ /usr/local/include/cpp_redis/cpp_redis
+ /usr/local/include/cpp_redis/helpers/variadic_template.hpp
+ /usr/local/include/cpp_redis/impl/client.ipp
+ /usr/local/include/cpp_redis/misc/error.hpp
+ /usr/local/include/cpp_redis/misc/logger.hpp
+ /usr/local/include/cpp_redis/network/redis_connection.hpp
+ /usr/local/include/cpp_redis/network/tcp_client.hpp
+ /usr/local/include/cpp_redis/network/tcp_client_iface.hpp
+ /usr/local/include/tacopie/network/io_service.hpp
+ /usr/local/include/tacopie/network/self_pipe.hpp
+ /usr/local/include/tacopie/network/tcp_client.hpp
+ /usr/local/include/tacopie/network/tcp_server.hpp
+ /usr/local/include/tacopie/network/tcp_socket.hpp
+ /usr/local/include/tacopie/tacopie
+ /usr/local/include/tacopie/utils/error.hpp
+ /usr/local/include/tacopie/utils/logger.hpp
+ /usr/local/include/tacopie/utils/thread_pool.hpp
+ /usr/local/include/tacopie/utils/typedefs.hpp
 

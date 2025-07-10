@@ -248,51 +248,10 @@ server/CMakeFiles/server.dir/server.cc.o: \
  /home/zgyx/my-Chatroom/server/../netlib/net/Buffer.h \
  /home/zgyx/my-Chatroom/server/../netlib/net/EventLoopThreadpool.h \
  /home/zgyx/my-Chatroom/server/../netlib/net/EventLoopThread.h \
- /usr/include/c++/13/condition_variable \
- /home/zgyx/my-Chatroom/server/../netlib/base/logger.h \
- /home/zgyx/my-Chatroom/server/../netlib/base/logStream.h \
- /usr/include/c++/13/sstream /usr/include/c++/13/bits/sstream.tcc \
- /home/zgyx/my-Chatroom/server/../netlib/base/noncopyable.h \
- /home/zgyx/my-Chatroom/server/../netlib/base/Timestamp.h \
- /usr/include/c++/13/cstring /home/zgyx/my-Chatroom/server/redisCmd.h \
- /usr/local/include/cpp_redis/cpp_redis \
- /usr/local/include/cpp_redis/core/client.hpp /usr/include/c++/13/future \
- /usr/include/c++/13/bits/atomic_futex.h /usr/include/c++/13/queue \
- /usr/include/c++/13/deque /usr/include/c++/13/bits/stl_deque.h \
- /usr/include/c++/13/bits/deque.tcc /usr/include/c++/13/bits/stl_heap.h \
- /usr/include/c++/13/bits/stl_queue.h \
- /usr/local/include/cpp_redis/core/sentinel.hpp \
- /usr/local/include/cpp_redis/misc/logger.hpp \
- /usr/local/include/cpp_redis/network/redis_connection.hpp \
- /usr/local/include/cpp_redis/builders/reply_builder.hpp \
- /usr/local/include/cpp_redis/builders/builder_iface.hpp \
- /usr/local/include/cpp_redis/core/reply.hpp \
- /usr/local/include/cpp_redis/network/tcp_client_iface.hpp \
- /usr/local/include/cpp_redis/helpers/variadic_template.hpp \
- /usr/local/include/cpp_redis/impl/client.ipp \
- /usr/local/include/cpp_redis/core/subscriber.hpp \
- /usr/local/include/cpp_redis/misc/error.hpp \
- /usr/local/include/cpp_redis/network/tcp_client.hpp \
- /usr/local/include/tacopie/tacopie \
- /usr/local/include/tacopie/utils/error.hpp \
- /usr/local/include/tacopie/utils/logger.hpp \
- /usr/local/include/tacopie/utils/typedefs.hpp \
- /usr/local/include/tacopie/network/io_service.hpp \
- /usr/include/c++/13/unordered_map \
- /usr/include/c++/13/bits/unordered_map.h \
- /usr/include/c++/13/bits/hashtable.h \
- /usr/include/c++/13/bits/hashtable_policy.h \
- /usr/include/c++/13/bits/enable_special_members.h \
- /usr/local/include/tacopie/network/self_pipe.hpp \
- /usr/local/include/tacopie/network/tcp_socket.hpp \
- /usr/local/include/tacopie/utils/thread_pool.hpp \
- /usr/include/c++/13/list /usr/include/c++/13/bits/stl_list.h \
- /usr/include/c++/13/bits/list.tcc \
- /usr/local/include/tacopie/network/tcp_server.hpp \
- /usr/local/include/tacopie/network/tcp_client.hpp \
- /usr/include/nlohmann/json.hpp /usr/include/c++/13/algorithm \
- /usr/include/c++/13/bits/stl_algo.h \
+ /usr/include/c++/13/condition_variable /usr/include/nlohmann/json.hpp \
+ /usr/include/c++/13/algorithm /usr/include/c++/13/bits/stl_algo.h \
  /usr/include/c++/13/bits/algorithmfwd.h \
+ /usr/include/c++/13/bits/stl_heap.h \
  /usr/include/c++/13/bits/uniform_int_dist.h /usr/include/c++/13/cstddef \
  /usr/include/c++/13/iterator /usr/include/c++/13/bits/stream_iterator.h \
  /usr/include/c++/13/utility /usr/include/c++/13/bits/stl_relops.h \
@@ -301,9 +260,14 @@ server/CMakeFiles/server.dir/server.cc.o: \
  /usr/include/nlohmann/detail/conversions/from_json.hpp \
  /usr/include/c++/13/array /usr/include/c++/13/compare \
  /usr/include/c++/13/forward_list /usr/include/c++/13/bits/forward_list.h \
- /usr/include/c++/13/bits/forward_list.tcc /usr/include/c++/13/valarray \
- /usr/include/c++/13/cmath /usr/include/math.h \
- /usr/include/x86_64-linux-gnu/bits/math-vector.h \
+ /usr/include/c++/13/bits/forward_list.tcc \
+ /usr/include/c++/13/unordered_map \
+ /usr/include/c++/13/bits/unordered_map.h \
+ /usr/include/c++/13/bits/hashtable.h \
+ /usr/include/c++/13/bits/hashtable_policy.h \
+ /usr/include/c++/13/bits/enable_special_members.h \
+ /usr/include/c++/13/valarray /usr/include/c++/13/cmath \
+ /usr/include/math.h /usr/include/x86_64-linux-gnu/bits/math-vector.h \
  /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
  /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h \
  /usr/include/x86_64-linux-gnu/bits/fp-logb.h \
@@ -337,6 +301,7 @@ server/CMakeFiles/server.dir/server.cc.o: \
  /usr/include/nlohmann/detail/meta/call_std/end.hpp \
  /usr/include/nlohmann/json_fwd.hpp \
  /usr/include/nlohmann/detail/string_concat.hpp \
+ /usr/include/c++/13/cstring \
  /usr/include/nlohmann/detail/meta/identity_tag.hpp \
  /usr/include/nlohmann/detail/meta/std_fs.hpp \
  /usr/include/nlohmann/detail/conversions/to_json.hpp \
@@ -371,5 +336,40 @@ server/CMakeFiles/server.dir/server.cc.o: \
  /usr/include/nlohmann/ordered_map.hpp \
  /usr/include/nlohmann/detail/macro_unscope.hpp \
  /usr/include/nlohmann/thirdparty/hedley/hedley_undef.hpp \
- /home/zgyx/my-Chatroom/server/handleData.h \
- /home/zgyx/my-Chatroom/server/redisCmd.h
+ /home/zgyx/my-Chatroom/server/../base/handleData.h \
+ /home/zgyx/my-Chatroom/server/redisCmd.h \
+ /usr/local/include/cpp_redis/cpp_redis \
+ /usr/local/include/cpp_redis/core/client.hpp /usr/include/c++/13/future \
+ /usr/include/c++/13/bits/atomic_futex.h /usr/include/c++/13/queue \
+ /usr/include/c++/13/deque /usr/include/c++/13/bits/stl_deque.h \
+ /usr/include/c++/13/bits/deque.tcc /usr/include/c++/13/bits/stl_queue.h \
+ /usr/local/include/cpp_redis/core/sentinel.hpp \
+ /usr/local/include/cpp_redis/misc/logger.hpp \
+ /usr/local/include/cpp_redis/network/redis_connection.hpp \
+ /usr/local/include/cpp_redis/builders/reply_builder.hpp \
+ /usr/local/include/cpp_redis/builders/builder_iface.hpp \
+ /usr/local/include/cpp_redis/core/reply.hpp \
+ /usr/local/include/cpp_redis/network/tcp_client_iface.hpp \
+ /usr/local/include/cpp_redis/helpers/variadic_template.hpp \
+ /usr/local/include/cpp_redis/impl/client.ipp \
+ /usr/local/include/cpp_redis/core/subscriber.hpp \
+ /usr/local/include/cpp_redis/misc/error.hpp \
+ /usr/local/include/cpp_redis/network/tcp_client.hpp \
+ /usr/local/include/tacopie/tacopie \
+ /usr/local/include/tacopie/utils/error.hpp \
+ /usr/local/include/tacopie/utils/logger.hpp \
+ /usr/local/include/tacopie/utils/typedefs.hpp \
+ /usr/local/include/tacopie/network/io_service.hpp \
+ /usr/local/include/tacopie/network/self_pipe.hpp \
+ /usr/local/include/tacopie/network/tcp_socket.hpp \
+ /usr/local/include/tacopie/utils/thread_pool.hpp \
+ /usr/include/c++/13/list /usr/include/c++/13/bits/stl_list.h \
+ /usr/include/c++/13/bits/list.tcc \
+ /usr/local/include/tacopie/network/tcp_server.hpp \
+ /usr/local/include/tacopie/network/tcp_client.hpp \
+ /home/zgyx/my-Chatroom/server/../base/../netlib/base/logger.h \
+ /home/zgyx/my-Chatroom/server/../base/../netlib/base/logStream.h \
+ /usr/include/c++/13/sstream /usr/include/c++/13/bits/sstream.tcc \
+ /home/zgyx/my-Chatroom/server/../base/../netlib/base/noncopyable.h \
+ /home/zgyx/my-Chatroom/server/../base/../netlib/base/Timestamp.h \
+ /home/zgyx/my-Chatroom/server/../base/../netlib/net/TcpConnection.h

@@ -15,6 +15,7 @@ find_package(nlohmann_json 3.2.0 REQUIRED)
 set(CLIENT_HEADERS
     ../base/logOn.h
     ../base/user.h
+    ../base/handleData.h
 )
 set(CLIENT_SOURCES
     client.cc

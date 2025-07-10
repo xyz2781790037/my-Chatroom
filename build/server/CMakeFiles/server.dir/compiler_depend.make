@@ -376,6 +376,8 @@ server/CMakeFiles/server.dir/server.cc.o: /home/zgyx/my-Chatroom/server/server.c
   /home/zgyx/my-Chatroom/netlib/base/logStream.h \
   /home/zgyx/my-Chatroom/netlib/base/logger.h \
   /home/zgyx/my-Chatroom/netlib/base/noncopyable.h \
+  /home/zgyx/my-Chatroom/netlib/net/TcpConnection.h \
+  /home/zgyx/my-Chatroom/base/handleData.h \
   /home/zgyx/my-Chatroom/netlib/base/Timestamp.h \
   /home/zgyx/my-Chatroom/netlib/base/noncopyable.h \
   /home/zgyx/my-Chatroom/netlib/net/Acceptor.h \
@@ -393,7 +395,6 @@ server/CMakeFiles/server.dir/server.cc.o: /home/zgyx/my-Chatroom/server/server.c
   /home/zgyx/my-Chatroom/netlib/net/TimerId.h \
   /home/zgyx/my-Chatroom/netlib/net/TimerQueue.h \
   /home/zgyx/my-Chatroom/netlib/net/sigpipe.h \
-  /home/zgyx/my-Chatroom/server/handleData.h \
   /home/zgyx/my-Chatroom/server/redisCmd.h \
   /usr/include/alloca.h \
   /usr/include/arpa/inet.h \
@@ -867,8 +868,6 @@ server/CMakeFiles/server.dir/server.cc.o: /home/zgyx/my-Chatroom/server/server.c
 
 /home/zgyx/my-Chatroom/netlib/net/TimerQueue.h:
 
-/home/zgyx/my-Chatroom/netlib/net/TcpConnection.h:
-
 /home/zgyx/my-Chatroom/netlib/net/SocketOps.h:
 
 /home/zgyx/my-Chatroom/netlib/net/Socket.h:
@@ -882,6 +881,8 @@ server/CMakeFiles/server.dir/server.cc.o: /home/zgyx/my-Chatroom/server/server.c
 /home/zgyx/my-Chatroom/netlib/net/Channel.h:
 
 /home/zgyx/my-Chatroom/netlib/net/Acceptor.h:
+
+/home/zgyx/my-Chatroom/netlib/net/TcpConnection.h:
 
 /usr/local/include/tacopie/utils/typedefs.hpp:
 
@@ -900,6 +901,8 @@ server/CMakeFiles/server.dir/server.cc.o: /home/zgyx/my-Chatroom/server/server.c
 /usr/include/x86_64-linux-gnu/bits/sigstksz.h:
 
 /usr/local/include/tacopie/network/io_service.hpp:
+
+/home/zgyx/my-Chatroom/base/handleData.h:
 
 /usr/local/include/cpp_redis/network/tcp_client.hpp:
 
@@ -1584,8 +1587,6 @@ server/CMakeFiles/server.dir/server.cc.o: /home/zgyx/my-Chatroom/server/server.c
 /usr/include/x86_64-linux-gnu/bits/stdint-intn.h:
 
 /usr/include/c++/13/string:
-
-/home/zgyx/my-Chatroom/server/handleData.h:
 
 /usr/include/c++/13/thread:
 

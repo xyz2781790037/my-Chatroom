@@ -2,20 +2,31 @@
 #define HANDLEDATA_H
 #include <string>
 #include "redisCmd.h"
-class handleData{
+#include "../netlib/base/logger.h"
+#include "../netlib/net/TcpConnection.h"
+namespace mulib{
+    namespace net{
+        using TcpConnectionPtr = std::shared_ptr<TcpConnection>;
+    }
+}
+class handleData
+{
 public:
-    int getDataType(std::string datatype);
     enum type
     {
         REGISTER,
         LOGIN,
         RETRIEVE_PWD,
-        PRINT
+        PRINT,
+        INFOEMATION
     };
-private:
-    void handleRegister();
+    type getDataType(std::string datatype);
+    void handleRegister(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
+    void handleLogin(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
+    nlohmann::json sendMeg(std::string message);
+    
 };
-inline int handleData::getDataType(std::string datatype){
+inline handleData::type handleData::getDataType(std::string datatype){
     if(datatype == "register"){
         return REGISTER;
     }
@@ -28,8 +39,11 @@ inline int handleData::getDataType(std::string datatype){
     else if(datatype == "print"){
         return PRINT;
     }
+    else if(datatype == "information"){
+        return INFOEMATION;
+    }
 }
-void handleData::handleRegister(){
+inline void handleData::handleRegister(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
     redis.setNewUser(jsonData);
     LOG_INFO << "准备发送注册成功消息给客户端";
     if (conn && conn->connected())
@@ -41,5 +55,29 @@ void handleData::handleRegister(){
     {
         std::cout << "连接尚未建立，无法发送注册信息。\n";
     }
+}
+inline void handleData::handleLogin(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
+    int result = redis.handleLogin(jsonData);
+    nlohmann::json jdata;
+    if (result == 1)
+    {
+        jdata["account"] = jsonData["account"];
+        redis.returnUser(jdata);
+        LOG_INFO << "准备发送 :" << jdata.dump();
+        conn->send(jdata.dump() + "\n");
+        conn->send(sendMeg("成功登陆").dump() + "\n");
+    }
+    else if(result == 0){
+        conn->send(sendMeg("密码错误").dump() + "\n");
+    }
+    else{
+        conn->send(sendMeg("账号不存在").dump() + "\n");
+    }
+}
+inline nlohmann::json handleData::sendMeg(std::string message){
+    nlohmann::json j;
+    j["type"] = "print";
+    j["meg"] = message;
+    return j;
 }
 #endif

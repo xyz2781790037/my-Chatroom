@@ -340,4 +340,40 @@ client/CMakeFiles/client.dir/client.cc.o: \
  /usr/include/nlohmann/detail/macro_unscope.hpp \
  /usr/include/nlohmann/thirdparty/hedley/hedley_undef.hpp \
  /home/zgyx/my-Chatroom/server/../netlib/net/EventLoop.h \
- /home/zgyx/my-Chatroom/client/../netlib/base/logger.h
+ /home/zgyx/my-Chatroom/client/../netlib/base/logger.h \
+ /home/zgyx/my-Chatroom/client/../netlib/net/TcpConnection.h \
+ /home/zgyx/my-Chatroom/client/../base/handleData.h \
+ /home/zgyx/my-Chatroom/server/redisCmd.h \
+ /usr/local/include/cpp_redis/cpp_redis \
+ /usr/local/include/cpp_redis/core/client.hpp \
+ /usr/include/c++/13/condition_variable /usr/include/c++/13/future \
+ /usr/include/c++/13/bits/atomic_futex.h /usr/include/c++/13/queue \
+ /usr/include/c++/13/deque /usr/include/c++/13/bits/stl_deque.h \
+ /usr/include/c++/13/bits/deque.tcc /usr/include/c++/13/bits/stl_queue.h \
+ /usr/local/include/cpp_redis/core/sentinel.hpp \
+ /usr/local/include/cpp_redis/misc/logger.hpp \
+ /usr/local/include/cpp_redis/network/redis_connection.hpp \
+ /usr/local/include/cpp_redis/builders/reply_builder.hpp \
+ /usr/local/include/cpp_redis/builders/builder_iface.hpp \
+ /usr/local/include/cpp_redis/core/reply.hpp \
+ /usr/local/include/cpp_redis/network/tcp_client_iface.hpp \
+ /usr/local/include/cpp_redis/helpers/variadic_template.hpp \
+ /usr/local/include/cpp_redis/impl/client.ipp \
+ /usr/local/include/cpp_redis/core/subscriber.hpp \
+ /usr/local/include/cpp_redis/misc/error.hpp \
+ /usr/local/include/cpp_redis/network/tcp_client.hpp \
+ /usr/local/include/tacopie/tacopie \
+ /usr/local/include/tacopie/utils/error.hpp \
+ /usr/local/include/tacopie/utils/logger.hpp \
+ /usr/local/include/tacopie/utils/typedefs.hpp \
+ /usr/local/include/tacopie/network/io_service.hpp \
+ /usr/local/include/tacopie/network/self_pipe.hpp \
+ /usr/local/include/tacopie/network/tcp_socket.hpp \
+ /usr/local/include/tacopie/utils/thread_pool.hpp \
+ /usr/include/c++/13/list /usr/include/c++/13/bits/stl_list.h \
+ /usr/include/c++/13/bits/list.tcc \
+ /usr/local/include/tacopie/network/tcp_server.hpp \
+ /usr/local/include/tacopie/network/tcp_client.hpp \
+ /home/zgyx/my-Chatroom/client/../base/../netlib/net/TcpConnection.h \
+ /home/zgyx/my-Chatroom/client/../base/MessageSplitter.h \
+ /home/zgyx/my-Chatroom/client/../base/../netlib/net/Buffer.h

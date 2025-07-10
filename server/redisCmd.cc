@@ -85,7 +85,7 @@ std::string redisCmd::getField(const std::string &account, const std::string &fi
         return result.as_string();
     }
     else{
-        return "";
+        return "null";
     }
 }
 void redisCmd::returnUser(nlohmann::json &data){
@@ -94,4 +94,5 @@ void redisCmd::returnUser(nlohmann::json &data){
     data["email"] = getQQEmail(account);
     data["myname"] = getMyname(account);
     data["password"] = getPassward(account);
+    data["type"] = "information";
 }

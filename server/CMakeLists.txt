@@ -14,7 +14,7 @@ find_package(nlohmann_json 3.2.0 REQUIRED)
 # 添加可执行文件
 set(SERVER_HEADERS
     redisCmd.h
-    handleData.h
+    ../base/handleData.h
 )
 set(SERVER_SOURCES
     server.cc
@@ -32,4 +32,5 @@ target_link_libraries(server
 )
 target_include_directories(server PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/../base
 )
