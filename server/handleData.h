@@ -5,6 +5,8 @@
 #include "../netlib/base/logger.h"
 #include "../netlib/net/TcpConnection.h"
 #include "../base/logOn.h"
+#include "../base/MegType.h"
+#include "../base/MessageSplitter.h"
 namespace mulib{
     namespace net{
         using TcpConnectionPtr = std::shared_ptr<TcpConnection>;
@@ -12,11 +14,47 @@ namespace mulib{
 }
 class handleData{
 public:
+    void Megcycle(const TcpConnectionPtr &conn, Buffer *buf);
+private:
     void handleRegister(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
     void handleLogin(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
     nlohmann::json sendMeg(std::string message, logon::Status state);
     std::string returnPwd(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
 };
+inline void handleData::Megcycle(const TcpConnectionPtr &conn, Buffer *buf)
+{
+    redisCmd redis;
+    MessageSplitter megser;
+    megser.append(buf);
+    std::string jsondata;
+    while (megser.nextMessage(jsondata))
+    {
+        LOG_INFO << jsondata;
+        auto jsonData = nlohmann::json::parse(jsondata);
+        if (jsonData.contains("type"))
+        {
+            LOG_DEBUG << "JSON 正常";
+            Type::types type = Type::getDataType(jsonData["type"]);
+            LOG_INFO << "type is :" << type;
+            if (type == Type::REGISTER)
+            {
+                handleRegister(conn, jsonData, redis);
+            }
+            else if (type == Type::LOGIN)
+            {
+                handleLogin(conn, jsonData, redis);
+            }
+            else if (type == Type::GETPWD)
+            {
+                returnPwd(conn, jsonData, redis);
+            }
+        }
+        else
+        {
+            LOG_ERROR << "JSON 数据缺少必要字段，忽略";
+        }
+    }
+}
 inline void handleData::handleRegister(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
     redis.setNewUser(jsonData);
     LOG_INFO << "准备发送注册成功消息给客户端";
