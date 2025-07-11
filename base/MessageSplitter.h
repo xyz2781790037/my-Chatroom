@@ -20,7 +20,6 @@ private:
 void MessageSplitter::append(mulib::net::Buffer *buf)
 {
     buffer_ += buf->retrieveAllAsString();
-
     size_t pos;
     while ((pos = buffer_.find('\n')) != std::string::npos)
     {

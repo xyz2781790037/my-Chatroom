@@ -104,12 +104,10 @@ inline void logon::Register()
     getline(std::cin, qqEmail);
     User person(registerAccount, registerPassword1, qqEmail);
     auto conn = client_->connection();
-    if (conn)
-    {
+    if (conn){
         person.sendUserInformation(conn);
     }
-    else
-    {
+    else{
         std::cout << "服务器未运行，无法发送注册信息。\n";
     }
 }
@@ -126,11 +124,17 @@ inline void logon::getPassword(){
     std::string account, qqemail,Vcode;
     std::cout << "输入你的账号：";
     getline(std::cin,account);
-    std::cout << "输入你的邮箱：";
-    getline(std::cin, qqemail);
     
     std::cout << "请输入验证码：";
     getline(std::cin, Vcode);
+    auto conn = client_->connection();
+    if (conn){
+        User::sendPassword(account, qqemail,Vcode,conn);
+    }
+    else{
+        std::cout << "服务器未运行，无法发送找回信息。\n";
+    }
+    
 
 }
 #endif

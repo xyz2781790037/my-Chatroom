@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/zgyx/my-Chatroom/server -I/home/zgyx/my-Chatroom/netlib -I/home/zgyx/my-Chatroom/client -I/home/zgyx/my-Chatroom/../base
+CXX_INCLUDES = -I/home/zgyx/my-Chatroom/server -I/home/zgyx/my-Chatroom/netlib -I/home/zgyx/my-Chatroom/client -I/home/zgyx/my-Chatroom/../base -I/home/zgyx/my-Chatroom/../server
 
 CXX_FLAGS = -std=gnu++11
 

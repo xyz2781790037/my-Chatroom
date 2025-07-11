@@ -15,7 +15,8 @@ find_package(nlohmann_json 3.2.0 REQUIRED)
 set(CLIENT_HEADERS
     ../base/logOn.h
     ../base/user.h
-    ../base/handleData.h
+    ../base/Megtype.h
+    handleMeg.h
 )
 set(CLIENT_SOURCES
     client.cc
@@ -29,4 +30,5 @@ target_link_libraries(client
 target_include_directories(client PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/../base
+    ${CMAKE_SOURCE_DIR}/../server
 )

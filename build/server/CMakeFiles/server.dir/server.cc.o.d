@@ -336,7 +336,7 @@ server/CMakeFiles/server.dir/server.cc.o: \
  /usr/include/nlohmann/ordered_map.hpp \
  /usr/include/nlohmann/detail/macro_unscope.hpp \
  /usr/include/nlohmann/thirdparty/hedley/hedley_undef.hpp \
- /home/zgyx/my-Chatroom/server/../base/handleData.h \
+ /home/zgyx/my-Chatroom/server/handleData.h \
  /home/zgyx/my-Chatroom/server/redisCmd.h \
  /usr/local/include/cpp_redis/cpp_redis \
  /usr/local/include/cpp_redis/core/client.hpp /usr/include/c++/13/future \
@@ -367,15 +367,17 @@ server/CMakeFiles/server.dir/server.cc.o: \
  /usr/include/c++/13/bits/list.tcc \
  /usr/local/include/tacopie/network/tcp_server.hpp \
  /usr/local/include/tacopie/network/tcp_client.hpp \
- /home/zgyx/my-Chatroom/server/../base/../netlib/base/logger.h \
- /home/zgyx/my-Chatroom/server/../base/../netlib/base/logStream.h \
+ /home/zgyx/my-Chatroom/server/../netlib/base/logger.h \
+ /home/zgyx/my-Chatroom/server/../netlib/base/logStream.h \
  /usr/include/c++/13/sstream /usr/include/c++/13/bits/sstream.tcc \
- /home/zgyx/my-Chatroom/server/../base/../netlib/base/noncopyable.h \
- /home/zgyx/my-Chatroom/server/../base/../netlib/base/Timestamp.h \
- /home/zgyx/my-Chatroom/server/../base/../netlib/net/TcpConnection.h \
+ /home/zgyx/my-Chatroom/server/../netlib/base/noncopyable.h \
+ /home/zgyx/my-Chatroom/server/../netlib/base/Timestamp.h \
+ /home/zgyx/my-Chatroom/server/../netlib/net/TcpConnection.h \
  /home/zgyx/my-Chatroom/server/../base/logOn.h \
  /home/zgyx/my-Chatroom/server/../netlib/net/TcpClient.h \
  /home/zgyx/my-Chatroom/server/../netlib/net/Connector.h \
+ /home/zgyx/my-Chatroom/server/../base/../netlib/base/logger.h \
  /home/zgyx/my-Chatroom/server/../base/user.h \
+ /home/zgyx/my-Chatroom/server/../base/MegType.h \
  /home/zgyx/my-Chatroom/server/../base/MessageSplitter.h \
  /home/zgyx/my-Chatroom/server/../base/../netlib/net/Buffer.h

@@ -13,8 +13,9 @@ link_directories(/usr/local/lib)
 find_package(nlohmann_json 3.2.0 REQUIRED)
 # 添加可执行文件
 set(SERVER_HEADERS
+    handleData.h
     redisCmd.h
-    ../base/handleData.h
+    ../base/MegType.h
 )
 set(SERVER_SOURCES
     server.cc

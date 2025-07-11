@@ -4,45 +4,19 @@
 #include "redisCmd.h"
 #include "../netlib/base/logger.h"
 #include "../netlib/net/TcpConnection.h"
-#include "logOn.h"
+#include "../base/logOn.h"
 namespace mulib{
     namespace net{
         using TcpConnectionPtr = std::shared_ptr<TcpConnection>;
     }
 }
-class handleData
-{
+class handleData{
 public:
-    enum type
-    {
-        REGISTER,
-        LOGIN,
-        GETPWD,
-        PRINT,
-        INFOEMATION
-    };
-    type getDataType(std::string datatype);
     void handleRegister(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
     void handleLogin(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
     nlohmann::json sendMeg(std::string message, logon::Status state);
+    std::string returnPwd(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
 };
-inline handleData::type handleData::getDataType(std::string datatype){
-    if(datatype == "register"){
-        return REGISTER;
-    }
-    else if(datatype == "login"){
-        return LOGIN;
-    }
-    else if(datatype == "getpwd"){
-        return GETPWD;
-    }
-    else if(datatype == "print"){
-        return PRINT;
-    }
-    else if(datatype == "information"){
-        return INFOEMATION;
-    }
-}
 inline void handleData::handleRegister(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
     redis.setNewUser(jsonData);
     LOG_INFO << "准备发送注册成功消息给客户端";
@@ -79,5 +53,11 @@ inline nlohmann::json handleData::sendMeg(std::string message,logon::Status stat
     j["meg"] = message;
     j["state"] = state;
     return j;
+}
+inline std::string handleData::returnPwd(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
+    int result = redis.Vuser(jsonData);
+    if(result == 1){
+        conn->send(jsonData.dump());
+    }
 }
 #endif

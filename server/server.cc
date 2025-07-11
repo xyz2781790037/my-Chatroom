@@ -1,6 +1,7 @@
 #include "../netlib/net/TcpServer.h"
 #include <nlohmann/json.hpp>
-#include "../base/handleData.h"
+#include "handleData.h"
+#include "../base/MegType.h"
 #include "../base/MessageSplitter.h"
 void onConnection(const mulib::net::TcpConnectionPtr &conn)
 {
@@ -9,25 +10,31 @@ void onConnection(const mulib::net::TcpConnectionPtr &conn)
         std::cout << "new conncetion" << std::endl;
     }
 }
-void onMessage(const TcpConnectionPtr&conn ,Buffer *buf,mulib::base::Timestamp recviveTime){
-    handleData handledata_;
+void onMessage(const TcpConnectionPtr &conn, Buffer *buf, mulib::base::Timestamp recviveTime)
+{
     redisCmd redis;
+    handleData handledata_;
     MessageSplitter megser;
-    std::string json_str = buf->retrieveAllAsString();
-    LOG_INFO << "收到数据 :" << json_str;
     megser.append(buf);
     std::string jsondata;
-    while(megser.nextMessage(jsondata)){
+    while (megser.nextMessage(jsondata))
+    {
+        LOG_INFO << jsondata;
         auto jsonData = nlohmann::json::parse(jsondata);
         if (jsonData.contains("type")){
             LOG_DEBUG << "JSON 正常";
-            int type = handledata_.getDataType(jsonData["type"]);
-            if(type == handleData::REGISTER){
+            Type::types type = Type::getDataType(jsonData["type"]);
+            LOG_INFO << "type is :" << type;
+            if (type == Type::REGISTER)
+            {
                 handledata_.handleRegister(conn, jsonData, redis);
             }
-            else if (type == handleData::LOGIN)
+            else if (type == Type::LOGIN)
             {
                 handledata_.handleLogin(conn, jsonData, redis);
+            }
+            else if(type == Type::GETPWD){
+                handledata_.returnPwd(conn,jsonData,redis);
             }
         }
         else

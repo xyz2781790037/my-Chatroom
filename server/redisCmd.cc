@@ -13,7 +13,7 @@ int redisCmd::assignId(){
     redisClient.sync_commit();
     return id;
 }
-void redisCmd::setNewUser(nlohmann::json data){
+void redisCmd::setNewUser(nlohmann::json &data){
     connect();
     char id[9];
     sprintf(id, "%08d", assignId());
@@ -40,7 +40,7 @@ void redisCmd::connect(){
         redisClient.sync_commit();
     }
 }
-int redisCmd::handleLogin(nlohmann::json data){
+int redisCmd::handleLogin(nlohmann::json &data){
     connect();
     
     if(!isAccount(data["account"])){
@@ -95,4 +95,18 @@ void redisCmd::returnUser(nlohmann::json &data){
     data["myname"] = getMyname(account);
     data["password"] = getPassward(account);
     data["type"] = "information";
+}
+int redisCmd::Vuser(nlohmann::json &data){
+    if (isAccount(data["account"])){
+        if(data["return"] == "email"){
+            data["email"] = getQQEmail(data["account"]);
+            return 1;
+        }
+        else{
+            if(data["return"] == "verify"){
+                return 0;
+            }
+        }
+    }
+    return -1;
 }

@@ -9,7 +9,8 @@ public:
     User(std::string usrname, std::string usrpassword);
     void sendUserInformation(const mulib::net::TcpClient::TcpConnectionPtr &conn);
     void sendLogin(const mulib::net::TcpClient::TcpConnectionPtr &conn);
-    void sendPassword(std::string account, std::string email, const mulib::net::TcpClient::TcpConnectionPtr &conn);
+    static std::string getQQemail(std::string account, mulib::net::TcpClient::TcpConnectionPtr &conn);
+    static void sendPassword(std::string account, std::string email, std::string vcode, const mulib::net::TcpClient::TcpConnectionPtr &conn);
 
 private:
     std::string usrName;
@@ -41,11 +42,19 @@ void User::sendLogin(const mulib::net::TcpClient::TcpConnectionPtr &conn){
     user["password"] = usrPassword;
     conn->send(user.dump() + "\n");
 }
-void User::sendPassword(std::string account, std::string email, const mulib::net::TcpClient::TcpConnectionPtr &conn){
+void User::sendPassword(std::string account, std::string email, std::string vcode,const mulib::net::TcpClient::TcpConnectionPtr &conn)
+{
     nlohmann::json user;
-    user["type"] = "getpassword";
+    user["type"] = "getpwd";
     user["email"] = email;
     user["account"] = account;
+    conn->send(user.dump() + "\n");
+}
+std::string User::getQQemail(std::string account, mulib::net::TcpClient::TcpConnectionPtr &conn){
+    nlohmann::json user;
+    user["type"] = "getpwd";
+    user["account"] = account;
+    user["return"] = "email";
     conn->send(user.dump() + "\n");
 }
 #endif
