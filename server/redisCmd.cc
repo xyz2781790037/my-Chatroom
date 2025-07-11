@@ -1,5 +1,6 @@
 #include "redisCmd.h"
 #include "../netlib/base/logger.h"
+#include "../base/logOn.h"
 redisCmd::redisCmd(){
     connect();
 }
@@ -100,6 +101,7 @@ int redisCmd::Vuser(nlohmann::json &data){
     if (isAccount(data["account"])){
         if(data["return"] == "email"){
             data["email"] = getQQEmail(data["account"]);
+            data["state"] = logon::EXECUTE;
             return 1;
         }
         else{

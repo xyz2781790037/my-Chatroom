@@ -95,7 +95,7 @@ inline std::string verCode::verify(std::string useQQ){
     std::string to = useQQ + "@qq.com";
     std::string subject = "【注册验证码】";
     std::string body = "您的验证码是：" + code + "\n有效期5分钟，请勿泄露。";
-    std::cout << code << std::endl;
+    std::cout << "验证码为 :" << code << std::endl;
     sendEmail(to, subject, body);
     return code;
 }

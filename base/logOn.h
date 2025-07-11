@@ -14,7 +14,8 @@ public:
     void ui();
     enum Status{
         WAIT,
-        EXECUTE
+        EXECUTE,
+        RETURN
     };
     void updataState(Status state);
 
@@ -44,6 +45,7 @@ inline void logon::ui()
 }
 inline void logon::selectFunc(int funcnum)
 {
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     switch (funcnum){
     case 1:
         login();
@@ -67,7 +69,6 @@ inline void logon::selectFunc(int funcnum)
 inline void logon::login(){
     currentState_ = WAIT;
     std::string Account, passWord;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cout << "账号: ";
     getline(std::cin, Account);
     std::cout << "密码: ";
@@ -88,7 +89,6 @@ inline void logon::Register()
     currentState_ = WAIT;
     std::string registerAccount, registerPassword1, registerPassword2;
     std::string qqEmail;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cout << "账号: ";
     getline(std::cin, registerAccount);
     std::cout << "密码: ";
@@ -120,16 +120,22 @@ inline void logon::updataState(Status state){
     currentState_ = state;
 }
 inline void logon::getPassword(){
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    currentState_ = WAIT;
     std::string account, qqemail,Vcode;
     std::cout << "输入你的账号：";
     getline(std::cin,account);
-    
-    std::cout << "请输入验证码：";
-    getline(std::cin, Vcode);
     auto conn = client_->connection();
     if (conn){
-        User::sendPassword(account, qqemail,Vcode,conn);
+        User::getQQemail(account, conn);
+        while(true){
+            if(currentState_ == EXECUTE){
+                std::cout << "请输入验证码：";
+                getline(std::cin, Vcode);
+            }
+            else if(currentState_ == RETURN){
+                return;
+            }
+        }
     }
     else{
         std::cout << "服务器未运行，无法发送找回信息。\n";

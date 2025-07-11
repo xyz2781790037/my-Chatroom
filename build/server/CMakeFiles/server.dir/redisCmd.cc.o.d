@@ -300,4 +300,72 @@ server/CMakeFiles/server.dir/redisCmd.cc.o: \
  /usr/include/c++/13/sstream /usr/include/c++/13/bits/sstream.tcc \
  /home/zgyx/my-Chatroom/server/../netlib/base/noncopyable.h \
  /home/zgyx/my-Chatroom/server/../netlib/base/Timestamp.h \
- /usr/include/x86_64-linux-gnu/sys/time.h
+ /usr/include/x86_64-linux-gnu/sys/time.h \
+ /home/zgyx/my-Chatroom/server/../base/logOn.h \
+ /home/zgyx/my-Chatroom/server/../netlib/net/TcpClient.h \
+ /home/zgyx/my-Chatroom/server/../netlib/net/TcpConnection.h \
+ /home/zgyx/my-Chatroom/server/../netlib/net/../base/noncopyable.h \
+ /home/zgyx/my-Chatroom/server/../netlib/net/EventLoop.h \
+ /home/zgyx/my-Chatroom/server/../netlib/net/TimerId.h \
+ /home/zgyx/my-Chatroom/server/../netlib/net/Timer.h \
+ /home/zgyx/my-Chatroom/server/../netlib/net/../base/Timestamp.h \
+ /home/zgyx/my-Chatroom/server/../netlib/net/TimerQueue.h \
+ /usr/include/c++/13/set /usr/include/c++/13/bits/stl_set.h \
+ /usr/include/c++/13/bits/stl_multiset.h \
+ /home/zgyx/my-Chatroom/server/../netlib/net/Channel.h \
+ /home/zgyx/my-Chatroom/server/../netlib/net/sigpipe.h \
+ /usr/include/signal.h \
+ /usr/include/x86_64-linux-gnu/bits/signum-generic.h \
+ /usr/include/x86_64-linux-gnu/bits/signum-arch.h \
+ /usr/include/x86_64-linux-gnu/bits/types/sig_atomic_t.h \
+ /usr/include/x86_64-linux-gnu/bits/types/siginfo_t.h \
+ /usr/include/x86_64-linux-gnu/bits/types/__sigval_t.h \
+ /usr/include/x86_64-linux-gnu/bits/siginfo-arch.h \
+ /usr/include/x86_64-linux-gnu/bits/siginfo-consts.h \
+ /usr/include/x86_64-linux-gnu/bits/siginfo-consts-arch.h \
+ /usr/include/x86_64-linux-gnu/bits/types/sigval_t.h \
+ /usr/include/x86_64-linux-gnu/bits/types/sigevent_t.h \
+ /usr/include/x86_64-linux-gnu/bits/sigevent-consts.h \
+ /usr/include/x86_64-linux-gnu/bits/sigaction.h \
+ /usr/include/x86_64-linux-gnu/bits/sigcontext.h \
+ /usr/include/x86_64-linux-gnu/bits/types/stack_t.h \
+ /usr/include/x86_64-linux-gnu/sys/ucontext.h \
+ /usr/include/x86_64-linux-gnu/bits/sigstack.h \
+ /usr/include/x86_64-linux-gnu/bits/sigstksz.h /usr/include/unistd.h \
+ /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ /usr/include/x86_64-linux-gnu/bits/environments.h \
+ /usr/include/x86_64-linux-gnu/bits/confname.h \
+ /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
+ /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
+ /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
+ /usr/include/linux/close_range.h \
+ /usr/include/x86_64-linux-gnu/bits/ss_flags.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_sigstack.h \
+ /usr/include/x86_64-linux-gnu/bits/sigthread.h \
+ /usr/include/x86_64-linux-gnu/bits/signal_ext.h \
+ /home/zgyx/my-Chatroom/server/../netlib/net/InetAddress.h \
+ /usr/include/arpa/inet.h /usr/include/netinet/in.h \
+ /usr/include/x86_64-linux-gnu/sys/socket.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
+ /usr/include/x86_64-linux-gnu/bits/socket.h \
+ /usr/include/x86_64-linux-gnu/bits/socket_type.h \
+ /usr/include/x86_64-linux-gnu/bits/sockaddr.h \
+ /usr/include/x86_64-linux-gnu/asm/socket.h \
+ /usr/include/asm-generic/socket.h /usr/include/linux/posix_types.h \
+ /usr/include/linux/stddef.h \
+ /usr/include/x86_64-linux-gnu/asm/posix_types.h \
+ /usr/include/x86_64-linux-gnu/asm/posix_types_64.h \
+ /usr/include/asm-generic/posix_types.h \
+ /usr/include/x86_64-linux-gnu/asm/bitsperlong.h \
+ /usr/include/asm-generic/bitsperlong.h \
+ /usr/include/x86_64-linux-gnu/asm/sockios.h \
+ /usr/include/asm-generic/sockios.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
+ /usr/include/x86_64-linux-gnu/bits/in.h /usr/include/memory.h \
+ /home/zgyx/my-Chatroom/server/../netlib/net/SocketOps.h \
+ /home/zgyx/my-Chatroom/server/../netlib/net/Socket.h \
+ /usr/include/netinet/tcp.h \
+ /home/zgyx/my-Chatroom/server/../netlib/net/Buffer.h \
+ /home/zgyx/my-Chatroom/server/../netlib/net/Connector.h \
+ /home/zgyx/my-Chatroom/server/../base/../netlib/base/logger.h \
+ /home/zgyx/my-Chatroom/server/../base/user.h

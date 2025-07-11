@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.13)
 project(MychatroomProject)
+find_package(CURL REQUIRED)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -30,6 +31,7 @@ target_link_libraries(server
     tacopie
     pthread
     nlohmann_json::nlohmann_json
+    CURL::libcurl
 )
 target_include_directories(server PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}

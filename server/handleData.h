@@ -4,9 +4,10 @@
 #include "redisCmd.h"
 #include "../netlib/base/logger.h"
 #include "../netlib/net/TcpConnection.h"
-#include "../base/logOn.h"
 #include "../base/MegType.h"
 #include "../base/MessageSplitter.h"
+#include "../base/verCode.h"
+#include "../base/logOn.h"
 namespace mulib{
     namespace net{
         using TcpConnectionPtr = std::shared_ptr<TcpConnection>;
@@ -95,7 +96,16 @@ inline nlohmann::json handleData::sendMeg(std::string message,logon::Status stat
 inline std::string handleData::returnPwd(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
     int result = redis.Vuser(jsonData);
     if(result == 1){
-        conn->send(jsonData.dump());
+        conn->send(jsonData.dump() + "\n");
+    }
+    else if(result == 0){
+        verCode vercode_;
+        std::string code = vercode_.verify(jsonData["eamil"]);
+        jsonData["return"] = code;
+        conn->send(jsonData.dump() + "\n");
+    }
+    else if(result == -1){
+        conn->send(sendMeg("账号不存在", logon::WAIT).dump() + "\n");
     }
 }
 #endif

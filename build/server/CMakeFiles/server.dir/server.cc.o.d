@@ -373,11 +373,31 @@ server/CMakeFiles/server.dir/server.cc.o: \
  /home/zgyx/my-Chatroom/server/../netlib/base/noncopyable.h \
  /home/zgyx/my-Chatroom/server/../netlib/base/Timestamp.h \
  /home/zgyx/my-Chatroom/server/../netlib/net/TcpConnection.h \
+ /home/zgyx/my-Chatroom/server/../base/MegType.h \
+ /home/zgyx/my-Chatroom/server/../base/MessageSplitter.h \
+ /home/zgyx/my-Chatroom/server/../base/../netlib/net/Buffer.h \
+ /home/zgyx/my-Chatroom/server/../base/verCode.h \
+ /usr/include/x86_64-linux-gnu/curl/curl.h \
+ /usr/include/x86_64-linux-gnu/curl/curlver.h \
+ /usr/include/x86_64-linux-gnu/curl/system.h \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/limits.h \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/syslimits.h \
+ /usr/include/limits.h /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/local_lim.h \
+ /usr/include/linux/limits.h \
+ /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/uio_lim.h \
+ /usr/include/x86_64-linux-gnu/curl/easy.h \
+ /usr/include/x86_64-linux-gnu/curl/multi.h \
+ /usr/include/x86_64-linux-gnu/curl/curl.h \
+ /usr/include/x86_64-linux-gnu/curl/urlapi.h \
+ /usr/include/x86_64-linux-gnu/curl/options.h \
+ /usr/include/x86_64-linux-gnu/curl/header.h \
+ /usr/include/x86_64-linux-gnu/curl/websockets.h \
+ /usr/include/x86_64-linux-gnu/curl/mprintf.h \
  /home/zgyx/my-Chatroom/server/../base/logOn.h \
  /home/zgyx/my-Chatroom/server/../netlib/net/TcpClient.h \
  /home/zgyx/my-Chatroom/server/../netlib/net/Connector.h \
  /home/zgyx/my-Chatroom/server/../base/../netlib/base/logger.h \
- /home/zgyx/my-Chatroom/server/../base/user.h \
- /home/zgyx/my-Chatroom/server/../base/MegType.h \
- /home/zgyx/my-Chatroom/server/../base/MessageSplitter.h \
- /home/zgyx/my-Chatroom/server/../base/../netlib/net/Buffer.h
+ /home/zgyx/my-Chatroom/server/../base/user.h

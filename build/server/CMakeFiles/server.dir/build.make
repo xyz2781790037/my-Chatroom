@@ -109,6 +109,7 @@ server/server: server/CMakeFiles/server.dir/server.cc.o
 server/server: server/CMakeFiles/server.dir/redisCmd.cc.o
 server/server: server/CMakeFiles/server.dir/build.make
 server/server: netlib/libnetlib.a
+server/server: /usr/lib/x86_64-linux-gnu/libcurl.so
 server/server: server/CMakeFiles/server.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/zgyx/my-Chatroom/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable server"
 	cd /home/zgyx/my-Chatroom/build/server && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/server.dir/link.txt --verbose=$(VERBOSE)

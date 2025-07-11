@@ -14,9 +14,9 @@ find_package(nlohmann_json 3.2.0 REQUIRED)
 # 添加可执行文件
 set(CLIENT_HEADERS
     ../base/logOn.h
-    ../base/user.h
     ../base/Megtype.h
     handleMeg.h
+    ../base/user.h
 )
 set(CLIENT_SOURCES
     client.cc
