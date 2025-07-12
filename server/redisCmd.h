@@ -12,11 +12,11 @@ public:
     int Vuser(nlohmann::json &data);
     bool isAccount(std::string account);
     std::string getQQEmail(std::string account);
+    std::string getPassward(std::string account);
 
 private: 
     void connect();
     std::string getMyname(std::string account);
-    std::string getPassward(std::string account);
     std::string getID(std::string account);
     std::string getField(const std::string &account, const std::string &field);
     cpp_redis::client redisClient;

@@ -12,8 +12,7 @@ namespace Type{
     };
     types getDataType(std::string datatype);
 }
-using namespace Type;
-types Type::getDataType(std::string datatype)
+Type::types Type::getDataType(std::string datatype)
 {
     if (datatype == "register")
     {
@@ -34,6 +33,9 @@ types Type::getDataType(std::string datatype)
     else if (datatype == "information")
     {
         return INFOEMATION;
+    }
+    else{
+        LOG_FATAL << "getType error";
     }
 }
 #endif

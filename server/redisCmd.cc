@@ -98,16 +98,20 @@ void redisCmd::returnUser(nlohmann::json &data){
     data["type"] = "information";
 }
 int redisCmd::Vuser(nlohmann::json &data){
-    if (isAccount(data["account"])){
+    LOG_INFO << "redisCmd::Vuser";
+    if (isAccount(data["account"]))
+    {
         if(data["return"] == "email"){
             data["email"] = getQQEmail(data["account"]);
             data["state"] = logon::EXECUTE;
             return 1;
         }
+        else if(data["return"] == "verify"){
+            data["state"] = logon::EXECUTE;
+            return 0;
+        }
         else{
-            if(data["return"] == "verify"){
-                return 0;
-            }
+            return 2;
         }
     }
     return -1;

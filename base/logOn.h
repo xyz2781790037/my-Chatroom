@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <string>
 #include <memory>
+#include <atomic>
 #include "user.h"
 class logon{
 public:
@@ -18,6 +19,7 @@ public:
         RETURN
     };
     void updataState(Status state);
+    Status getState() const;
 
 private:
     void selectFunc(int funcnum);
@@ -26,12 +28,13 @@ private:
     void exitSystem();
     void getPassword();
     std::shared_ptr<mulib::net::TcpClient> client_;
-    Status currentState_ = EXECUTE;
+    std::atomic<Status> currentState_;
 };
 inline void logon::ui()
 {
+    updataState(EXECUTE);
     while(true){
-        if(currentState_ == EXECUTE){
+        if(getState() == EXECUTE){
             std::cout << "   chatroom" << std::endl;
             std::cout << "   1.登陆" << std::endl;
             std::cout << "   2.注册" << std::endl;
@@ -42,6 +45,9 @@ inline void logon::ui()
             selectFunc(funcNum);
         }
     }
+}
+inline logon::Status logon::getState() const{
+    return currentState_.load(std::memory_order_acquire);
 }
 inline void logon::selectFunc(int funcnum)
 {
@@ -62,12 +68,11 @@ inline void logon::selectFunc(int funcnum)
     default:
         std::cout << "输入错误,请重新输入" << std::endl;
         sleep(1);
-        system("clear");
         break;
     }
 }
 inline void logon::login(){
-    currentState_ = WAIT;
+    updataState(WAIT);
     std::string Account, passWord;
     std::cout << "账号: ";
     getline(std::cin, Account);
@@ -86,7 +91,7 @@ inline void logon::login(){
 }
 inline void logon::Register()
 {
-    currentState_ = WAIT;
+    updataState(WAIT);
     std::string registerAccount, registerPassword1, registerPassword2;
     std::string qqEmail;
     std::cout << "账号: ";
@@ -117,22 +122,32 @@ inline void logon::exitSystem(){
     exit(0);
 }
 inline void logon::updataState(Status state){
-    currentState_ = state;
+    currentState_.store(state, std::memory_order_release);
 }
 inline void logon::getPassword(){
-    currentState_ = WAIT;
-    std::string account, qqemail,Vcode;
+    updataState(WAIT);
+    std::string account, qqemail, Vcode;
     std::cout << "输入你的账号：";
     getline(std::cin,account);
     auto conn = client_->connection();
-    if (conn){
+    if (conn && conn->connected()){
+        LOG_INFO << "开始进入服务器查找账号";
         User::getQQemail(account, conn);
         while(true){
-            if(currentState_ == EXECUTE){
-                std::cout << "请输入验证码：";
+            if (getState() == EXECUTE)
+            {
+                std::cout << "请输入验证码(输入/resend重发): ";
                 getline(std::cin, Vcode);
+                if(Vcode == "/resend"){
+                    User::resend(account, conn);
+                    updataState(WAIT);
+                    continue;
+                }
+                User::sendPassword(account, Vcode, conn);
+                updataState(WAIT);
             }
-            else if(currentState_ == RETURN){
+            else if(getState() == RETURN){
+                updataState(EXECUTE);
                 return;
             }
         }
@@ -140,7 +155,5 @@ inline void logon::getPassword(){
     else{
         std::cout << "服务器未运行，无法发送找回信息。\n";
     }
-    
-
 }
 #endif

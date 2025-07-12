@@ -61,8 +61,10 @@ void TcpConnection::send(const std::string &message){
             sendInLoop(message);
         }
         else{
-            loop_->runInLoop([this, message]()
-                             { sendInLoop(message); });
+            std::shared_ptr<TcpConnection> self = shared_from_this();
+            loop_->runInLoop([self, message]() {
+                self->sendInLoop(message);
+            });
         }
     }
 }
@@ -120,6 +122,7 @@ void TcpConnection::shutdownInLoop(){
 void TcpConnection::sendInLoop(const std::string &data)
 {
     loop_->assertInLoopThread();
+    assert(channel_ != nullptr);
     ssize_t nwrote = 0;
     int len = data.size();
     size_t remaining = data.size();

@@ -20,7 +20,8 @@ private:
     void handleRegister(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
     void handleLogin(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
     nlohmann::json sendMeg(std::string message, logon::Status state);
-    std::string returnPwd(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
+    void returnPwd(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
+    std::string code;
 };
 inline void handleData::Megcycle(const TcpConnectionPtr &conn, Buffer *buf)
 {
@@ -39,15 +40,19 @@ inline void handleData::Megcycle(const TcpConnectionPtr &conn, Buffer *buf)
             LOG_INFO << "type is :" << type;
             if (type == Type::REGISTER)
             {
+                LOG_INFO << "进入register";
                 handleRegister(conn, jsonData, redis);
             }
             else if (type == Type::LOGIN)
             {
+                LOG_INFO << "进入login";
                 handleLogin(conn, jsonData, redis);
             }
             else if (type == Type::GETPWD)
             {
+                LOG_INFO << "进入getpwd";
                 returnPwd(conn, jsonData, redis);
+                LOG_INFO << "离开getpwd";
             }
         }
         else
@@ -57,14 +62,19 @@ inline void handleData::Megcycle(const TcpConnectionPtr &conn, Buffer *buf)
     }
 }
 inline void handleData::handleRegister(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
-    redis.setNewUser(jsonData);
-    LOG_INFO << "准备发送注册成功消息给客户端";
-    if (conn && conn->connected()){
-        conn->send(sendMeg("注册成功！", logon::EXECUTE).dump() + "\n");
-        LOG_INFO << "handleData::handleRegister: end";
+    if(!redis.isAccount(jsonData["account"])){
+        redis.setNewUser(jsonData);
+        LOG_INFO << "准备发送注册成功消息给客户端";
+        if (conn && conn->connected()){
+            conn->send(sendMeg("注册成功！", logon::EXECUTE).dump() + "\n");
+            LOG_INFO << "handleData::handleRegister: end";
+        }
+        else{
+            std::cout << "连接尚未建立，无法发送注册信息。\n";
+        }
     }
     else{
-        std::cout << "连接尚未建立，无法发送注册信息。\n";
+        conn->send(sendMeg("账号已存在",logon::EXECUTE).dump() + "\n");
     }
 }
 inline void handleData::handleLogin(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
@@ -93,19 +103,36 @@ inline nlohmann::json handleData::sendMeg(std::string message,logon::Status stat
     j["state"] = state;
     return j;
 }
-inline std::string handleData::returnPwd(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
+inline void handleData::returnPwd(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
     int result = redis.Vuser(jsonData);
-    if(result == 1){
+    LOG_INFO << "result is:" << result;
+    verCode vercode_;
+    if (result == 1)
+    {
         conn->send(jsonData.dump() + "\n");
     }
     else if(result == 0){
-        verCode vercode_;
-        std::string code = vercode_.verify(jsonData["eamil"]);
-        jsonData["return"] = code;
+        code = vercode_.verify(redis.getQQEmail(jsonData["account"]));
+        LOG_INFO << "验证码已发送为：" << code;
         conn->send(jsonData.dump() + "\n");
     }
     else if(result == -1){
-        conn->send(sendMeg("账号不存在", logon::WAIT).dump() + "\n");
+        LOG_INFO << "result == -1";
+        conn->send(sendMeg("账号不存在", logon::RETURN).dump() + "\n");
+    }
+    else if(result == 2){
+        if (code == jsonData["vcode"])
+        {
+            LOG_INFO << "客户验证码正确";
+            jsonData["return"] = "true";
+            jsonData["state"] = logon::RETURN;
+            jsonData["password"] = redis.getPassward(jsonData["account"]);
+            conn->send(jsonData.dump() + "\n");
+        }
+        else{
+            LOG_INFO << "客户验证码错误";
+            conn->send(sendMeg("验证码错误", logon::EXECUTE).dump() + "\n");
+        }
     }
 }
 #endif
