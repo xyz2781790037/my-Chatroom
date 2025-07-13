@@ -350,4 +350,7 @@ client/CMakeFiles/client.dir/client.cc.o: \
  /home/zgyx/my-Chatroom/client/../base/MegType.h \
  /home/zgyx/my-Chatroom/client/../base/logOn.h \
  /home/zgyx/my-Chatroom/client/../base/../netlib/base/logger.h \
- /home/zgyx/my-Chatroom/client/../base/user.h
+ /home/zgyx/my-Chatroom/client/../base/user.h \
+ /home/zgyx/my-Chatroom/client/../base/MessageSplitter.h \
+ /home/zgyx/my-Chatroom/client/../base/user.h \
+ /home/zgyx/my-Chatroom/client/UserUi.h

@@ -6,7 +6,8 @@
 #include <nlohmann/json.hpp>
 #include "../base/MegType.h"
 #include "../base/logOn.h"
-#include "../base/User.h"
+#include "../base/user.h"
+#include "UserUi.h"
 class handleMeg{
 public:
     void recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, Buffer *buf, logon &clientLog);
@@ -44,7 +45,10 @@ void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, 
             clientLog.updataState(jsonData["state"]);
         }
         else if(type == Type::INFOEMATION){
-            
+            User user(jsonData["account"], jsonData["password"], jsonData["email"]);
+            user.updataUserInformation(jsonData["myname"],jsonData["ID"]);
+            Userui own;
+            own.ui(user);
         }
     }
 }

@@ -4,6 +4,8 @@
 server/CMakeFiles/server.dir/redisCmd.cc.o
  /home/zgyx/my-Chatroom/server/redisCmd.cc
  /home/zgyx/my-Chatroom/netlib/base/logger.h
+ /home/zgyx/my-Chatroom/netlib/net/Buffer.h
+ /home/zgyx/my-Chatroom/base/MessageSplitter.h
  /home/zgyx/my-Chatroom/base/logOn.h
  /home/zgyx/my-Chatroom/base/user.h
  /home/zgyx/my-Chatroom/netlib/base/Timestamp.h

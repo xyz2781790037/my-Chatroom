@@ -9,6 +9,7 @@
 #include <memory>
 #include <atomic>
 #include "user.h"
+#include "MessageSplitter.h"
 class logon{
 public:
     logon(std::shared_ptr<mulib::net::TcpClient> client) : client_(client) {}
@@ -76,8 +77,10 @@ inline void logon::login(){
     std::string Account, passWord;
     std::cout << "账号: ";
     getline(std::cin, Account);
+    MessageSplitter::segstrspace(Account);
     std::cout << "密码: ";
     getline(std::cin, passWord);
+    MessageSplitter::segstrspace(passWord);
     User user(Account,passWord);
     auto conn = client_->connection();
     if (conn)
@@ -96,17 +99,22 @@ inline void logon::Register()
     std::string qqEmail;
     std::cout << "账号: ";
     getline(std::cin, registerAccount);
+    MessageSplitter::segstrspace(registerAccount);
     std::cout << "密码: ";
     getline(std::cin, registerPassword1);
+    MessageSplitter::segstrspace(registerPassword1);
     std::cout << "再输入一次密码: ";
     getline(std::cin, registerPassword2);
+    MessageSplitter::segstrspace(registerPassword2);
     while(registerPassword2 != registerPassword1){
         std::cout << "与密码不符，请重新输入" << std::endl;
         std::cout << "再输入一次密码: ";
         getline(std::cin, registerPassword2);
+        MessageSplitter::segstrspace(registerPassword2);
     }
     std::cout << "请绑定qq邮箱: ";
     getline(std::cin, qqEmail);
+    MessageSplitter::segstrspace(qqEmail);
     User person(registerAccount, registerPassword1, qqEmail);
     auto conn = client_->connection();
     if (conn){

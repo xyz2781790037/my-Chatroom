@@ -368,4 +368,6 @@ server/CMakeFiles/server.dir/redisCmd.cc.o: \
  /home/zgyx/my-Chatroom/server/../netlib/net/Buffer.h \
  /home/zgyx/my-Chatroom/server/../netlib/net/Connector.h \
  /home/zgyx/my-Chatroom/server/../base/../netlib/base/logger.h \
- /home/zgyx/my-Chatroom/server/../base/user.h
+ /home/zgyx/my-Chatroom/server/../base/user.h \
+ /home/zgyx/my-Chatroom/server/../base/MessageSplitter.h \
+ /home/zgyx/my-Chatroom/server/../base/../netlib/net/Buffer.h

@@ -12,11 +12,13 @@ public:
     static void getQQemail(std::string &account, mulib::net::TcpClient::TcpConnectionPtr &conn);
     static void sendPassword(std::string &account, std::string vcode, const mulib::net::TcpClient::TcpConnectionPtr &conn);
     static void resend(std::string &account, const mulib::net::TcpClient::TcpConnectionPtr &conn);
+    void updataUserInformation(std::string usrname,std::string usrid);
 
-private:
     std::string usrName;
     std::string usrPassword;
     std::string usrqqEmail;
+    std::string usrMyname;
+    std::string usrId;
 };
 inline User::User(std::string usrname, std::string usrpassword, std::string usrqqemail) : usrName(usrname),
 usrPassword(usrpassword),usrqqEmail(usrqqemail){}
@@ -66,5 +68,8 @@ inline void User::resend(std::string &account, const mulib::net::TcpClient::TcpC
     user["return"] = "verify";
     conn->send(user.dump() + "\n");
 }
-
+inline void User::updataUserInformation(std::string usrname, std::string usrid){
+    usrMyname = usrname;
+    usrId = usrid;
+}
 #endif

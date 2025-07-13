@@ -12,12 +12,13 @@ public:
     void append(mulib::net::Buffer *buf);
 
     bool nextMessage(std::string &msg);
+    static std::string segstrspace(std::string &order, int count = 0);
 
 private:
     std::string buffer_;
     std::queue<std::string> messages_;
 };
-void MessageSplitter::append(mulib::net::Buffer *buf)
+inline void MessageSplitter::append(mulib::net::Buffer *buf)
 {
     buffer_ += buf->retrieveAllAsString();
     size_t pos;
@@ -31,7 +32,7 @@ void MessageSplitter::append(mulib::net::Buffer *buf)
         }
     }
 }
-bool MessageSplitter::nextMessage(std::string &msg)
+inline bool MessageSplitter::nextMessage(std::string &msg)
 {
     if (!messages_.empty())
     {
@@ -40,5 +41,21 @@ bool MessageSplitter::nextMessage(std::string &msg)
         return true;
     }
     return false;
+}
+inline std::string MessageSplitter::segstrspace(std::string &order, int count)
+{
+    int len = order.size();
+    while (count < len)
+    {
+        if ((order[count] == ' '))
+        {
+            order.erase(count, 1);
+        }
+        else
+        {
+            count++;
+        }
+    }
+    return order;
 }
 #endif

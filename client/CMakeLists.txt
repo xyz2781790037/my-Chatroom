@@ -16,10 +16,12 @@ set(CLIENT_HEADERS
     ../base/logOn.h
     ../base/Megtype.h
     handleMeg.h
+    UserUi.h
     ../base/user.h
 )
 set(CLIENT_SOURCES
     client.cc
+    UserUi.cc
 )
 add_executable(client ${CLIENT_SOURCES})
 # 链接 cpp_redis 和 tacopie

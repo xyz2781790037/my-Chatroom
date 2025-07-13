@@ -130,6 +130,30 @@ client/fast:
 	cd /home/zgyx/my-Chatroom/build && $(MAKE) $(MAKESILENT) -f client/CMakeFiles/client.dir/build.make client/CMakeFiles/client.dir/build
 .PHONY : client/fast
 
+UserUi.o: UserUi.cc.o
+.PHONY : UserUi.o
+
+# target to build an object file
+UserUi.cc.o:
+	cd /home/zgyx/my-Chatroom/build && $(MAKE) $(MAKESILENT) -f client/CMakeFiles/client.dir/build.make client/CMakeFiles/client.dir/UserUi.cc.o
+.PHONY : UserUi.cc.o
+
+UserUi.i: UserUi.cc.i
+.PHONY : UserUi.i
+
+# target to preprocess a source file
+UserUi.cc.i:
+	cd /home/zgyx/my-Chatroom/build && $(MAKE) $(MAKESILENT) -f client/CMakeFiles/client.dir/build.make client/CMakeFiles/client.dir/UserUi.cc.i
+.PHONY : UserUi.cc.i
+
+UserUi.s: UserUi.cc.s
+.PHONY : UserUi.s
+
+# target to generate assembly for a file
+UserUi.cc.s:
+	cd /home/zgyx/my-Chatroom/build && $(MAKE) $(MAKESILENT) -f client/CMakeFiles/client.dir/build.make client/CMakeFiles/client.dir/UserUi.cc.s
+.PHONY : UserUi.cc.s
+
 client.o: client.cc.o
 .PHONY : client.o
 
@@ -163,6 +187,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... client"
+	@echo "... UserUi.o"
+	@echo "... UserUi.i"
+	@echo "... UserUi.s"
 	@echo "... client.o"
 	@echo "... client.i"
 	@echo "... client.s"
