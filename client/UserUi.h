@@ -6,7 +6,7 @@ const std::string COLOUREND = "\033[0m";
 class Userui{
 public:
     Userui(User &user);
-    void ui(User &user);
+    void ui();
 
 private:
     void selectFunc(std::string select);

@@ -1,6 +1,6 @@
 #include "UserUi.h"
 Userui::Userui(User &user) : user(user){}
-void Userui::ui(User &user)
+void Userui::ui()
 {
     Presence = true;
     while(Presence){
@@ -34,7 +34,7 @@ void Userui::selectFunc(std::string select){
     else if (select == "6"){
     }
     else if (select == "7"){
-
+        myinformation();
     }
     else if (select == "8"){
     }
@@ -43,4 +43,7 @@ void Userui::selectFunc(std::string select){
     else{
 
     }
+}
+void Userui::myinformation(){
+    std::cout << "账号：" << user.getUserName();
 }

@@ -13,6 +13,9 @@ public:
     static void sendPassword(std::string &account, std::string vcode, const mulib::net::TcpClient::TcpConnectionPtr &conn);
     static void resend(std::string &account, const mulib::net::TcpClient::TcpConnectionPtr &conn);
     void updataUserInformation(std::string usrname,std::string usrid);
+    std::string getUserName();
+    std::string getUserEmail();
+
 
     std::string usrName;
     std::string usrPassword;
@@ -20,9 +23,22 @@ public:
     std::string usrMyname;
     std::string usrId;
 };
-inline User::User(std::string usrname, std::string usrpassword, std::string usrqqemail) : usrName(usrname),
-usrPassword(usrpassword),usrqqEmail(usrqqemail){}
-inline User::User(std::string usrname, std::string usrpassword) : usrName(usrname),usrPassword(usrpassword){}
+inline User::User(std::string usrname, std::string usrpassword, std::string usrqqemail) : usrPassword(usrpassword),usrqqEmail(usrqqemail){
+    if(usrname.substr(0,5) == "user:"){
+        usrName = usrname.substr(6);
+    }
+    else{
+        usrName = usrname;
+    }
+}
+inline User::User(std::string usrname, std::string usrpassword) : usrName(usrname),usrPassword(usrpassword){
+    if (usrname.substr(0, 5) == "user:"){
+        usrName = usrname.substr(6);
+    }
+    else{
+        usrName = usrname;
+    }
+}
 inline void User::sendUserInformation(const mulib::net::TcpClient::TcpConnectionPtr &conn)
 {
     srand(time(0));
@@ -32,7 +48,7 @@ inline void User::sendUserInformation(const mulib::net::TcpClient::TcpConnection
     std::string myname = std::string(8 - len, '0') + strNum;
     nlohmann::json user;
     user["type"] = "register";
-    user["account"] = usrName;
+    user["account"] = "user:" + usrName;
     user["password"] = usrPassword;
     user["qqEmail"] = usrqqEmail;
     user["myname"] = myname;
@@ -41,7 +57,7 @@ inline void User::sendUserInformation(const mulib::net::TcpClient::TcpConnection
 inline void User::sendLogin(const mulib::net::TcpClient::TcpConnectionPtr &conn){
     nlohmann::json user;
     user["type"] = "login";
-    user["account"] = usrName;
+    user["account"] = "user:" + usrName;
     user["password"] = usrPassword;
     conn->send(user.dump() + "\n");
 }
@@ -49,7 +65,7 @@ inline void User::sendPassword(std::string &account, std::string vcode,const mul
 {
     nlohmann::json user;
     user["type"] = "getpwd";
-    user["account"] = account;
+    user["account"] = "user:" + account;
     user["return"] = "test";
     user["vcode"] = vcode;
     conn->send(user.dump() + "\n");
@@ -57,14 +73,14 @@ inline void User::sendPassword(std::string &account, std::string vcode,const mul
 inline void User::getQQemail(std::string &account, mulib::net::TcpClient::TcpConnectionPtr &conn){
     nlohmann::json user;
     user["type"] = "getpwd";
-    user["account"] = account;
+    user["account"] = "user:" + account;
     user["return"] = "email";
     conn->send(user.dump() + "\n");
 }
 inline void User::resend(std::string &account, const mulib::net::TcpClient::TcpConnectionPtr &conn){
     nlohmann::json user;
     user["type"] = "getpwd";
-    user["account"] = account;
+    user["account"] = "user:" + account;
     user["return"] = "verify";
     conn->send(user.dump() + "\n");
 }

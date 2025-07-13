@@ -47,8 +47,8 @@ void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, 
         else if(type == Type::INFOEMATION){
             User user(jsonData["account"], jsonData["password"], jsonData["email"]);
             user.updataUserInformation(jsonData["myname"],jsonData["ID"]);
-            Userui own;
-            own.ui(user);
+            Userui own(user);
+            own.ui();
         }
     }
 }
