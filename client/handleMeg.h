@@ -5,16 +5,15 @@
 #include "../netlib/base/logger.h"
 #include <nlohmann/json.hpp>
 #include "../base/MegType.h"
-#include "../base/logOn.h"
 #include "../base/user.h"
 #include "UserUi.h"
 class handleMeg{
 public:
-    void recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, Buffer *buf, logon &clientLog);
+    void recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, Buffer *buf);
 private:
-    void print(logon &clientLog,nlohmann::json j);
+    void print(nlohmann::json j);
 };
-void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, Buffer *buf,logon &clientLog)
+void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, Buffer *buf)
 {
     MessageSplitter megSpl;
     megSpl.append(buf);
@@ -27,7 +26,7 @@ void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, 
         std::cout << "type:" << type << std::endl;
         if (type == Type::PRINT)
         {
-            print(clientLog,jsonData);
+            print(jsonData);
         }
         else if (type == Type::GETPWD)
         {
@@ -42,7 +41,7 @@ void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, 
             else if(jsonData["return"] == "true"){
                 std::cout << "你的密码为：" << jsonData["password"] << std::endl;
             }
-            clientLog.updataState(jsonData["state"]);
+            Type::updataState(jsonData["state"]);
         }
         else if(type == Type::INFOEMATION){
             User user(jsonData["account"], jsonData["password"], jsonData["email"]);
@@ -52,10 +51,16 @@ void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, 
         }
     }
 }
-void handleMeg::print(logon &clientLog,nlohmann::json j)
+void handleMeg::print(nlohmann::json j)
 {
     std::cout << "收到服务器消息：" << j["meg"] << std::endl;
-    LOG_INFO << "state: " << j["state"];
-    clientLog.updataState(j["state"]);
+    if(j.contains("state")){
+        LOG_INFO << "state: " << j["state"];
+        Type::updataState(j["state"]);
+    }
+    else if(j.contains("userstate")){
+        LOG_INFO << "Ustate: " << j["userstate"];
+        Type::updataUserState(j["userstate"]);
+    }
 }
 #endif

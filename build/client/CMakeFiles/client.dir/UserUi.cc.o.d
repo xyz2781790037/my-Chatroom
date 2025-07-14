@@ -333,4 +333,17 @@ client/CMakeFiles/client.dir/UserUi.cc.o: \
  /home/zgyx/my-Chatroom/server/../netlib/net/Socket.h \
  /usr/include/netinet/tcp.h \
  /home/zgyx/my-Chatroom/server/../netlib/net/Buffer.h \
- /home/zgyx/my-Chatroom/server/../netlib/net/Connector.h
+ /home/zgyx/my-Chatroom/server/../netlib/net/Connector.h \
+ /home/zgyx/my-Chatroom/client/../base/logOn.h \
+ /home/zgyx/my-Chatroom/client/../base/../netlib/base/logger.h \
+ /home/zgyx/my-Chatroom/client/../base/../netlib/base/logStream.h \
+ /usr/include/c++/13/sstream /usr/include/c++/13/bits/sstream.tcc \
+ /home/zgyx/my-Chatroom/client/../base/../netlib/base/noncopyable.h \
+ /home/zgyx/my-Chatroom/client/../base/../netlib/base/Timestamp.h \
+ /home/zgyx/my-Chatroom/client/../base/user.h \
+ /home/zgyx/my-Chatroom/client/../base/MessageSplitter.h \
+ /home/zgyx/my-Chatroom/client/../base/../netlib/net/Buffer.h \
+ /usr/include/c++/13/queue /usr/include/c++/13/deque \
+ /usr/include/c++/13/bits/stl_deque.h /usr/include/c++/13/bits/deque.tcc \
+ /usr/include/c++/13/bits/stl_queue.h \
+ /home/zgyx/my-Chatroom/client/../base/MegType.h

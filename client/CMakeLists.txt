@@ -14,7 +14,7 @@ find_package(nlohmann_json 3.2.0 REQUIRED)
 # 添加可执行文件
 set(CLIENT_HEADERS
     ../base/logOn.h
-    ../base/Megtype.h
+    ../base/MegType.h
     handleMeg.h
     UserUi.h
     ../base/user.h
@@ -22,6 +22,7 @@ set(CLIENT_HEADERS
 set(CLIENT_SOURCES
     client.cc
     UserUi.cc
+    ../base/MegType.cc
 )
 add_executable(client ${CLIENT_SOURCES})
 # 链接 cpp_redis 和 tacopie

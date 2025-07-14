@@ -6,5 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = -I/home/zgyx/my-Chatroom/server -I/home/zgyx/my-Chatroom/netlib -I/home/zgyx/my-Chatroom/client -I/home/zgyx/my-Chatroom/../base
 
-CXX_FLAGS = -g -std=gnu++11
+CXX_FLAGS = -std=gnu++11
 

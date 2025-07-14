@@ -21,6 +21,7 @@ set(SERVER_HEADERS
 set(SERVER_SOURCES
     server.cc
     redisCmd.cc
+    ../base/MegType.cc
 )
 add_executable(server ${SERVER_SOURCES})
 # 链接 cpp_redis 和 tacopie

@@ -1,18 +1,24 @@
 #ifndef USERUI_H
 #define USERUI_H
-const std::string COLOUR1 = "\033[1;34m";
-const std::string COLOUREND = "\033[0m";
 #include "../base/user.h"
+#include <string>
+const std::string COLOUR1 = "\033[1;34m";//蓝
+const std::string COLOUREND = "\033[0m";
+const std::string COLOUR2 = "\033[1;31m";//32深绿
+const std::string COLOUR3 = "\033[1;38m";// 37白色
 class Userui{
 public:
-    Userui(User &user);
+    Userui(User &user, const mulib::net::TcpClient::TcpConnectionPtr &Conn);
     void ui();
 
 private:
     void selectFunc(std::string select);
     void myinformation();
+
+    std::string concealPwd();
     bool Presence = true;
     User &user;
+    const mulib::net::TcpClient::TcpConnectionPtr &conn;
 };
 
 #endif

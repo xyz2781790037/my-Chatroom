@@ -7,73 +7,62 @@
 #include <unistd.h>
 #include <string>
 #include <memory>
-#include <atomic>
 #include "user.h"
 #include "MessageSplitter.h"
+#include "MegType.h"
 class logon{
 public:
     logon(std::shared_ptr<mulib::net::TcpClient> client) : client_(client) {}
     void ui();
-    enum Status{
-        WAIT,
-        EXECUTE,
-        RETURN
-    };
-    void updataState(Status state);
-    Status getState() const;
 
 private:
-    void selectFunc(int funcnum);
+    void selectFunc(std::string funcnum);
     void login();
     void Register();
     void exitSystem();
     void getPassword();
     std::shared_ptr<mulib::net::TcpClient> client_;
-    std::atomic<Status> currentState_;
 };
 inline void logon::ui()
 {
-    updataState(EXECUTE);
+    Type::updataState(Type::Status::EXECUTE);
     while(true){
-        if(getState() == EXECUTE){
+        if (Type::getState() == Type::EXECUTE)
+        {
             std::cout << "   chatroom" << std::endl;
             std::cout << "   1.登陆" << std::endl;
             std::cout << "   2.注册" << std::endl;
             std::cout << "   3.退出" << std::endl;
             std::cout << "   4.找回密码 " << std::endl;
-            int funcNum;
+            std::string funcNum;
             std::cin >> funcNum;
             selectFunc(funcNum);
         }
     }
 }
-inline logon::Status logon::getState() const{
-    return currentState_.load(std::memory_order_acquire);
-}
-inline void logon::selectFunc(int funcnum)
+inline void logon::selectFunc(std::string funcnum)
 {
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    switch (funcnum){
-    case 1:
+    MessageSplitter::ignoreCin();
+    if (funcnum == "1"){
         login();
-        break;
-    case 2:
+    }
+    else if(funcnum == "2"){
         Register();
-        break;
-    case 3:
+    }
+    else if(funcnum == "3"){
         exitSystem();
-        break;
-    case 4:
+    }
+    else if(funcnum == "4"){
         getPassword();
-        break;
-    default:
+    }
+    else{
         std::cout << "输入错误,请重新输入" << std::endl;
         sleep(1);
-        break;
+        system("clear");
     }
 }
 inline void logon::login(){
-    updataState(WAIT);
+    Type::updataState(Type::Status::WAIT);
     std::string Account, passWord;
     std::cout << "账号: ";
     getline(std::cin, Account);
@@ -94,7 +83,7 @@ inline void logon::login(){
 }
 inline void logon::Register()
 {
-    updataState(WAIT);
+    Type::updataState(Type::Status::WAIT);
     std::string registerAccount, registerPassword1, registerPassword2;
     std::string qqEmail;
     std::cout << "账号: ";
@@ -129,11 +118,8 @@ inline void logon::exitSystem(){
     client_->stop();
     exit(0);
 }
-inline void logon::updataState(Status state){
-    currentState_.store(state, std::memory_order_release);
-}
 inline void logon::getPassword(){
-    updataState(WAIT);
+    Type::updataState(Type::Status::WAIT);
     std::string account, qqemail, Vcode;
     std::cout << "输入你的账号：";
     getline(std::cin,account);
@@ -142,20 +128,20 @@ inline void logon::getPassword(){
         LOG_INFO << "开始进入服务器查找账号";
         User::getQQemail(account, conn);
         while(true){
-            if (getState() == EXECUTE)
+            if (Type::getState() == Type::EXECUTE)
             {
                 std::cout << "请输入验证码(输入/resend重发): ";
                 getline(std::cin, Vcode);
                 if(Vcode == "/resend"){
                     User::resend(account, conn);
-                    updataState(WAIT);
+                    Type::updataState(Type::Status::WAIT);
                     continue;
                 }
                 User::sendPassword(account, Vcode, conn);
-                updataState(WAIT);
+                Type::updataState(Type::Status::WAIT);
             }
-            else if(getState() == RETURN){
-                updataState(EXECUTE);
+            else if (Type::getState() == Type::RETURN){
+                Type::updataState(Type::Status::EXECUTE);
                 return;
             }
         }

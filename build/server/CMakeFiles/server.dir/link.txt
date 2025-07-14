@@ -1,1 +1,1 @@
-/usr/bin/c++ -g CMakeFiles/server.dir/server.cc.o CMakeFiles/server.dir/redisCmd.cc.o -o server   -L/usr/local/lib  -Wl,-rpath,/usr/local/lib ../netlib/libnetlib.a -lcpp_redis -ltacopie -lpthread /usr/lib/x86_64-linux-gnu/libcurl.so 
+/usr/bin/c++ CMakeFiles/server.dir/server.cc.o CMakeFiles/server.dir/redisCmd.cc.o CMakeFiles/server.dir/__/base/MegType.cc.o -o server   -L/usr/local/lib  -Wl,-rpath,/usr/local/lib ../netlib/libnetlib.a -lcpp_redis -ltacopie -lpthread /usr/lib/x86_64-linux-gnu/libcurl.so 

@@ -1,5 +1,6 @@
 #include <../netlib/net/EventLoop.h>
 #include "../netlib/net/TcpConnection.h"
+#include "../base/logOn.h"
 #include "handleMeg.h"
 int main(){
     mulib::base::Logger::setLogLevel(mulib::base::Logger::DEBUG);
@@ -18,9 +19,9 @@ int main(){
         std::cout << "连接断开" << std::endl;
     } });
     handleMeg handlemeg_;
-    clientPtr->setMessageCallback([&clientLog,&handlemeg_](const mulib::net::TcpClient::TcpConnectionPtr &conn, Buffer *buf, mulib::base::Timestamp) {  
+    clientPtr->setMessageCallback([&handlemeg_](const mulib::net::TcpClient::TcpConnectionPtr &conn, Buffer *buf, mulib::base::Timestamp) {  
         LOG_INFO << "收到消息";
-        handlemeg_.recviveMeg(conn,buf,clientLog);
+        handlemeg_.recviveMeg(conn,buf);
     });
     mainLoop.loop(-1);
     return 0;

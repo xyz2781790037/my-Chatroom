@@ -13,6 +13,7 @@ public:
 
     bool nextMessage(std::string &msg);
     static std::string segstrspace(std::string &order, int count = 0);
+    static void ignoreCin();
 
 private:
     std::string buffer_;
@@ -57,5 +58,8 @@ inline std::string MessageSplitter::segstrspace(std::string &order, int count)
         }
     }
     return order;
+}
+inline void MessageSplitter::ignoreCin(){
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 #endif

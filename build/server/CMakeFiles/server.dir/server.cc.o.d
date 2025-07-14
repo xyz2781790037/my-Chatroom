@@ -401,4 +401,5 @@ server/CMakeFiles/server.dir/server.cc.o: \
  /home/zgyx/my-Chatroom/server/../netlib/net/Connector.h \
  /home/zgyx/my-Chatroom/server/../base/../netlib/base/logger.h \
  /home/zgyx/my-Chatroom/server/../base/user.h \
- /home/zgyx/my-Chatroom/server/../base/MessageSplitter.h
+ /home/zgyx/my-Chatroom/server/../base/MessageSplitter.h \
+ /home/zgyx/my-Chatroom/server/../base/MegType.h

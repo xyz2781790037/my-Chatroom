@@ -103,11 +103,11 @@ int redisCmd::Vuser(nlohmann::json &data){
     {
         if(data["return"] == "email"){
             data["email"] = getQQEmail(data["account"]);
-            data["state"] = logon::EXECUTE;
+            data["state"] = Type::EXECUTE;
             return 1;
         }
         else if(data["return"] == "verify"){
-            data["state"] = logon::EXECUTE;
+            data["state"] = Type::EXECUTE;
             return 0;
         }
         else{

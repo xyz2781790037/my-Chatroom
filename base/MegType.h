@@ -1,6 +1,7 @@
 #ifndef MEGTYPE_H
 #define MEGTYPE_H
 #include <string>
+#include <atomic>
 namespace Type{
     enum types
     {
@@ -10,32 +11,25 @@ namespace Type{
         PRINT,
         INFOEMATION
     };
+    enum Status
+    {
+        WAIT,
+        EXECUTE,
+        RETURN
+    };
+    enum UserStatus
+    {
+        UWAIT,
+        UEXECUTE,
+        URETURN
+    };
+    void updataState(Status state);
+    Status getState();
+    void updataUserState(UserStatus state);
+    UserStatus getUserState();
     types getDataType(std::string datatype);
-}
-Type::types Type::getDataType(std::string datatype)
-{
-    if (datatype == "register")
-    {
-        return REGISTER;
-    }
-    else if (datatype == "login")
-    {
-        return LOGIN;
-    }
-    else if (datatype == "getpwd")
-    {
-        return GETPWD;
-    }
-    else if (datatype == "print")
-    {
-        return PRINT;
-    }
-    else if (datatype == "information")
-    {
-        return INFOEMATION;
-    }
-    else{
-        LOG_FATAL << "getType error";
-    }
+    
+    extern std::atomic<Status> currentState_;
+    extern std::atomic<UserStatus> currentUserState_;
 }
 #endif

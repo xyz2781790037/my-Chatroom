@@ -13,10 +13,16 @@ public:
     static void sendPassword(std::string &account, std::string vcode, const mulib::net::TcpClient::TcpConnectionPtr &conn);
     static void resend(std::string &account, const mulib::net::TcpClient::TcpConnectionPtr &conn);
     void updataUserInformation(std::string usrname,std::string usrid);
+    void preparation(nlohmann::json j,std::string account, std::string type, std::string typedata);
+    void send(nlohmann::json j);
+
     std::string getUserName();
     std::string getUserEmail();
+    std::string getUserMyname();
+    std::string getUserId();
+    std::string getPassword();
 
-
+private:
     std::string usrName;
     std::string usrPassword;
     std::string usrqqEmail;
@@ -25,7 +31,7 @@ public:
 };
 inline User::User(std::string usrname, std::string usrpassword, std::string usrqqemail) : usrPassword(usrpassword),usrqqEmail(usrqqemail){
     if(usrname.substr(0,5) == "user:"){
-        usrName = usrname.substr(6);
+        usrName = usrname.substr(5);
     }
     else{
         usrName = usrname;
@@ -33,7 +39,7 @@ inline User::User(std::string usrname, std::string usrpassword, std::string usrq
 }
 inline User::User(std::string usrname, std::string usrpassword) : usrName(usrname),usrPassword(usrpassword){
     if (usrname.substr(0, 5) == "user:"){
-        usrName = usrname.substr(6);
+        usrName = usrname.substr(5);
     }
     else{
         usrName = usrname;
@@ -87,5 +93,23 @@ inline void User::resend(std::string &account, const mulib::net::TcpClient::TcpC
 inline void User::updataUserInformation(std::string usrname, std::string usrid){
     usrMyname = usrname;
     usrId = usrid;
+}
+inline std::string User::getUserName(){
+    return usrName;
+}
+inline std::string User::getUserEmail(){
+    return usrqqEmail;
+}
+inline std::string User::getUserMyname(){
+    return usrMyname;
+}
+inline std::string User::getUserId(){
+    return usrId;
+}
+inline std::string User::getPassword(){
+    return usrPassword;
+}
+inline void preparation(nlohmann::json j,std::string account, std::string type, std::string typedata){
+    nlohmann::json l;
 }
 #endif
