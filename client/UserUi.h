@@ -8,7 +8,7 @@ const std::string COLOUR2 = "\033[1;31m";//32深绿
 const std::string COLOUR3 = "\033[1;38m";// 37白色
 class Userui{
 public:
-    Userui(User &user, const mulib::net::TcpClient::TcpConnectionPtr &Conn);
+    Userui(std::shared_ptr<User> user, const mulib::net::TcpClient::TcpConnectionPtr &Conn);
     void ui();
 
 private:
@@ -17,7 +17,7 @@ private:
 
     std::string concealPwd();
     bool Presence = true;
-    User &user;
+    std::shared_ptr<User> user_;
     const mulib::net::TcpClient::TcpConnectionPtr &conn;
 };
 

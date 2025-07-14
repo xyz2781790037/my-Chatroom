@@ -19,28 +19,25 @@ namespace Type{
 
 Type::types Type::getDataType(std::string datatype)
 {
-    if (datatype == "register")
-    {
+    if (datatype == "register"){
         return REGISTER;
     }
-    else if (datatype == "login")
-    {
+    else if (datatype == "login"){
         return LOGIN;
     }
-    else if (datatype == "getpwd")
-    {
+    else if (datatype == "getpwd"){
         return GETPWD;
     }
-    else if (datatype == "print")
-    {
+    else if (datatype == "print"){
         return PRINT;
     }
-    else if (datatype == "information")
-    {
+    else if (datatype == "information"){
         return INFOEMATION;
     }
-    else
-    {
+    else if(datatype == "revise"){
+        return REVISE;
+    }
+    else{
         LOG_FATAL << "getType error";
     }
 }

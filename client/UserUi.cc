@@ -1,13 +1,13 @@
 #include "UserUi.h"
 #include "../base/logOn.h"
-Userui::Userui(User &user, const mulib::net::TcpClient::TcpConnectionPtr &Conn) : user(user),conn(Conn){}
+Userui::Userui(std::shared_ptr<User> user, const mulib::net::TcpClient::TcpConnectionPtr &Conn) : user_(user), conn(Conn) {}
 void Userui::ui()
 {
     Presence = true;
     while(Presence){
         if (Type::getUserState() == Type::UEXECUTE)
         {
-            std::cout << COLOUR1 << "     你好, " << user.getUserName() << COLOUREND << std::endl;
+            std::cout << COLOUR1 << "     你好, " << user_->getUserName() << COLOUREND << std::endl;
             std::cout << "     1.我的好友" << std::endl;
             std::cout << "     2.添加好友" << std::endl;
             std::cout << "     3.管理好友" << std::endl;
@@ -54,34 +54,36 @@ void Userui::selectFunc(std::string select){
 }
 std::string Userui::concealPwd(){
     std::string a;
-    for (int i = 0; i < user.getPassword().size();i++){
+    for (int i = 0; i < user_->getPassword().size();i++){
         a += "*";
     }
     return a;
 }
 void Userui::myinformation(){
-    std::cout << COLOUR3 << "账号：" << user.getUserName() << COLOUREND << std::endl;
-    std::cout << COLOUR3 << "ID ：" << user.getUserId() << COLOUREND << std::endl;
-    std::cout << COLOUR3 << "邮箱：" << user.getUserEmail() << COLOUREND << std::endl;
-    std::cout << COLOUR3 << "用户名：" << user.getUserMyname() << COLOUREND << std::endl;
+    LOG_INFO << user_->getUserEmail();
+    std::cout << COLOUR3 << "账号：" << user_->getUserName() << COLOUREND << std::endl;
+    std::cout << COLOUR3 << "ID ：" << user_->getUserId() << COLOUREND << std::endl;
+    std::cout << COLOUR3 << "邮箱：" << user_->getUserEmail() << COLOUREND << std::endl;
+    std::cout << COLOUR3 << "用户名：" << user_->getUserMyname() << COLOUREND << std::endl;
     std::cout << COLOUR3 << "密码：" << concealPwd() << COLOUREND << std::endl;
     std::cout << COLOUR3 << "输入1修改密码，输入2修改用户名，输入3退出" << COLOUREND << std::endl;
     std::string select1;
     std::cin >> select1;
     MessageSplitter::ignoreCin();
-    if(select1 == "1"){
+    Type::updataUserState(Type::UWAIT);
+    if (select1 == "1"){
         std::string oldPassword,newPassword;
         while(1){
             std::cout << "请输入原密码：";
             getline(std::cin,oldPassword);
-            if(oldPassword == user.getPassword()){
+            if(oldPassword == user_->getPassword()){
                 std::cout << "请输入新密码：";
                 getline(std::cin, newPassword);
                 nlohmann::json j;
-                j["type"] = "";
-                j["password"] = newPassword;
-                j["account"] = "user:" + user.getUserName();
-                conn->send(j.dump() + "\n");
+                user_->preparation(j, "type", "revise");
+                user_->preparation(j, "password", newPassword);
+                user_->send(j, conn);
+                user_->revisePwd(newPassword);
                 break;
             }
             else{
@@ -93,12 +95,18 @@ void Userui::myinformation(){
         std::cout << "请输入新的用户名：";
         std::string newmyname;
         getline(std::cin, newmyname);
+        nlohmann::json j;
+        user_->preparation(j, "type", "revise");
+        user_->preparation(j, "myname", newmyname);
+        user_->send(j, conn);
+        user_->reviseMyname(newmyname);
     }
     else if (select1 == "3"){
         Type::updataUserState(Type::UEXECUTE);
     }
     else{
-        myinformation();
+        
         std::cout << "输入错误！" << std::endl;
+        myinformation();
     }
 }

@@ -9,7 +9,8 @@ namespace Type{
         LOGIN,
         GETPWD,
         PRINT,
-        INFOEMATION
+        INFOEMATION,
+        REVISE
     };
     enum Status
     {

@@ -13,14 +13,17 @@ public:
     static void sendPassword(std::string &account, std::string vcode, const mulib::net::TcpClient::TcpConnectionPtr &conn);
     static void resend(std::string &account, const mulib::net::TcpClient::TcpConnectionPtr &conn);
     void updataUserInformation(std::string usrname,std::string usrid);
-    void preparation(nlohmann::json j,std::string account, std::string type, std::string typedata);
-    void send(nlohmann::json j);
+    void preparation(nlohmann::json &j, std::string type, std::string typedata);
+    void send(nlohmann::json &j, const mulib::net::TcpClient::TcpConnectionPtr &conn);
 
     std::string getUserName();
     std::string getUserEmail();
     std::string getUserMyname();
     std::string getUserId();
     std::string getPassword();
+
+    void revisePwd(std::string password);
+    void reviseMyname(std::string myname);
 
 private:
     std::string usrName;
@@ -109,7 +112,18 @@ inline std::string User::getUserId(){
 inline std::string User::getPassword(){
     return usrPassword;
 }
-inline void preparation(nlohmann::json j,std::string account, std::string type, std::string typedata){
-    nlohmann::json l;
+inline void User::preparation(nlohmann::json &j, std::string type, std::string typedata){
+    j[type] = typedata;
+}
+inline void User::send(nlohmann::json &j,const mulib::net::TcpClient::TcpConnectionPtr &conn)
+{
+    j["account"] = "user:" + usrName;
+    conn->send(j.dump() + "\n");
+}
+inline void User::revisePwd(std::string password){
+    usrPassword = password;
+}
+inline void User::reviseMyname(std::string myname){
+    usrMyname = myname;
 }
 #endif

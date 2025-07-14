@@ -6,5 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = -I/home/zgyx/my-Chatroom/server -I/home/zgyx/my-Chatroom/netlib -I/home/zgyx/my-Chatroom/client
 
-CXX_FLAGS =  -g -Wall -pthread -std=gnu++17
+CXX_FLAGS =  -g -Wall -pthread -g -std=gnu++17
 

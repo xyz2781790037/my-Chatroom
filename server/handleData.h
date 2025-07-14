@@ -22,6 +22,7 @@ private:
     nlohmann::json sendMeg(std::string message, Type::Status state);
     nlohmann::json sendMeg(std::string message, Type::UserStatus state);
     void returnPwd(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
+    void revise(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
     std::string code;
 };
 inline void handleData::Megcycle(const TcpConnectionPtr &conn, Buffer *buf)
@@ -54,6 +55,10 @@ inline void handleData::Megcycle(const TcpConnectionPtr &conn, Buffer *buf)
                 LOG_INFO << "进入getpwd";
                 returnPwd(conn, jsonData, redis);
                 LOG_INFO << "离开getpwd";
+            }
+            else if(type == Type::REVISE){
+                LOG_INFO << "进入revise";
+                revise(conn, jsonData, redis);
             }
         }
         else
@@ -144,5 +149,20 @@ inline void handleData::returnPwd(const TcpConnectionPtr &conn, nlohmann::json &
             conn->send(sendMeg("验证码错误", Type::EXECUTE).dump() + "\n");
         }
     }
+}
+inline void handleData::revise(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
+    if(jsonData.contains("password")){
+        redis.reviseData(jsonData,"password",jsonData["password"]);
+    }
+    else if(jsonData.contains("myname")){
+        redis.reviseData(jsonData, "myname", jsonData["myname"]);
+    }
+    LOG_INFO << "In handleData::revise";
+    std::string a = sendMeg("修改成功！", Type::UEXECUTE).dump() + "\n";
+    LOG_INFO << a;
+    conn->send(a);
+    LOG_INFO << "conn use count = " << conn.use_count();
+
+    LOG_INFO << "1111";
 }
 #endif

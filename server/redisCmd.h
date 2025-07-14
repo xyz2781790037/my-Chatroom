@@ -11,6 +11,7 @@ public:
     void returnUser(nlohmann::json &data);
     int Vuser(nlohmann::json &data);
     bool isAccount(std::string account);
+    void reviseData(nlohmann::json &data, std::string type,std::string typedata);
     std::string getQQEmail(std::string account);
     std::string getPassward(std::string account);
 

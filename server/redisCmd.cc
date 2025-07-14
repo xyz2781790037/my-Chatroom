@@ -116,3 +116,9 @@ int redisCmd::Vuser(nlohmann::json &data){
     }
     return -1;
 }
+void redisCmd::reviseData(nlohmann::json &data, std::string type,std::string typedata){
+    std::string key = data["account"];
+    LOG_INFO << "key= " << key;
+    redisClient.hset(key, type, typedata);
+    redisClient.sync_commit();
+}
