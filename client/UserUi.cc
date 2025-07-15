@@ -1,6 +1,10 @@
 #include "UserUi.h"
 #include "../base/logOn.h"
 Userui::Userui(std::shared_ptr<User> user, const mulib::net::TcpClient::TcpConnectionPtr &Conn) : user_(user), conn(Conn) {}
+Userui::~Userui() {
+    std::cout << "Userui 被析构，conn 生命周期结束" << std::endl;
+}
+
 void Userui::ui()
 {
     Presence = true;
@@ -23,11 +27,6 @@ void Userui::ui()
             std::cin >> select;
             selectFunc(select);
         }
-        else if(Type::getUserState() == Type::URETURN){
-            online("offline");
-            Type::updataState(Type::EXECUTE);
-            Presence = false;
-        }
     }
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
 }
@@ -38,7 +37,7 @@ void Userui::selectFunc(std::string select){
     }
     else if (select == "2"){
         std::string name;
-        std::cout << " ";
+        std::cout << "请输入账号：";
         getline(std::cin, name);
         nlohmann::json j;
         user_->preparation(j, "type", "add");
@@ -60,7 +59,9 @@ void Userui::selectFunc(std::string select){
         myinformation();
     }
     else if (select == "9"){
-        Type::updataUserState(Type::URETURN);
+        online("offline");
+        Presence = false;
+        Type::updataState(Type::EXECUTE);
     }
     else if(select == "10"){
         deleteUser();

@@ -130,6 +130,30 @@ server/fast:
 	cd /home/zgyx/my-Chatroom/build && $(MAKE) $(MAKESILENT) -f server/CMakeFiles/server.dir/build.make server/CMakeFiles/server.dir/build
 .PHONY : server/fast
 
+ConnectionManager.o: ConnectionManager.cc.o
+.PHONY : ConnectionManager.o
+
+# target to build an object file
+ConnectionManager.cc.o:
+	cd /home/zgyx/my-Chatroom/build && $(MAKE) $(MAKESILENT) -f server/CMakeFiles/server.dir/build.make server/CMakeFiles/server.dir/ConnectionManager.cc.o
+.PHONY : ConnectionManager.cc.o
+
+ConnectionManager.i: ConnectionManager.cc.i
+.PHONY : ConnectionManager.i
+
+# target to preprocess a source file
+ConnectionManager.cc.i:
+	cd /home/zgyx/my-Chatroom/build && $(MAKE) $(MAKESILENT) -f server/CMakeFiles/server.dir/build.make server/CMakeFiles/server.dir/ConnectionManager.cc.i
+.PHONY : ConnectionManager.cc.i
+
+ConnectionManager.s: ConnectionManager.cc.s
+.PHONY : ConnectionManager.s
+
+# target to generate assembly for a file
+ConnectionManager.cc.s:
+	cd /home/zgyx/my-Chatroom/build && $(MAKE) $(MAKESILENT) -f server/CMakeFiles/server.dir/build.make server/CMakeFiles/server.dir/ConnectionManager.cc.s
+.PHONY : ConnectionManager.cc.s
+
 __/base/MegType.o: __/base/MegType.cc.o
 .PHONY : __/base/MegType.o
 
@@ -153,6 +177,30 @@ __/base/MegType.s: __/base/MegType.cc.s
 __/base/MegType.cc.s:
 	cd /home/zgyx/my-Chatroom/build && $(MAKE) $(MAKESILENT) -f server/CMakeFiles/server.dir/build.make server/CMakeFiles/server.dir/__/base/MegType.cc.s
 .PHONY : __/base/MegType.cc.s
+
+handleData.o: handleData.cc.o
+.PHONY : handleData.o
+
+# target to build an object file
+handleData.cc.o:
+	cd /home/zgyx/my-Chatroom/build && $(MAKE) $(MAKESILENT) -f server/CMakeFiles/server.dir/build.make server/CMakeFiles/server.dir/handleData.cc.o
+.PHONY : handleData.cc.o
+
+handleData.i: handleData.cc.i
+.PHONY : handleData.i
+
+# target to preprocess a source file
+handleData.cc.i:
+	cd /home/zgyx/my-Chatroom/build && $(MAKE) $(MAKESILENT) -f server/CMakeFiles/server.dir/build.make server/CMakeFiles/server.dir/handleData.cc.i
+.PHONY : handleData.cc.i
+
+handleData.s: handleData.cc.s
+.PHONY : handleData.s
+
+# target to generate assembly for a file
+handleData.cc.s:
+	cd /home/zgyx/my-Chatroom/build && $(MAKE) $(MAKESILENT) -f server/CMakeFiles/server.dir/build.make server/CMakeFiles/server.dir/handleData.cc.s
+.PHONY : handleData.cc.s
 
 redisCmd.o: redisCmd.cc.o
 .PHONY : redisCmd.o
@@ -211,9 +259,15 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... server"
+	@echo "... ConnectionManager.o"
+	@echo "... ConnectionManager.i"
+	@echo "... ConnectionManager.s"
 	@echo "... __/base/MegType.o"
 	@echo "... __/base/MegType.i"
 	@echo "... __/base/MegType.s"
+	@echo "... handleData.o"
+	@echo "... handleData.i"
+	@echo "... handleData.s"
 	@echo "... redisCmd.o"
 	@echo "... redisCmd.i"
 	@echo "... redisCmd.s"

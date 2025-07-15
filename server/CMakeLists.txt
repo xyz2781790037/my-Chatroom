@@ -17,11 +17,14 @@ set(SERVER_HEADERS
     handleData.h
     redisCmd.h
     ../base/MegType.h
+    ConnectionManager.h
 )
 set(SERVER_SOURCES
     server.cc
+    handleData.cc
     redisCmd.cc
     ../base/MegType.cc
+    ConnectionManager.cc
 )
 add_executable(server ${SERVER_SOURCES})
 # 链接 cpp_redis 和 tacopie

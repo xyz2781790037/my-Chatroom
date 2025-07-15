@@ -158,12 +158,12 @@ netlib/CMakeFiles/netlib.dir/clean:
 server/CMakeFiles/server.dir/all: netlib/CMakeFiles/netlib.dir/all
 	$(MAKE) $(MAKESILENT) -f server/CMakeFiles/server.dir/build.make server/CMakeFiles/server.dir/depend
 	$(MAKE) $(MAKESILENT) -f server/CMakeFiles/server.dir/build.make server/CMakeFiles/server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/zgyx/my-Chatroom/build/CMakeFiles --progress-num=23,24,25,26 "Built target server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/zgyx/my-Chatroom/build/CMakeFiles --progress-num=23,24,25,26,27,28 "Built target server"
 .PHONY : server/CMakeFiles/server.dir/all
 
 # Build rule for subdir invocation for target.
 server/CMakeFiles/server.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/zgyx/my-Chatroom/build/CMakeFiles 22
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/zgyx/my-Chatroom/build/CMakeFiles 24
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 server/CMakeFiles/server.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/zgyx/my-Chatroom/build/CMakeFiles 0
 .PHONY : server/CMakeFiles/server.dir/rule

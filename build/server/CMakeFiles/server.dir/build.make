@@ -83,10 +83,24 @@ server/CMakeFiles/server.dir/server.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/server.dir/server.cc.s"
 	cd /home/zgyx/my-Chatroom/build/server && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/zgyx/my-Chatroom/server/server.cc -o CMakeFiles/server.dir/server.cc.s
 
+server/CMakeFiles/server.dir/handleData.cc.o: server/CMakeFiles/server.dir/flags.make
+server/CMakeFiles/server.dir/handleData.cc.o: /home/zgyx/my-Chatroom/server/handleData.cc
+server/CMakeFiles/server.dir/handleData.cc.o: server/CMakeFiles/server.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/zgyx/my-Chatroom/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object server/CMakeFiles/server.dir/handleData.cc.o"
+	cd /home/zgyx/my-Chatroom/build/server && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT server/CMakeFiles/server.dir/handleData.cc.o -MF CMakeFiles/server.dir/handleData.cc.o.d -o CMakeFiles/server.dir/handleData.cc.o -c /home/zgyx/my-Chatroom/server/handleData.cc
+
+server/CMakeFiles/server.dir/handleData.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/server.dir/handleData.cc.i"
+	cd /home/zgyx/my-Chatroom/build/server && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/zgyx/my-Chatroom/server/handleData.cc > CMakeFiles/server.dir/handleData.cc.i
+
+server/CMakeFiles/server.dir/handleData.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/server.dir/handleData.cc.s"
+	cd /home/zgyx/my-Chatroom/build/server && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/zgyx/my-Chatroom/server/handleData.cc -o CMakeFiles/server.dir/handleData.cc.s
+
 server/CMakeFiles/server.dir/redisCmd.cc.o: server/CMakeFiles/server.dir/flags.make
 server/CMakeFiles/server.dir/redisCmd.cc.o: /home/zgyx/my-Chatroom/server/redisCmd.cc
 server/CMakeFiles/server.dir/redisCmd.cc.o: server/CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/zgyx/my-Chatroom/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object server/CMakeFiles/server.dir/redisCmd.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/zgyx/my-Chatroom/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object server/CMakeFiles/server.dir/redisCmd.cc.o"
 	cd /home/zgyx/my-Chatroom/build/server && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT server/CMakeFiles/server.dir/redisCmd.cc.o -MF CMakeFiles/server.dir/redisCmd.cc.o.d -o CMakeFiles/server.dir/redisCmd.cc.o -c /home/zgyx/my-Chatroom/server/redisCmd.cc
 
 server/CMakeFiles/server.dir/redisCmd.cc.i: cmake_force
@@ -100,7 +114,7 @@ server/CMakeFiles/server.dir/redisCmd.cc.s: cmake_force
 server/CMakeFiles/server.dir/__/base/MegType.cc.o: server/CMakeFiles/server.dir/flags.make
 server/CMakeFiles/server.dir/__/base/MegType.cc.o: /home/zgyx/my-Chatroom/base/MegType.cc
 server/CMakeFiles/server.dir/__/base/MegType.cc.o: server/CMakeFiles/server.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/zgyx/my-Chatroom/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object server/CMakeFiles/server.dir/__/base/MegType.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/zgyx/my-Chatroom/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object server/CMakeFiles/server.dir/__/base/MegType.cc.o"
 	cd /home/zgyx/my-Chatroom/build/server && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT server/CMakeFiles/server.dir/__/base/MegType.cc.o -MF CMakeFiles/server.dir/__/base/MegType.cc.o.d -o CMakeFiles/server.dir/__/base/MegType.cc.o -c /home/zgyx/my-Chatroom/base/MegType.cc
 
 server/CMakeFiles/server.dir/__/base/MegType.cc.i: cmake_force
@@ -111,23 +125,41 @@ server/CMakeFiles/server.dir/__/base/MegType.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/server.dir/__/base/MegType.cc.s"
 	cd /home/zgyx/my-Chatroom/build/server && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/zgyx/my-Chatroom/base/MegType.cc -o CMakeFiles/server.dir/__/base/MegType.cc.s
 
+server/CMakeFiles/server.dir/ConnectionManager.cc.o: server/CMakeFiles/server.dir/flags.make
+server/CMakeFiles/server.dir/ConnectionManager.cc.o: /home/zgyx/my-Chatroom/server/ConnectionManager.cc
+server/CMakeFiles/server.dir/ConnectionManager.cc.o: server/CMakeFiles/server.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/zgyx/my-Chatroom/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object server/CMakeFiles/server.dir/ConnectionManager.cc.o"
+	cd /home/zgyx/my-Chatroom/build/server && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT server/CMakeFiles/server.dir/ConnectionManager.cc.o -MF CMakeFiles/server.dir/ConnectionManager.cc.o.d -o CMakeFiles/server.dir/ConnectionManager.cc.o -c /home/zgyx/my-Chatroom/server/ConnectionManager.cc
+
+server/CMakeFiles/server.dir/ConnectionManager.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/server.dir/ConnectionManager.cc.i"
+	cd /home/zgyx/my-Chatroom/build/server && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/zgyx/my-Chatroom/server/ConnectionManager.cc > CMakeFiles/server.dir/ConnectionManager.cc.i
+
+server/CMakeFiles/server.dir/ConnectionManager.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/server.dir/ConnectionManager.cc.s"
+	cd /home/zgyx/my-Chatroom/build/server && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/zgyx/my-Chatroom/server/ConnectionManager.cc -o CMakeFiles/server.dir/ConnectionManager.cc.s
+
 # Object files for target server
 server_OBJECTS = \
 "CMakeFiles/server.dir/server.cc.o" \
+"CMakeFiles/server.dir/handleData.cc.o" \
 "CMakeFiles/server.dir/redisCmd.cc.o" \
-"CMakeFiles/server.dir/__/base/MegType.cc.o"
+"CMakeFiles/server.dir/__/base/MegType.cc.o" \
+"CMakeFiles/server.dir/ConnectionManager.cc.o"
 
 # External object files for target server
 server_EXTERNAL_OBJECTS =
 
 server/server: server/CMakeFiles/server.dir/server.cc.o
+server/server: server/CMakeFiles/server.dir/handleData.cc.o
 server/server: server/CMakeFiles/server.dir/redisCmd.cc.o
 server/server: server/CMakeFiles/server.dir/__/base/MegType.cc.o
+server/server: server/CMakeFiles/server.dir/ConnectionManager.cc.o
 server/server: server/CMakeFiles/server.dir/build.make
 server/server: netlib/libnetlib.a
 server/server: /usr/lib/x86_64-linux-gnu/libcurl.so
 server/server: server/CMakeFiles/server.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/zgyx/my-Chatroom/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/zgyx/my-Chatroom/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable server"
 	cd /home/zgyx/my-Chatroom/build/server && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/server.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

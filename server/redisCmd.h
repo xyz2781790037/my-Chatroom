@@ -15,8 +15,9 @@ public:
     std::string getQQEmail(std::string account);
     std::string getPassward(std::string account);
     void deleteUser(std::string account);
-    int addFriend(std::string account, std::string friendname);
+    void addFriend(std::string account, std::string friendname);
     void updataship(nlohmann::json &data);
+    void waitHandleMeg(nlohmann::json &data,std::string type);
 
 private: 
     void connect();

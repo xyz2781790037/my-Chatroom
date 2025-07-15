@@ -46,12 +46,13 @@ void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, 
             auto userPtr = std::make_shared<User>(
                 jsonData["account"], jsonData["password"], jsonData["email"]);
             userPtr->updataUserInformation(jsonData["myname"],jsonData["ID"]);
-            auto ownPtr = std::make_shared<Userui>(userPtr, conn);
-            std::thread ownuiThread([ownPtr]() {
-                ownPtr->ui();
-            });
+            auto Copyconn = conn;
+            auto ownPtr = std::make_shared<Userui>(userPtr, Copyconn);
             
-            ownuiThread.join();
+            std::thread ownuiThread([ownPtr]()
+                                    { ownPtr->ui(); });
+
+            ownuiThread.detach();
         }
     }
 }

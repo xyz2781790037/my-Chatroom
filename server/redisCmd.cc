@@ -51,6 +51,10 @@ int redisCmd::handleLogin(nlohmann::json &data){
     else{
         if(data["password"] == getPassward(data["account"])){
             LOG_INFO << "账号：" << data["account"] << "存在";
+            if (getUserStatus(data["account"]) == "online"){
+                LOG_WARN << "账号已登陆";
+                return 2;
+            }
             return 1;
         }
         else{
@@ -143,12 +147,14 @@ void redisCmd::updataship(nlohmann::json &data){
     redisClient.hset(key, "mystate", mystate);
     redisClient.sync_commit();
 }
-int redisCmd::addFriend(std::string account,std::string friendname)
-{
-    if(isAccount(friendname)){
-        redisClient.hset(account, friendname,getUserStatus(account));
-        redisClient.sync_commit();
-        return 1;
-    }
-    return -1;
+void redisCmd::addFriend(std::string account,std::string friendname){
+    redisClient.hset(account, friendname,getUserStatus(account));
+    redisClient.sync_commit();
+}
+void redisCmd::waitHandleMeg(nlohmann::json &data,std::string type){
+    std::string a = data["account"];
+    std::string key = "mess:" + a;
+    std::string mess = data.dump();
+    redisClient.hset(key, type, mess);
+    redisClient.sync_commit();
 }

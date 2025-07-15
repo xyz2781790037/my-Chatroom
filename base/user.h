@@ -118,11 +118,15 @@ inline void User::preparation(nlohmann::json &j, std::string type, std::string t
 }
 inline void User::send(nlohmann::json &j,const mulib::net::TcpClient::TcpConnectionPtr &conn,std::string category)
 {
-    LOG_INFO << "111";
     j["account"] = category + usrName;
     LOG_INFO << j.dump();
-    conn->send(j.dump() + "\n");
-    LOG_INFO << "111";
+    if(conn && conn->connected()){
+        conn->send(j.dump() + "\n");
+        LOG_INFO << "111";
+    }
+    else{
+        LOG_ERROR << "conn过期";
+    }
 }
 inline void User::revisePwd(std::string password){
     usrPassword = password;

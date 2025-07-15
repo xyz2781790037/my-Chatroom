@@ -8,7 +8,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/zgyx/my-Chatroom/server/ConnectionManager.cc" "server/CMakeFiles/server.dir/ConnectionManager.cc.o" "gcc" "server/CMakeFiles/server.dir/ConnectionManager.cc.o.d"
   "/home/zgyx/my-Chatroom/base/MegType.cc" "server/CMakeFiles/server.dir/__/base/MegType.cc.o" "gcc" "server/CMakeFiles/server.dir/__/base/MegType.cc.o.d"
+  "/home/zgyx/my-Chatroom/server/handleData.cc" "server/CMakeFiles/server.dir/handleData.cc.o" "gcc" "server/CMakeFiles/server.dir/handleData.cc.o.d"
   "/home/zgyx/my-Chatroom/server/redisCmd.cc" "server/CMakeFiles/server.dir/redisCmd.cc.o" "gcc" "server/CMakeFiles/server.dir/redisCmd.cc.o.d"
   "/home/zgyx/my-Chatroom/server/server.cc" "server/CMakeFiles/server.dir/server.cc.o" "gcc" "server/CMakeFiles/server.dir/server.cc.o.d"
   )
