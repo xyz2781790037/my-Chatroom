@@ -17,7 +17,8 @@ public:
     void deleteUser(std::string account);
     void addFriend(std::string account, std::string friendname);
     void updataship(nlohmann::json &data);
-    void waitHandleMeg(nlohmann::json &data,std::string type);
+    void waitHandleMeg(std::string key,nlohmann::json &data);
+    cpp_redis::reply findmess(nlohmann::json &data);
 
 private: 
     void connect();

@@ -46,6 +46,9 @@ Type::types Type::getDataType(std::string datatype)
     else if(datatype == "ship"){
         return SHIP;
     }
+    else if(datatype == "messdata"){
+        return MESSDATA;
+    }
     else{
         LOG_FATAL << "getType error";
     }

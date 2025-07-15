@@ -49,10 +49,16 @@ void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, 
             auto Copyconn = conn;
             auto ownPtr = std::make_shared<Userui>(userPtr, Copyconn);
             
-            std::thread ownuiThread([ownPtr]()
-                                    { ownPtr->ui(); });
-
+            std::thread ownuiThread([ownPtr]() { 
+                ownPtr->ui(); });
             ownuiThread.detach();
+        }
+        else if(type == Type::MESSDATA){
+            if(jsonData["use"] == "addfriend"){
+                std::string allname = jsonData["account"];
+                std::string name = allname.substr(5);
+                std::cout << "好友申请：" << name << "请求添加你为好友" << std::endl;
+            }
         }
     }
 }

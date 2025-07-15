@@ -1,9 +1,6 @@
 #include "UserUi.h"
 #include "../base/logOn.h"
 Userui::Userui(std::shared_ptr<User> user, const mulib::net::TcpClient::TcpConnectionPtr &Conn) : user_(user), conn(Conn) {}
-Userui::~Userui() {
-    std::cout << "Userui 被析构，conn 生命周期结束" << std::endl;
-}
 
 void Userui::ui()
 {
@@ -54,6 +51,10 @@ void Userui::selectFunc(std::string select){
     else if (select == "6"){
     }
     else if (select == "7"){
+        nlohmann::json j;
+        user_->preparation(j, "type", "messdata");
+        user_->send(j, conn, "mess:user:");
+        Type::updataUserState(Type::UWAIT);
     }
     else if (select == "8"){
         myinformation();

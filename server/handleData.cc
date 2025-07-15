@@ -45,6 +45,10 @@ void handleData::Megcycle(const TcpConnectionPtr &conn, Buffer *buf){
             else if(type == Type::SHIP){
                 updataShip(conn,jsonData, redis);
             }
+            else if(type == Type::MESSDATA){
+                LOG_INFO << "进入messdata";
+                findmess(conn,jsonData,redis);
+            }
         }
         else
         {
@@ -165,10 +169,10 @@ void handleData::addAll(const TcpConnectionPtr &conn, nlohmann::json &jsonData, 
             }
             else{
                 nlohmann::json js;
-                js["account"] = lastname;
-                js["type"] = "userhandle";
+                js["account"] = jsonData["account"];
+                js["type"] = "addfriend";
                 js["result"] = "no";
-                redis.waitHandleMeg(js,"addfirend");
+                redis.waitHandleMeg(lastname,js);
                 conn->send(sendMeg("好友申请已发送！", Type::UEXECUTE).dump() + "\n");
             }
         }
@@ -185,5 +189,18 @@ void handleData::updataShip(const TcpConnectionPtr &conn, nlohmann::json &jsonDa
     }
     else{
         connectionmanger_.removeUserConn(jsonData["account"]);
+    }
+}
+void handleData::findmess(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
+    LOG_INFO << "findmess";
+    cpp_redis::reply result = redis.findmess(jsonData);
+    for (const auto &item : result.as_array()){
+        if (item.is_string()){
+            auto j = nlohmann::json::parse(item.as_string());
+            j["use"] = j["type"];
+            j["type"] = Type::MESSDATA;
+            LOG_INFO << j.dump();
+            conn->send(j.dump() + "\n");
+        }
     }
 }

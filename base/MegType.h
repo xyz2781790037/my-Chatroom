@@ -13,7 +13,8 @@ namespace Type{
         REVISE,
         DELETE,
         ADD,
-        SHIP
+        SHIP,
+        MESSDATA
     };
     enum Status
     {

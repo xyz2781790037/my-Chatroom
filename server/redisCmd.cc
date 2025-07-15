@@ -151,10 +151,21 @@ void redisCmd::addFriend(std::string account,std::string friendname){
     redisClient.hset(account, friendname,getUserStatus(account));
     redisClient.sync_commit();
 }
-void redisCmd::waitHandleMeg(nlohmann::json &data,std::string type){
-    std::string a = data["account"];
-    std::string key = "mess:" + a;
+void redisCmd::waitHandleMeg(std::string Key,nlohmann::json &data){
+    std::string key = "mess:" + Key;
     std::string mess = data.dump();
-    redisClient.hset(key, type, mess);
+    std::vector<std::string> a = {mess};
+    redisClient.lpush(key,a);
     redisClient.sync_commit();
+}
+cpp_redis::reply redisCmd::findmess(nlohmann::json &data)
+{
+    LOG_INFO << data["account"];
+    auto reply = redisClient.lrange(data["account"], 0, -1);
+    redisClient.sync_commit();
+    auto result = reply.get();
+    if(result.is_array()){
+        return result;
+    }
+    return cpp_redis::reply();
 }
