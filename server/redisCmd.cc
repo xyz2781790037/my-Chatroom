@@ -60,6 +60,7 @@ int redisCmd::handleLogin(nlohmann::json &data){
     }
 }
 bool redisCmd::isAccount(std::string account){
+    connect();
     auto reply = redisClient.get(account);
     redisClient.sync_commit();
     auto result = reply.get();
@@ -78,7 +79,11 @@ std::string redisCmd::getPassward(std::string account){
 std::string redisCmd::getID(std::string account){
     return getField(account, "ID");
 }
+std::string redisCmd::getUserStatus(std::string account){
+    return getField(account, "mystate");
+}
 std::string redisCmd::getField(const std::string &account, const std::string &field){
+    connect();
     auto reply = redisClient.hget(account, field);
     redisClient.sync_commit();
     auto result = reply.get();
@@ -90,6 +95,7 @@ std::string redisCmd::getField(const std::string &account, const std::string &fi
     }
 }
 void redisCmd::returnUser(nlohmann::json &data){
+    connect();
     std::string account = data["account"];
     data["ID"] = getID(account);
     data["email"] = getQQEmail(account);
@@ -98,6 +104,7 @@ void redisCmd::returnUser(nlohmann::json &data){
     data["type"] = "information";
 }
 int redisCmd::Vuser(nlohmann::json &data){
+    connect();
     LOG_INFO << "redisCmd::Vuser";
     if (isAccount(data["account"]))
     {
@@ -117,8 +124,31 @@ int redisCmd::Vuser(nlohmann::json &data){
     return -1;
 }
 void redisCmd::reviseData(nlohmann::json &data, std::string type,std::string typedata){
+    connect();
     std::string key = data["account"];
     LOG_INFO << "key= " << key;
     redisClient.hset(key, type, typedata);
     redisClient.sync_commit();
+}
+void redisCmd::deleteUser(std::string account){
+    connect();
+    std::vector<std::string> key = {account};
+    redisClient.del(key);
+    redisClient.sync_commit();
+}
+void redisCmd::updataship(nlohmann::json &data){
+    connect();
+    std::string key = data["account"];
+    std::string mystate = data["mystate"];
+    redisClient.hset(key, "mystate", mystate);
+    redisClient.sync_commit();
+}
+int redisCmd::addFriend(std::string account,std::string friendname)
+{
+    if(isAccount(friendname)){
+        redisClient.hset(account, friendname,getUserStatus(account));
+        redisClient.sync_commit();
+        return 1;
+    }
+    return -1;
 }

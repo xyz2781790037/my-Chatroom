@@ -50,7 +50,8 @@ void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, 
             std::thread ownuiThread([ownPtr]() {
                 ownPtr->ui();
             });
-            ownuiThread.detach();
+            
+            ownuiThread.join();
         }
     }
 }

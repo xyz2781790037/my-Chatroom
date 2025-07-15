@@ -334,12 +334,12 @@ client/CMakeFiles/client.dir/UserUi.cc.o: \
  /usr/include/netinet/tcp.h \
  /home/zgyx/my-Chatroom/server/../netlib/net/Buffer.h \
  /home/zgyx/my-Chatroom/server/../netlib/net/Connector.h \
- /home/zgyx/my-Chatroom/client/../base/logOn.h \
  /home/zgyx/my-Chatroom/client/../base/../netlib/base/logger.h \
  /home/zgyx/my-Chatroom/client/../base/../netlib/base/logStream.h \
  /usr/include/c++/13/sstream /usr/include/c++/13/bits/sstream.tcc \
  /home/zgyx/my-Chatroom/client/../base/../netlib/base/noncopyable.h \
  /home/zgyx/my-Chatroom/client/../base/../netlib/base/Timestamp.h \
+ /home/zgyx/my-Chatroom/client/../base/logOn.h \
  /home/zgyx/my-Chatroom/client/../base/user.h \
  /home/zgyx/my-Chatroom/client/../base/MessageSplitter.h \
  /home/zgyx/my-Chatroom/client/../base/../netlib/net/Buffer.h \

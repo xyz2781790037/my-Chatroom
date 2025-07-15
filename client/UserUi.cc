@@ -4,7 +4,8 @@ Userui::Userui(std::shared_ptr<User> user, const mulib::net::TcpClient::TcpConne
 void Userui::ui()
 {
     Presence = true;
-    while(Presence){
+    online("online");
+    while (Presence){
         if (Type::getUserState() == Type::UEXECUTE)
         {
             std::cout << COLOUR1 << "     你好, " << user_->getUserName() << COLOUREND << std::endl;
@@ -17,17 +18,33 @@ void Userui::ui()
             std::cout << "     7.验证信息" << std::endl;
             std::cout << "     8.我的信息" << std::endl;
             std::cout << "     9.退出登陆" << std::endl;
+            std::cout << "     10.注销账号" << std::endl;
             std::string select;
             std::cin >> select;
             selectFunc(select);
         }
+        else if(Type::getUserState() == Type::URETURN){
+            online("offline");
+            Type::updataState(Type::EXECUTE);
+            Presence = false;
+        }
     }
+    std::this_thread::sleep_for(std::chrono::milliseconds(200));
 }
 void Userui::selectFunc(std::string select){
+    MessageSplitter::ignoreCin();
     if(select == "1"){
 
     }
     else if (select == "2"){
+        std::string name;
+        std::cout << " ";
+        getline(std::cin, name);
+        nlohmann::json j;
+        user_->preparation(j, "type", "add");
+        user_->preparation(j, "name", name);
+        user_->send(j, conn, "fire:");
+        Type::updataUserState(Type::UWAIT);
     }
     else if (select == "3"){
     }
@@ -43,8 +60,10 @@ void Userui::selectFunc(std::string select){
         myinformation();
     }
     else if (select == "9"){
-        Presence = false;
-        Type::updataState(Type::EXECUTE);
+        Type::updataUserState(Type::URETURN);
+    }
+    else if(select == "10"){
+        deleteUser();
     }
     else{
         std::cout << COLOUR2 << "输入错误，请重新输入" << COLOUREND << std::endl;
@@ -69,8 +88,8 @@ void Userui::myinformation(){
     std::cout << COLOUR3 << "输入1修改密码，输入2修改用户名，输入3退出" << COLOUREND << std::endl;
     std::string select1;
     std::cin >> select1;
-    MessageSplitter::ignoreCin();
     Type::updataUserState(Type::UWAIT);
+    MessageSplitter::ignoreCin();
     if (select1 == "1"){
         std::string oldPassword,newPassword;
         while(1){
@@ -82,7 +101,7 @@ void Userui::myinformation(){
                 nlohmann::json j;
                 user_->preparation(j, "type", "revise");
                 user_->preparation(j, "password", newPassword);
-                user_->send(j, conn);
+                user_->send(j, conn,"user:");
                 user_->revisePwd(newPassword);
                 break;
             }
@@ -98,7 +117,7 @@ void Userui::myinformation(){
         nlohmann::json j;
         user_->preparation(j, "type", "revise");
         user_->preparation(j, "myname", newmyname);
-        user_->send(j, conn);
+        user_->send(j, conn,"user:");
         user_->reviseMyname(newmyname);
     }
     else if (select1 == "3"){
@@ -109,4 +128,36 @@ void Userui::myinformation(){
         std::cout << "输入错误！" << std::endl;
         myinformation();
     }
+}
+void Userui::deleteUser(){
+    std::cout << "请输入账号：";
+    std::string account, pwd,dd;
+    getline(std::cin, account);
+    if(account != user_->getUserName()){
+        std::cout << COLOUR2 << "输入错误，请稍后再试" << COLOUREND << std::endl;
+        return;
+    }
+    std::cout << "请输入密码：";
+    getline(std::cin, pwd);
+    if(pwd != user_->getPassword()){
+        std::cout << COLOUR2 << "输入错误，请稍后再试" << COLOUREND << std::endl;
+        return;
+    }
+    std::cout << "真的要注销" << user_->getUserName() << "这个账号吗[Y/n]";
+    getline(std::cin, dd);
+    if(dd == "Y"){
+        nlohmann::json j;
+        user_->preparation(j, "type", "delete");
+        user_->send(j, conn,"user:");
+        Presence = false;
+    }
+    else{
+        return;
+    }
+}
+void Userui::online(std::string ship){
+    nlohmann::json j;
+    user_->preparation(j, "mystate", ship);
+    user_->preparation(j, "type", "ship");
+    user_->send(j, conn,"user:");
 }

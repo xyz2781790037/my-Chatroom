@@ -10,7 +10,10 @@ namespace Type{
         GETPWD,
         PRINT,
         INFOEMATION,
-        REVISE
+        REVISE,
+        DELETE,
+        ADD,
+        SHIP
     };
     enum Status
     {

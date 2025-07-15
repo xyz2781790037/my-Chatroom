@@ -37,6 +37,15 @@ Type::types Type::getDataType(std::string datatype)
     else if(datatype == "revise"){
         return REVISE;
     }
+    else if(datatype == "delete"){
+        return DELETE;
+    }
+    else if(datatype == "add"){
+        return ADD;
+    }
+    else if(datatype == "ship"){
+        return SHIP;
+    }
     else{
         LOG_FATAL << "getType error";
     }

@@ -23,6 +23,10 @@ private:
     nlohmann::json sendMeg(std::string message, Type::UserStatus state);
     void returnPwd(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
     void revise(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
+    void deleteUser(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
+    void addAll(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
+    void updataShip(nlohmann::json &jsonData, redisCmd &redis);
+
     std::string code;
 };
 inline void handleData::Megcycle(const TcpConnectionPtr &conn, Buffer *buf)
@@ -59,6 +63,17 @@ inline void handleData::Megcycle(const TcpConnectionPtr &conn, Buffer *buf)
             else if(type == Type::REVISE){
                 LOG_INFO << "进入revise";
                 revise(conn, jsonData, redis);
+            }
+            else if(type == Type::DELETE){
+                LOG_INFO << "进入delete";
+                deleteUser(conn, jsonData, redis);
+            }
+            else if(type == Type::ADD){
+                LOG_INFO << "进入add";
+                addAll(conn,jsonData,redis);
+            }
+            else if(type == Type::SHIP){
+                updataShip(jsonData, redis);
             }
         }
         else
@@ -162,7 +177,26 @@ inline void handleData::revise(const TcpConnectionPtr &conn, nlohmann::json &jso
     LOG_INFO << a;
     conn->send(a);
     LOG_INFO << "conn use count = " << conn.use_count();
-
-    LOG_INFO << "1111";
+}
+inline void handleData::deleteUser(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
+    redis.deleteUser(jsonData["account"]);
+    conn->send(sendMeg("注销成功", Type::EXECUTE).dump() + "\n");
+}
+inline void handleData::addAll(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
+    std::string key = jsonData["account"];
+    std::string friendname = jsonData["name"];
+    int result = 0;
+    if (key.substr(0, 5) == "fire:"){
+        result = redis.addFriend(key,"user:" + friendname);
+    }
+    if(result == -1){
+        conn->send(sendMeg("用户不存在！", Type::UEXECUTE).dump() + "\n");
+    }
+    else if(result == -2){
+        
+    }
+}
+inline void handleData::updataShip(nlohmann::json &jsonData, redisCmd &redis){
+    redis.updataship(jsonData);
 }
 #endif

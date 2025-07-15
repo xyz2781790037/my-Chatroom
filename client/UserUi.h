@@ -10,11 +10,13 @@ class Userui{
 public:
     Userui(std::shared_ptr<User> user, const mulib::net::TcpClient::TcpConnectionPtr &Conn);
     void ui();
+    void online(std::string ship);
 
 private:
     void selectFunc(std::string select);
     void myinformation();
-
+    void deleteUser();
+    
     std::string concealPwd();
     bool Presence = true;
     std::shared_ptr<User> user_;

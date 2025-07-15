@@ -14,9 +14,13 @@ public:
     void reviseData(nlohmann::json &data, std::string type,std::string typedata);
     std::string getQQEmail(std::string account);
     std::string getPassward(std::string account);
+    void deleteUser(std::string account);
+    int addFriend(std::string account, std::string friendname);
+    void updataship(nlohmann::json &data);
 
 private: 
     void connect();
+    std::string getUserStatus(std::string account);
     std::string getMyname(std::string account);
     std::string getID(std::string account);
     std::string getField(const std::string &account, const std::string &field);

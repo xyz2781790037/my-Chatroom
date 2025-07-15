@@ -3,6 +3,7 @@
 #include <string>
 #include <nlohmann/json.hpp>
 #include <../netlib/net/TcpClient.h>
+#include "../netlib/base/logger.h"
 class User{
 public:
     User(std::string usrname, std::string usrpassword, std::string usrqqemail);
@@ -14,7 +15,7 @@ public:
     static void resend(std::string &account, const mulib::net::TcpClient::TcpConnectionPtr &conn);
     void updataUserInformation(std::string usrname,std::string usrid);
     void preparation(nlohmann::json &j, std::string type, std::string typedata);
-    void send(nlohmann::json &j, const mulib::net::TcpClient::TcpConnectionPtr &conn);
+    void send(nlohmann::json &j, const mulib::net::TcpClient::TcpConnectionPtr &conn, std::string category);
 
     std::string getUserName();
     std::string getUserEmail();
@@ -115,10 +116,13 @@ inline std::string User::getPassword(){
 inline void User::preparation(nlohmann::json &j, std::string type, std::string typedata){
     j[type] = typedata;
 }
-inline void User::send(nlohmann::json &j,const mulib::net::TcpClient::TcpConnectionPtr &conn)
+inline void User::send(nlohmann::json &j,const mulib::net::TcpClient::TcpConnectionPtr &conn,std::string category)
 {
-    j["account"] = "user:" + usrName;
+    LOG_INFO << "111";
+    j["account"] = category + usrName;
+    LOG_INFO << j.dump();
     conn->send(j.dump() + "\n");
+    LOG_INFO << "111";
 }
 inline void User::revisePwd(std::string password){
     usrPassword = password;
