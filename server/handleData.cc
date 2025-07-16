@@ -120,7 +120,7 @@ void handleData::returnPwd(const TcpConnectionPtr &conn, nlohmann::json &jsonDat
         conn->send(jsonData.dump() + "\n");
     }
     else if(result == 0){
-        code = vercode_.verify(redis.getQQEmail(jsonData["account"]));
+        code = vercode_.verify(redis.getData(jsonData["account"],"email"));
         LOG_INFO << "验证码已发送为：" << code;
         conn->send(jsonData.dump() + "\n");
     }
@@ -134,7 +134,7 @@ void handleData::returnPwd(const TcpConnectionPtr &conn, nlohmann::json &jsonDat
             LOG_INFO << "客户验证码正确";
             jsonData["return"] = "true";
             jsonData["state"] = Type::RETURN;
-            jsonData["password"] = redis.getPassward(jsonData["account"]);
+            jsonData["password"] = redis.getData(jsonData["account"],"password");
             conn->send(jsonData.dump() + "\n");
         }
         else{
@@ -165,9 +165,9 @@ void handleData::addAll(const TcpConnectionPtr &conn, nlohmann::json &jsonData, 
     std::string friendname = jsonData["name"];
     std::string lastname = "user:" + friendname;
     int result = 0;
-    if (key.substr(0, 5) == "fire:"){
+    if (key.substr(0, 5) == "frie:"){
         if(redis.isAccount(lastname)){
-            if(jsonData.contains(lastname)){
+            if(redis.getData(key,lastname) != "null"){
                 conn->send(sendMeg("他已经是好友了", Type::UEXECUTE).dump() + "\n");
             }
             else{
@@ -209,16 +209,15 @@ void handleData::findmess(const TcpConnectionPtr &conn, nlohmann::json &jsonData
     conn->send(sendMeg("--------------------------", Type::URETURN).dump() + "\n");
 }
 void handleData::verify(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
-    std::string a = jsonData["name"];
-    if(jsonData["result"] == "yes" && redis.isAccount("user:" + a)){
-        redis.addFriend(jsonData["account"], jsonData["name"]);
-        redis.addFriend(jsonData["name"], jsonData["account"]);
+    int end = redis.verifyUser(jsonData);
+    LOG_INFO << "end= " << end;
+    if(end == 1){
         conn->send(sendMeg("你们已经成为好友", Type::URETURN).dump() + "\n");
     }
-    else if(jsonData["result"] == "no"){
+    else if(end == -1){
         conn->send(sendMeg("你已拒绝成为好友", Type::URETURN).dump() + "\n");
     }
     else{
-        conn->send(sendMeg("用户不存在", Type::URETURN).dump() + "\n");
+        conn->send(sendMeg("用户或申请不存在", Type::URETURN).dump() + "\n");
     }
 }

@@ -39,7 +39,7 @@ void Userui::selectFunc(std::string select){
         nlohmann::json j;
         user_->preparation(j, "type", "add");
         user_->preparation(j, "name", name);
-        user_->send(j, conn, "fire:");
+        user_->send(j, conn, "frie:");
         Type::updataUserState(Type::UWAIT);
     }
     else if (select == "3"){

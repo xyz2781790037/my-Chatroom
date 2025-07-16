@@ -49,9 +49,9 @@ int redisCmd::handleLogin(nlohmann::json &data){
         return -1;
     }
     else{
-        if(data["password"] == getPassward(data["account"])){
+        if(data["password"] == getData(data["account"],"password")){
             LOG_INFO << "账号：" << data["account"] << "存在";
-            if (getUserStatus(data["account"]) == "online"){
+            if (getData(data["account"],"mystate") == "online"){
                 LOG_WARN << "账号已登陆";
                 return 2;
             }
@@ -71,20 +71,8 @@ bool redisCmd::isAccount(std::string account){
     LOG_INFO << "account is " << result.is_null();
     return !result.is_null();
 }
-std::string redisCmd::getQQEmail(std::string account){
-    return getField(account, "email");
-}
-std::string redisCmd::getMyname(std::string account){
-    return getField(account, "myname");
-}
-std::string redisCmd::getPassward(std::string account){
-    return getField(account, "password");
-}
-std::string redisCmd::getID(std::string account){
-    return getField(account, "ID");
-}
-std::string redisCmd::getUserStatus(std::string account){
-    return getField(account, "mystate");
+std::string redisCmd::getData(std::string account,std::string dataname){
+    return getField(account, dataname);
 }
 std::string redisCmd::getField(const std::string &account, const std::string &field){
     connect();
@@ -101,10 +89,10 @@ std::string redisCmd::getField(const std::string &account, const std::string &fi
 void redisCmd::returnUser(nlohmann::json &data){
     connect();
     std::string account = data["account"];
-    data["ID"] = getID(account);
-    data["email"] = getQQEmail(account);
-    data["myname"] = getMyname(account);
-    data["password"] = getPassward(account);
+    data["ID"] = getData(account,"ID");
+    data["email"] = getData(account,"email");
+    data["myname"] = getData(account,"myname");
+    data["password"] = getData(account,"password");
     data["type"] = "information";
 }
 int redisCmd::Vuser(nlohmann::json &data){
@@ -113,7 +101,7 @@ int redisCmd::Vuser(nlohmann::json &data){
     if (isAccount(data["account"]))
     {
         if(data["return"] == "email"){
-            data["email"] = getQQEmail(data["account"]);
+            data["email"] = getData(data["account"],"email");
             data["state"] = Type::EXECUTE;
             return 1;
         }
@@ -148,12 +136,14 @@ void redisCmd::updataship(nlohmann::json &data){
     redisClient.sync_commit();
 }
 void redisCmd::addFriend(std::string account,std::string friendname){
+    connect();
     std::string account1 = "frie:" + account;
     std::string name = "user:" + friendname;
     redisClient.hset(account1, name, "ordinary");
     redisClient.sync_commit();
 }
 void redisCmd::waitHandleMeg(std::string Key,nlohmann::json &data){
+    connect();
     std::string key = "mess:" + Key;
     std::string mess = data.dump();
     std::vector<std::string> a = {mess};
@@ -162,6 +152,7 @@ void redisCmd::waitHandleMeg(std::string Key,nlohmann::json &data){
 }
 cpp_redis::reply redisCmd::findmess(nlohmann::json &data)
 {
+    connect();
     LOG_INFO << data["account"];
     auto reply = redisClient.lrange(data["account"], 0, -1);
     redisClient.sync_commit();
@@ -170,4 +161,32 @@ cpp_redis::reply redisCmd::findmess(nlohmann::json &data)
         return result;
     }
     return cpp_redis::reply();
+}
+int redisCmd::verifyUser(nlohmann::json &data){
+    std::string dataa = data["account"];
+    std::string last = "mess:user:" + dataa;
+    auto reply = redisClient.lrange(last, 0, -1);
+    redisClient.sync_commit();
+    auto result = reply.get();
+    for (const auto &item : result.as_array())
+    {
+        auto j = nlohmann::json::parse(item.as_string());
+        std::string a = data["name"];
+        LOG_INFO << "frie:" + a;
+        if (j["account"] == "frie:" + a && j["type"] == "addfriend"){
+            if(data["result"] == "yes"){
+                addFriend(data["account"], data["name"]);
+                addFriend(data["name"], data["account"]);
+                redisClient.lrem(last, 0, item.as_string());
+                redisClient.sync_commit();
+                return 1;
+            }
+            else{
+                redisClient.lrem(last, 0, item.as_string());
+                redisClient.sync_commit();
+                return -1;
+            }
+        }
+    }
+    return 0;
 }
