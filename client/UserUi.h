@@ -17,7 +17,9 @@ private:
     void selectFunc(std::string select);
     void myinformation();
     void deleteUser();
-    
+    void viewInformation();
+    bool handleCmd(std::string cmd);
+
     std::string concealPwd();
     bool Presence = true;
     std::shared_ptr<User> user_;

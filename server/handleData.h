@@ -23,7 +23,8 @@ private:
     void addAll(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
     void updataShip(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
     void findmess(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
-    
+    void verify(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
+
     std::string code;
 };
 #endif

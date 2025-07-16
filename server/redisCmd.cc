@@ -148,7 +148,9 @@ void redisCmd::updataship(nlohmann::json &data){
     redisClient.sync_commit();
 }
 void redisCmd::addFriend(std::string account,std::string friendname){
-    redisClient.hset(account, friendname,getUserStatus(account));
+    std::string account1 = "frie:" + account;
+    std::string name = "user:" + friendname;
+    redisClient.hset(account1, name, "ordinary");
     redisClient.sync_commit();
 }
 void redisCmd::waitHandleMeg(std::string Key,nlohmann::json &data){

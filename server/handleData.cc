@@ -49,6 +49,9 @@ void handleData::Megcycle(const TcpConnectionPtr &conn, Buffer *buf){
                 LOG_INFO << "进入messdata";
                 findmess(conn,jsonData,redis);
             }
+            else if(type == Type::VERIFY){
+                verify(conn, jsonData, redis);
+            }
         }
         else
         {
@@ -198,9 +201,24 @@ void handleData::findmess(const TcpConnectionPtr &conn, nlohmann::json &jsonData
         if (item.is_string()){
             auto j = nlohmann::json::parse(item.as_string());
             j["use"] = j["type"];
-            j["type"] = Type::MESSDATA;
+            j["type"] = "messdata";
             LOG_INFO << j.dump();
             conn->send(j.dump() + "\n");
         }
+    }
+    conn->send(sendMeg("--------------------------", Type::URETURN).dump() + "\n");
+}
+void handleData::verify(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
+    std::string a = jsonData["name"];
+    if(jsonData["result"] == "yes" && redis.isAccount("user:" + a)){
+        redis.addFriend(jsonData["account"], jsonData["name"]);
+        redis.addFriend(jsonData["name"], jsonData["account"]);
+        conn->send(sendMeg("你们已经成为好友", Type::URETURN).dump() + "\n");
+    }
+    else if(jsonData["result"] == "no"){
+        conn->send(sendMeg("你已拒绝成为好友", Type::URETURN).dump() + "\n");
+    }
+    else{
+        conn->send(sendMeg("用户不存在", Type::URETURN).dump() + "\n");
     }
 }

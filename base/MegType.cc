@@ -49,6 +49,9 @@ Type::types Type::getDataType(std::string datatype)
     else if(datatype == "messdata"){
         return MESSDATA;
     }
+    else if(datatype == "verify"){
+        return VERIFY;
+    }
     else{
         LOG_FATAL << "getType error";
     }

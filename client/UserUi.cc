@@ -51,10 +51,7 @@ void Userui::selectFunc(std::string select){
     else if (select == "6"){
     }
     else if (select == "7"){
-        nlohmann::json j;
-        user_->preparation(j, "type", "messdata");
-        user_->send(j, conn, "mess:user:");
-        Type::updataUserState(Type::UWAIT);
+        viewInformation();
     }
     else if (select == "8"){
         myinformation();
@@ -162,4 +159,58 @@ void Userui::online(std::string ship){
     user_->preparation(j, "mystate", ship);
     user_->preparation(j, "type", "ship");
     user_->send(j, conn,"user:");
+}
+void Userui::viewInformation(){
+    nlohmann::json j;
+    user_->preparation(j, "type", "messdata");
+    user_->send(j, conn, "mess:user:");
+    Type::updataUserState(Type::UWAIT);
+    while(1){
+        if(Type::getUserState() == Type::URETURN){
+            std::string cmd;
+            std::cout << "请输入指令(/addfriend username yes/no): ";
+            getline(std::cin, cmd);
+            if(cmd == "quit"){
+                Type::updataUserState(Type::UEXECUTE);
+                break;
+            }
+            if(handleCmd(cmd)){
+                Type::updataUserState(Type::UWAIT);
+            }
+        }
+    }
+}
+bool Userui::handleCmd(std::string cmd){
+    if(cmd[0] == '/'){
+        int pos1 = cmd.find_first_of(' ');
+        if(cmd.find(' ',pos1 + 1) == cmd.find_last_of(' ')){
+            std::string pass = cmd.substr(0,cmd.find_first_of(' '));
+            nlohmann::json j;
+            int start = cmd.find_first_of(' ');
+            int end = cmd.find_last_of(' ');
+            user_->preparation(j,"type","verify");
+            if(pass == "/addfriend" && (cmd.substr(end + 1) == "yes" || (cmd.substr(end + 1) == "no"))){
+                user_->preparation(j, "account", user_->getUserName());
+                user_->preparation(j, "name", cmd.substr(start + 1, end - start - 1));
+                user_->preparation(j, "result", cmd.substr(end + 1));
+                user_->send(j, conn,"");
+                return true;
+            }
+            else if(pass == "/addgroup"){
+
+            }
+            else{
+                std::cout << "输入错误" << std::endl;
+                return false;
+            }
+        }
+        else{
+            std::cout << "格式错误" << std::endl;
+            return false;
+        }
+    }
+    else{
+        std::cout << "输入错误,请重新输入" << std::endl;
+        return false;
+    }
 }

@@ -14,7 +14,8 @@ namespace Type{
         DELETE,
         ADD,
         SHIP,
-        MESSDATA
+        MESSDATA,
+        VERIFY
     };
     enum Status
     {
