@@ -15,6 +15,8 @@ public:
 
 private:
     void selectFunc(std::string select);
+    void seefriend();
+    void addfriend();
     void myinformation();
     void deleteUser();
     void viewInformation();

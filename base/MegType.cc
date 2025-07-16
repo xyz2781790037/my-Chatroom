@@ -52,6 +52,9 @@ Type::types Type::getDataType(std::string datatype)
     else if(datatype == "verify"){
         return VERIFY;
     }
+    else if(datatype == "see"){
+        return SEE;
+    }
     else{
         LOG_FATAL << "getType error";
     }

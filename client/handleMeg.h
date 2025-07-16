@@ -60,6 +60,12 @@ void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, 
                 std::cout << "好友申请：" << name << "请求添加你为好友" << std::endl;
             }
         }
+        else if(type == Type::SEE){
+            if(jsonData["see"] == "friend"){
+                std::string name = jsonData["name"];
+                std::cout << "好友：" << name.substr(5) << "(" << jsonData["myname"] << ")" << "状态：" << jsonData["mystate"] << "[" << jsonData["degree"] << "]" << std::endl;
+            }
+        }
     }
 }
 void handleMeg::print(nlohmann::json j)

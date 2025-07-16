@@ -30,17 +30,10 @@ void Userui::ui()
 void Userui::selectFunc(std::string select){
     MessageSplitter::ignoreCin();
     if(select == "1"){
-
+        seefriend();
     }
     else if (select == "2"){
-        std::string name;
-        std::cout << "请输入账号：";
-        getline(std::cin, name);
-        nlohmann::json j;
-        user_->preparation(j, "type", "add");
-        user_->preparation(j, "name", name);
-        user_->send(j, conn, "frie:");
-        Type::updataUserState(Type::UWAIT);
+        addfriend();
     }
     else if (select == "3"){
     }
@@ -159,6 +152,42 @@ void Userui::online(std::string ship){
     user_->preparation(j, "mystate", ship);
     user_->preparation(j, "type", "ship");
     user_->send(j, conn,"user:");
+}
+void Userui::seefriend(){
+    nlohmann::json j;
+    user_->preparation(j, "account",user_->getUserName());
+    user_->preparation(j, "type", "see");
+    user_->preparation(j, "see", "friend");
+    user_->send(j, conn, "frie:");
+    Type::updataUserState(Type::UWAIT);
+    while (1)
+    {
+        if (Type::getUserState() == Type::URETURN)
+        {
+            std::string cmd;
+            std::cout << "请输入指令(/c username): ";
+            getline(std::cin, cmd);
+            if (cmd == "quit")
+            {
+                Type::updataUserState(Type::UEXECUTE);
+                break;
+            }
+            if (handleCmd(cmd))
+            {
+                Type::updataUserState(Type::UWAIT);
+            }
+        }
+    }
+}
+void Userui::addfriend(){
+    std::string name;
+    std::cout << "请输入账号：";
+    getline(std::cin, name);
+    nlohmann::json j;
+    user_->preparation(j, "type", "add");
+    user_->preparation(j, "name", name);
+    user_->send(j, conn, "frie:");
+    Type::updataUserState(Type::UWAIT);
 }
 void Userui::viewInformation(){
     nlohmann::json j;

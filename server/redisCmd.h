@@ -19,8 +19,9 @@ public:
     cpp_redis::reply findmess(nlohmann::json &data);
     std::string getData(std::string account, std::string dataname);
     int verifyUser(nlohmann::json &data);
+    cpp_redis::reply see(nlohmann::json &data);
 
-private: 
+private:
     void connect();
     
     std::string getField(const std::string &account, const std::string &field);

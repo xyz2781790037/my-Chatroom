@@ -190,3 +190,12 @@ int redisCmd::verifyUser(nlohmann::json &data){
     }
     return 0;
 }
+cpp_redis::reply redisCmd::see(nlohmann::json &data){
+    auto reply = redisClient.hgetall("user:zeal");
+    redisClient.sync_commit();
+    auto result = reply.get();
+    if (result.is_array())
+    {
+        return result;
+    }
+}

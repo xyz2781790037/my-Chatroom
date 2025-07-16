@@ -52,6 +52,9 @@ void handleData::Megcycle(const TcpConnectionPtr &conn, Buffer *buf){
             else if(type == Type::VERIFY){
                 verify(conn, jsonData, redis);
             }
+            else if(type == Type::SEE){
+                see(conn,jsonData,redis);
+            }
         }
         else
         {
@@ -220,4 +223,22 @@ void handleData::verify(const TcpConnectionPtr &conn, nlohmann::json &jsonData, 
     else{
         conn->send(sendMeg("用户或申请不存在", Type::URETURN).dump() + "\n");
     }
+}
+void handleData::see(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
+    cpp_redis::reply result = redis.see(jsonData);
+    const auto &arr = result.as_array();
+    for (size_t i = 0; i + 1 < arr.size(); i += 2)
+    {
+        nlohmann::json j;
+        std::string field = arr[i].as_string();
+        std::string value = arr[i + 1].as_string();
+        j["type"] = "see";
+        j["name"] = field;
+        j["myname"] = redis.getData(field, "myname");
+        j["see"] = "friend";
+        j["mystate"] = redis.getData(field, "mystate");
+        j["degree"] = value;
+        conn->send(j.dump() + "\n");
+    }
+    conn->send(sendMeg("--------------------------", Type::URETURN).dump() + "\n");
 }
