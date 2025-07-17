@@ -163,6 +163,7 @@ cpp_redis::reply redisCmd::findmess(nlohmann::json &data)
     return cpp_redis::reply();
 }
 int redisCmd::verifyUser(nlohmann::json &data){
+    connect();
     std::string dataa = data["account"];
     std::string last = "mess:user:" + dataa;
     auto reply = redisClient.lrange(last, 0, -1);
@@ -191,6 +192,7 @@ int redisCmd::verifyUser(nlohmann::json &data){
     return 0;
 }
 cpp_redis::reply redisCmd::see(nlohmann::json &data){
+    connect();
     auto reply = redisClient.hgetall(data["account"]);
     redisClient.sync_commit();
     auto result = reply.get();
@@ -203,6 +205,11 @@ cpp_redis::reply redisCmd::see(nlohmann::json &data){
 bool redisCmd::isfriend(std::string account, std::string name){
     return getData(account, name) != "null";
 }
-void redisCmd::storeMessages(std::string account, std::string message){
-    std::string key = "msge:" + account.
+void redisCmd::storeMessages(std::string sender, std::string message)
+{
+    connect();
+    std::string key = "msge:" + sender.substr(5);
+    std::vector<std::string> a = {message};
+    redisClient.lpush(key, a);
+    redisClient.sync_commit();
 }

@@ -21,7 +21,7 @@ public:
     int verifyUser(nlohmann::json &data);
     cpp_redis::reply see(nlohmann::json &data);
     bool isfriend(std::string account,std::string name);
-    void storeMessages(std::string account, std::string message);
+    void storeMessages(std::string sender, std::string message);
 
 private:
     void connect();

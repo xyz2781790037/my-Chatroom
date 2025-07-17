@@ -86,7 +86,7 @@ void handleData::Megcycle(const TcpConnectionPtr &conn, Buffer *buf)
                 else
                 {
                     LOG_INFO << jsonData["receive"] << "不在线";
-                    redis.storeMessages();
+                    redis.storeMessages(jsonData["recevie"],j.dump());
                 }
             }
         }
