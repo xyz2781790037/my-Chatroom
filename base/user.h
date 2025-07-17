@@ -4,6 +4,7 @@
 #include <nlohmann/json.hpp>
 #include <../netlib/net/TcpClient.h>
 #include "../netlib/base/logger.h"
+#include "MessageSplitter.h"
 class User{
 public:
     User(std::string usrname, std::string usrpassword, std::string usrqqemail);
@@ -62,14 +63,14 @@ inline void User::sendUserInformation(const mulib::net::TcpClient::TcpConnection
     user["password"] = usrPassword;
     user["qqEmail"] = usrqqEmail;
     user["myname"] = myname;
-    conn->send(user.dump() + "\n");
+    conn->send(MessageSplitter::encodeMessage(user.dump()));
 }
 inline void User::sendLogin(const mulib::net::TcpClient::TcpConnectionPtr &conn){
     nlohmann::json user;
     user["type"] = "login";
     user["account"] = "user:" + usrName;
     user["password"] = usrPassword;
-    conn->send(user.dump() + "\n");
+    conn->send(MessageSplitter::encodeMessage(user.dump()));
 }
 inline void User::sendPassword(std::string &account, std::string vcode,const mulib::net::TcpClient::TcpConnectionPtr &conn)
 {
@@ -78,21 +79,21 @@ inline void User::sendPassword(std::string &account, std::string vcode,const mul
     user["account"] = "user:" + account;
     user["return"] = "test";
     user["vcode"] = vcode;
-    conn->send(user.dump() + "\n");
+    conn->send(MessageSplitter::encodeMessage(user.dump()));
 }
 inline void User::getQQemail(std::string &account, mulib::net::TcpClient::TcpConnectionPtr &conn){
     nlohmann::json user;
     user["type"] = "getpwd";
     user["account"] = "user:" + account;
     user["return"] = "email";
-    conn->send(user.dump() + "\n");
+    conn->send(MessageSplitter::encodeMessage(user.dump()));
 }
 inline void User::resend(std::string &account, const mulib::net::TcpClient::TcpConnectionPtr &conn){
     nlohmann::json user;
     user["type"] = "getpwd";
     user["account"] = "user:" + account;
     user["return"] = "verify";
-    conn->send(user.dump() + "\n");
+    conn->send(MessageSplitter::encodeMessage(user.dump()));
 }
 inline void User::updataUserInformation(std::string usrname, std::string usrid){
     usrMyname = usrname;
@@ -121,7 +122,7 @@ inline void User::send(nlohmann::json &j,const mulib::net::TcpClient::TcpConnect
     j["account"] = category + usrName;
     LOG_DEBUG << j.dump();
     if(conn && conn->connected()){
-        conn->send(j.dump() + "\n");
+        conn->send(MessageSplitter::encodeMessage(j.dump()));
         LOG_DEBUG << "111";
     }
     else{

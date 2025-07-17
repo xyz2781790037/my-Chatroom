@@ -2,12 +2,11 @@
 #include "../netlib/net/TcpConnection.h"
 #include "../base/logOn.h"
 #include "handleMeg.h"
-#include "1.h"
+#include "TermiosGuard.h"
 int main()
 {
-
-    // mulib::base::Logger::setLogLevel(mulib::base::Logger::DEBUG);
     TermiosGuard guard;
+    // mulib::base::Logger::setLogLevel(mulib::base::Logger::DEBUG);
     mulib::net::EventLoop mainLoop;
     mulib::net::InetAddress addr("172.17.0.1", 8080);
     auto clientPtr = std::make_shared<mulib::net::TcpClient>(&mainLoop, addr);

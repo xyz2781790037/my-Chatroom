@@ -30,6 +30,7 @@ void Userui::ui()
 }
 void Userui::selectFunc(std::string select){
     MessageSplitter::ignoreCin();
+    MessageSplitter::segstrspace(select);
     if(select == "1"){
         seefriend();
     }
@@ -88,11 +89,13 @@ void Userui::myinformation(){
     if (select1 == "1"){
         std::string oldPassword,newPassword;
         while(1){
+            guard.encryption();
             std::cout << "请输入原密码：";
-            MessageSplitter::safeGetline(oldPassword);
+            getline(std::cin,oldPassword);
+            guard.removeEncryption();
             if(oldPassword == user_->getPassword()){
-                std::cout << "请输入新密码：";
-                MessageSplitter::safeGetline(newPassword);
+                std::cout << "\n请输入新密码：";
+                getline(std::cin,newPassword);
                 nlohmann::json j;
                 user_->preparation(j, "type", "revise");
                 user_->preparation(j, "password", newPassword);
@@ -108,14 +111,14 @@ void Userui::myinformation(){
     else if (select1 == "2"){
         std::cout << "请输入新的用户名：";
         std::string newmyname;
-        MessageSplitter::safeGetline(newmyname);
+        getline(std::cin,newmyname);
         nlohmann::json j;
         user_->preparation(j, "type", "revise");
         user_->preparation(j, "myname", newmyname);
         user_->send(j, conn,"user:");
         user_->reviseMyname(newmyname);
     }
-    else if (select1 == "3"){
+    else if (select1 == "3" || select1 == "\u0003"){
         Type::updataUserState(Type::UEXECUTE);
     }
     else{
@@ -127,19 +130,20 @@ void Userui::myinformation(){
 void Userui::deleteUser(){
     std::cout << "请输入账号：";
     std::string account, pwd,dd;
-    MessageSplitter::safeGetline(account);
+    getline(std::cin,account);
+    MessageSplitter::segstrspace(account);
     if(account != user_->getUserName()){
         std::cout << COLOUR2 << "输入错误，请稍后再试" << COLOUREND << std::endl;
         return;
     }
     std::cout << "请输入密码：";
-    MessageSplitter::safeGetline(pwd);
+    getline(std::cin,pwd);
     if(pwd != user_->getPassword()){
         std::cout << COLOUR2 << "输入错误，请稍后再试" << COLOUREND << std::endl;
         return;
     }
     std::cout << "真的要注销" << user_->getUserName() << "这个账号吗[Y/n]";
-    MessageSplitter::safeGetline(dd);
+    getline(std::cin,dd);
     if(dd == "Y"){
         nlohmann::json j;
         user_->preparation(j, "type", "delete");
@@ -177,6 +181,7 @@ void Userui::seefriend(){
             
             std::cout << "请输入好友:";
             getline(std::cin, cmd);
+            MessageSplitter::segstrspace(cmd);
             if (cmd == "/quit" || cmd == "\u0003"){
                 Type::updataUserState(Type::UEXECUTE);
                 break;
@@ -238,14 +243,23 @@ void Userui::seefriend(){
     }
 }
 void Userui::addfriend(){
-    std::string name;
-    std::cout << "请输入账号：";
-    MessageSplitter::safeGetline(name);
-    nlohmann::json j;
-    user_->preparation(j, "type", "add");
-    user_->preparation(j, "name", name);
-    user_->send(j, conn, "frie:");
-    Type::updataUserState(Type::UWAIT);
+    while(true){
+        if(Type::getUserState() == Type::UEXECUTE){
+            std::string name;
+            std::cout << "请输入账号：";
+            getline(std::cin, name);
+            MessageSplitter::segstrspace(name);
+            if (name == "/quit" || name == "\u0003"){
+                break;
+            }
+            nlohmann::json j;
+            user_->preparation(j, "type", "add");
+            user_->preparation(j, "name", name);
+            user_->send(j, conn, "frie:");
+            Type::updataUserState(Type::UWAIT);
+        }
+    }
+    
 }
 void Userui::viewInformation(){
     nlohmann::json j;
@@ -256,7 +270,7 @@ void Userui::viewInformation(){
         if(Type::getUserState() == Type::URETURN){
             std::string cmd;
             std::cout << "请输入指令(/addfriend username yes/no): ";
-            MessageSplitter::safeGetline(cmd);
+            getline(std::cin,cmd);
             if(cmd == "/quit" || cmd == "\u0003"){
                 Type::updataUserState(Type::UEXECUTE);
                 break;

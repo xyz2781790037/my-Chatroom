@@ -1,5 +1,7 @@
 #include "MessageManager.h"
+#include "TermiosGuard.h"
 #include <iostream>
+TermiosGuard guard;
 void MessageManager::pushMessage(const std::string &user, const std::string &msg){
     std::lock_guard<std::mutex> lock(mutex_);
     userMessage_[user].push(msg);

@@ -508,6 +508,7 @@ server/CMakeFiles/server.dir/__/base/MegType.cc.o
 
 server/CMakeFiles/server.dir/handleData.cc.o
  /home/zgyx/my-Chatroom/server/handleData.cc
+ /home/zgyx/my-Chatroom/client/TermiosGuard.h
  /home/zgyx/my-Chatroom/netlib/base/logger.h
  /home/zgyx/my-Chatroom/netlib/net/Buffer.h
  /home/zgyx/my-Chatroom/base/MegType.h
@@ -800,6 +801,7 @@ server/CMakeFiles/server.dir/handleData.cc.o
  /usr/include/stdlib.h
  /usr/include/string.h
  /usr/include/strings.h
+ /usr/include/termios.h
  /usr/include/time.h
  /usr/include/unistd.h
  /usr/include/wchar.h
@@ -868,6 +870,16 @@ server/CMakeFiles/server.dir/handleData.cc.o
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h
  /usr/include/x86_64-linux-gnu/bits/struct_mutex.h
  /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h
+ /usr/include/x86_64-linux-gnu/bits/termios-baud.h
+ /usr/include/x86_64-linux-gnu/bits/termios-c_cc.h
+ /usr/include/x86_64-linux-gnu/bits/termios-c_cflag.h
+ /usr/include/x86_64-linux-gnu/bits/termios-c_iflag.h
+ /usr/include/x86_64-linux-gnu/bits/termios-c_lflag.h
+ /usr/include/x86_64-linux-gnu/bits/termios-c_oflag.h
+ /usr/include/x86_64-linux-gnu/bits/termios-misc.h
+ /usr/include/x86_64-linux-gnu/bits/termios-struct.h
+ /usr/include/x86_64-linux-gnu/bits/termios-tcflow.h
+ /usr/include/x86_64-linux-gnu/bits/termios.h
  /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h
  /usr/include/x86_64-linux-gnu/bits/time.h
  /usr/include/x86_64-linux-gnu/bits/time64.h
@@ -947,6 +959,7 @@ server/CMakeFiles/server.dir/handleData.cc.o
  /usr/include/x86_64-linux-gnu/sys/single_threaded.h
  /usr/include/x86_64-linux-gnu/sys/socket.h
  /usr/include/x86_64-linux-gnu/sys/time.h
+ /usr/include/x86_64-linux-gnu/sys/ttydefaults.h
  /usr/include/x86_64-linux-gnu/sys/types.h
  /usr/include/x86_64-linux-gnu/sys/ucontext.h
  /usr/lib/gcc/x86_64-linux-gnu/13/include/limits.h
@@ -981,6 +994,7 @@ server/CMakeFiles/server.dir/handleData.cc.o
 
 server/CMakeFiles/server.dir/redisCmd.cc.o
  /home/zgyx/my-Chatroom/server/redisCmd.cc
+ /home/zgyx/my-Chatroom/client/TermiosGuard.h
  /home/zgyx/my-Chatroom/netlib/base/logger.h
  /home/zgyx/my-Chatroom/netlib/net/Buffer.h
  /home/zgyx/my-Chatroom/base/MegType.h
@@ -1264,6 +1278,7 @@ server/CMakeFiles/server.dir/redisCmd.cc.o
  /usr/include/stdlib.h
  /usr/include/string.h
  /usr/include/strings.h
+ /usr/include/termios.h
  /usr/include/time.h
  /usr/include/unistd.h
  /usr/include/wchar.h
@@ -1329,6 +1344,16 @@ server/CMakeFiles/server.dir/redisCmd.cc.o
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h
  /usr/include/x86_64-linux-gnu/bits/struct_mutex.h
  /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h
+ /usr/include/x86_64-linux-gnu/bits/termios-baud.h
+ /usr/include/x86_64-linux-gnu/bits/termios-c_cc.h
+ /usr/include/x86_64-linux-gnu/bits/termios-c_cflag.h
+ /usr/include/x86_64-linux-gnu/bits/termios-c_iflag.h
+ /usr/include/x86_64-linux-gnu/bits/termios-c_lflag.h
+ /usr/include/x86_64-linux-gnu/bits/termios-c_oflag.h
+ /usr/include/x86_64-linux-gnu/bits/termios-misc.h
+ /usr/include/x86_64-linux-gnu/bits/termios-struct.h
+ /usr/include/x86_64-linux-gnu/bits/termios-tcflow.h
+ /usr/include/x86_64-linux-gnu/bits/termios.h
  /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h
  /usr/include/x86_64-linux-gnu/bits/time.h
  /usr/include/x86_64-linux-gnu/bits/time64.h
@@ -1396,6 +1421,7 @@ server/CMakeFiles/server.dir/redisCmd.cc.o
  /usr/include/x86_64-linux-gnu/sys/single_threaded.h
  /usr/include/x86_64-linux-gnu/sys/socket.h
  /usr/include/x86_64-linux-gnu/sys/time.h
+ /usr/include/x86_64-linux-gnu/sys/ttydefaults.h
  /usr/include/x86_64-linux-gnu/sys/types.h
  /usr/include/x86_64-linux-gnu/sys/ucontext.h
  /usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h
@@ -1428,6 +1454,7 @@ server/CMakeFiles/server.dir/redisCmd.cc.o
 
 server/CMakeFiles/server.dir/server.cc.o
  /home/zgyx/my-Chatroom/server/server.cc
+ /home/zgyx/my-Chatroom/client/TermiosGuard.h
  /home/zgyx/my-Chatroom/netlib/base/logger.h
  /home/zgyx/my-Chatroom/netlib/net/Buffer.h
  /home/zgyx/my-Chatroom/base/MegType.h
@@ -1720,6 +1747,7 @@ server/CMakeFiles/server.dir/server.cc.o
  /usr/include/stdlib.h
  /usr/include/string.h
  /usr/include/strings.h
+ /usr/include/termios.h
  /usr/include/time.h
  /usr/include/unistd.h
  /usr/include/wchar.h
@@ -1788,6 +1816,16 @@ server/CMakeFiles/server.dir/server.cc.o
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h
  /usr/include/x86_64-linux-gnu/bits/struct_mutex.h
  /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h
+ /usr/include/x86_64-linux-gnu/bits/termios-baud.h
+ /usr/include/x86_64-linux-gnu/bits/termios-c_cc.h
+ /usr/include/x86_64-linux-gnu/bits/termios-c_cflag.h
+ /usr/include/x86_64-linux-gnu/bits/termios-c_iflag.h
+ /usr/include/x86_64-linux-gnu/bits/termios-c_lflag.h
+ /usr/include/x86_64-linux-gnu/bits/termios-c_oflag.h
+ /usr/include/x86_64-linux-gnu/bits/termios-misc.h
+ /usr/include/x86_64-linux-gnu/bits/termios-struct.h
+ /usr/include/x86_64-linux-gnu/bits/termios-tcflow.h
+ /usr/include/x86_64-linux-gnu/bits/termios.h
  /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h
  /usr/include/x86_64-linux-gnu/bits/time.h
  /usr/include/x86_64-linux-gnu/bits/time64.h
@@ -1867,6 +1905,7 @@ server/CMakeFiles/server.dir/server.cc.o
  /usr/include/x86_64-linux-gnu/sys/single_threaded.h
  /usr/include/x86_64-linux-gnu/sys/socket.h
  /usr/include/x86_64-linux-gnu/sys/time.h
+ /usr/include/x86_64-linux-gnu/sys/ttydefaults.h
  /usr/include/x86_64-linux-gnu/sys/types.h
  /usr/include/x86_64-linux-gnu/sys/ucontext.h
  /usr/lib/gcc/x86_64-linux-gnu/13/include/limits.h

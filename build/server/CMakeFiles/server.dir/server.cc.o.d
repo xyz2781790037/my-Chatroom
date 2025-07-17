@@ -375,6 +375,18 @@ server/CMakeFiles/server.dir/server.cc.o: \
  /home/zgyx/my-Chatroom/server/../netlib/net/TcpConnection.h \
  /home/zgyx/my-Chatroom/server/../base/MegType.h \
  /home/zgyx/my-Chatroom/server/../base/MessageSplitter.h \
+ /home/zgyx/my-Chatroom/client/TermiosGuard.h /usr/include/termios.h \
+ /usr/include/x86_64-linux-gnu/bits/termios.h \
+ /usr/include/x86_64-linux-gnu/bits/termios-struct.h \
+ /usr/include/x86_64-linux-gnu/bits/termios-c_cc.h \
+ /usr/include/x86_64-linux-gnu/bits/termios-c_iflag.h \
+ /usr/include/x86_64-linux-gnu/bits/termios-c_oflag.h \
+ /usr/include/x86_64-linux-gnu/bits/termios-baud.h \
+ /usr/include/x86_64-linux-gnu/bits/termios-c_cflag.h \
+ /usr/include/x86_64-linux-gnu/bits/termios-c_lflag.h \
+ /usr/include/x86_64-linux-gnu/bits/termios-tcflow.h \
+ /usr/include/x86_64-linux-gnu/bits/termios-misc.h \
+ /usr/include/x86_64-linux-gnu/sys/ttydefaults.h \
  /home/zgyx/my-Chatroom/server/../base/../netlib/net/Buffer.h \
  /home/zgyx/my-Chatroom/server/../base/verCode.h \
  /usr/include/x86_64-linux-gnu/curl/curl.h \

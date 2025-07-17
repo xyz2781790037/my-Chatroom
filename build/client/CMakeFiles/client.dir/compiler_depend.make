@@ -3,6 +3,7 @@
 
 client/CMakeFiles/client.dir/MessageManager.cc.o: /home/zgyx/my-Chatroom/client/MessageManager.cc \
   /home/zgyx/my-Chatroom/client/MessageManager.h \
+  /home/zgyx/my-Chatroom/client/TermiosGuard.h \
   /usr/include/alloca.h \
   /usr/include/asm-generic/errno-base.h \
   /usr/include/asm-generic/errno.h \
@@ -119,6 +120,7 @@ client/CMakeFiles/client.dir/MessageManager.cc.o: /home/zgyx/my-Chatroom/client/
   /usr/include/errno.h \
   /usr/include/features-time64.h \
   /usr/include/features.h \
+  /usr/include/linux/close_range.h \
   /usr/include/linux/errno.h \
   /usr/include/locale.h \
   /usr/include/pthread.h \
@@ -127,21 +129,28 @@ client/CMakeFiles/client.dir/MessageManager.cc.o: /home/zgyx/my-Chatroom/client/
   /usr/include/stdint.h \
   /usr/include/stdio.h \
   /usr/include/stdlib.h \
+  /usr/include/termios.h \
   /usr/include/time.h \
+  /usr/include/unistd.h \
   /usr/include/wchar.h \
   /usr/include/wctype.h \
   /usr/include/x86_64-linux-gnu/asm/errno.h \
   /usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h \
   /usr/include/x86_64-linux-gnu/bits/byteswap.h \
+  /usr/include/x86_64-linux-gnu/bits/confname.h \
   /usr/include/x86_64-linux-gnu/bits/cpu-set.h \
   /usr/include/x86_64-linux-gnu/bits/endian.h \
   /usr/include/x86_64-linux-gnu/bits/endianness.h \
+  /usr/include/x86_64-linux-gnu/bits/environments.h \
   /usr/include/x86_64-linux-gnu/bits/errno.h \
   /usr/include/x86_64-linux-gnu/bits/floatn-common.h \
   /usr/include/x86_64-linux-gnu/bits/floatn.h \
+  /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
+  /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
   /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
   /usr/include/x86_64-linux-gnu/bits/locale.h \
   /usr/include/x86_64-linux-gnu/bits/long-double.h \
+  /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
   /usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h \
   /usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h \
   /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h \
@@ -155,6 +164,16 @@ client/CMakeFiles/client.dir/MessageManager.cc.o: /home/zgyx/my-Chatroom/client/
   /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
   /usr/include/x86_64-linux-gnu/bits/struct_mutex.h \
   /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h \
+  /usr/include/x86_64-linux-gnu/bits/termios-baud.h \
+  /usr/include/x86_64-linux-gnu/bits/termios-c_cc.h \
+  /usr/include/x86_64-linux-gnu/bits/termios-c_cflag.h \
+  /usr/include/x86_64-linux-gnu/bits/termios-c_iflag.h \
+  /usr/include/x86_64-linux-gnu/bits/termios-c_lflag.h \
+  /usr/include/x86_64-linux-gnu/bits/termios-c_oflag.h \
+  /usr/include/x86_64-linux-gnu/bits/termios-misc.h \
+  /usr/include/x86_64-linux-gnu/bits/termios-struct.h \
+  /usr/include/x86_64-linux-gnu/bits/termios-tcflow.h \
+  /usr/include/x86_64-linux-gnu/bits/termios.h \
   /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h \
   /usr/include/x86_64-linux-gnu/bits/time.h \
   /usr/include/x86_64-linux-gnu/bits/time64.h \
@@ -187,6 +206,7 @@ client/CMakeFiles/client.dir/MessageManager.cc.o: /home/zgyx/my-Chatroom/client/
   /usr/include/x86_64-linux-gnu/bits/types/wint_t.h \
   /usr/include/x86_64-linux-gnu/bits/typesizes.h \
   /usr/include/x86_64-linux-gnu/bits/uintn-identity.h \
+  /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
   /usr/include/x86_64-linux-gnu/bits/waitflags.h \
   /usr/include/x86_64-linux-gnu/bits/waitstatus.h \
   /usr/include/x86_64-linux-gnu/bits/wchar.h \
@@ -208,6 +228,7 @@ client/CMakeFiles/client.dir/MessageManager.cc.o: /home/zgyx/my-Chatroom/client/
   /usr/include/x86_64-linux-gnu/sys/cdefs.h \
   /usr/include/x86_64-linux-gnu/sys/select.h \
   /usr/include/x86_64-linux-gnu/sys/single_threaded.h \
+  /usr/include/x86_64-linux-gnu/sys/ttydefaults.h \
   /usr/include/x86_64-linux-gnu/sys/types.h \
   /usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h \
   /usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h \
@@ -224,6 +245,7 @@ client/CMakeFiles/client.dir/UserUi.cc.o: /home/zgyx/my-Chatroom/client/UserUi.c
   /home/zgyx/my-Chatroom/base/logOn.h \
   /home/zgyx/my-Chatroom/base/user.h \
   /home/zgyx/my-Chatroom/client/MessageManager.h \
+  /home/zgyx/my-Chatroom/client/TermiosGuard.h \
   /home/zgyx/my-Chatroom/client/UserUi.h \
   /home/zgyx/my-Chatroom/netlib/base/Timestamp.h \
   /home/zgyx/my-Chatroom/netlib/base/noncopyable.h \
@@ -491,6 +513,7 @@ client/CMakeFiles/client.dir/UserUi.cc.o: /home/zgyx/my-Chatroom/client/UserUi.c
   /usr/include/stdlib.h \
   /usr/include/string.h \
   /usr/include/strings.h \
+  /usr/include/termios.h \
   /usr/include/time.h \
   /usr/include/unistd.h \
   /usr/include/wchar.h \
@@ -556,6 +579,16 @@ client/CMakeFiles/client.dir/UserUi.cc.o: /home/zgyx/my-Chatroom/client/UserUi.c
   /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
   /usr/include/x86_64-linux-gnu/bits/struct_mutex.h \
   /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h \
+  /usr/include/x86_64-linux-gnu/bits/termios-baud.h \
+  /usr/include/x86_64-linux-gnu/bits/termios-c_cc.h \
+  /usr/include/x86_64-linux-gnu/bits/termios-c_cflag.h \
+  /usr/include/x86_64-linux-gnu/bits/termios-c_iflag.h \
+  /usr/include/x86_64-linux-gnu/bits/termios-c_lflag.h \
+  /usr/include/x86_64-linux-gnu/bits/termios-c_oflag.h \
+  /usr/include/x86_64-linux-gnu/bits/termios-misc.h \
+  /usr/include/x86_64-linux-gnu/bits/termios-struct.h \
+  /usr/include/x86_64-linux-gnu/bits/termios-tcflow.h \
+  /usr/include/x86_64-linux-gnu/bits/termios.h \
   /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h \
   /usr/include/x86_64-linux-gnu/bits/time.h \
   /usr/include/x86_64-linux-gnu/bits/time64.h \
@@ -623,6 +656,7 @@ client/CMakeFiles/client.dir/UserUi.cc.o: /home/zgyx/my-Chatroom/client/UserUi.c
   /usr/include/x86_64-linux-gnu/sys/single_threaded.h \
   /usr/include/x86_64-linux-gnu/sys/socket.h \
   /usr/include/x86_64-linux-gnu/sys/time.h \
+  /usr/include/x86_64-linux-gnu/sys/ttydefaults.h \
   /usr/include/x86_64-linux-gnu/sys/types.h \
   /usr/include/x86_64-linux-gnu/sys/ucontext.h \
   /usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h \
@@ -844,8 +878,8 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
   /home/zgyx/my-Chatroom/netlib/net/Socket.h \
   /home/zgyx/my-Chatroom/netlib/net/SocketOps.h \
   /home/zgyx/my-Chatroom/netlib/net/TcpConnection.h \
-  /home/zgyx/my-Chatroom/client/1.h \
   /home/zgyx/my-Chatroom/client/MessageManager.h \
+  /home/zgyx/my-Chatroom/client/TermiosGuard.h \
   /home/zgyx/my-Chatroom/client/UserUi.h \
   /home/zgyx/my-Chatroom/client/handleMeg.h \
   /home/zgyx/my-Chatroom/netlib/base/Timestamp.h \
@@ -1262,16 +1296,6 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
   /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h
 
 
-/usr/include/x86_64-linux-gnu/bits/termios.h:
-
-/usr/include/x86_64-linux-gnu/bits/termios-misc.h:
-
-/usr/include/x86_64-linux-gnu/bits/termios-c_iflag.h:
-
-/usr/include/x86_64-linux-gnu/bits/termios-baud.h:
-
-/usr/include/termios.h:
-
 /home/zgyx/my-Chatroom/client/handleMeg.h:
 
 /home/zgyx/my-Chatroom/base/MegType.cc:
@@ -1281,8 +1305,6 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 /usr/include/x86_64-linux-gnu/c++/13/bits/time_members.h:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/messages_members.h:
-
-/usr/include/x86_64-linux-gnu/bits/unistd_ext.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/stack_t.h:
 
@@ -1324,13 +1346,9 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 
 /usr/include/x86_64-linux-gnu/bits/in.h:
 
-/usr/include/x86_64-linux-gnu/bits/getopt_core.h:
-
 /usr/include/x86_64-linux-gnu/bits/fp-logb.h:
 
 /usr/include/x86_64-linux-gnu/bits/fp-fast.h:
-
-/usr/include/unistd.h:
 
 /usr/include/string.h:
 
@@ -1378,10 +1396,6 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 
 /usr/include/nlohmann/detail/conversions/to_chars.hpp:
 
-/usr/include/x86_64-linux-gnu/bits/posix_opt.h:
-
-/usr/include/nlohmann/detail/abi_macros.hpp:
-
 /usr/include/nlohmann/byte_container_with_subtype.hpp:
 
 /usr/include/netinet/in.h:
@@ -1389,8 +1403,6 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 /usr/include/memory.h:
 
 /usr/include/linux/stddef.h:
-
-/usr/include/linux/close_range.h:
 
 /usr/include/libintl.h:
 
@@ -1468,11 +1480,43 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 
 /usr/include/c++/13/bits/locale_facets_nonio.tcc:
 
-/usr/include/x86_64-linux-gnu/bits/confname.h:
+/usr/include/c++/13/bits/indirect_array.h:
 
-/usr/include/c++/13/bits/locale_facets_nonio.h:
+/usr/include/c++/13/bits/gslice.h:
 
-/usr/include/stdlib.h:
+/usr/include/c++/13/bits/forward_list.h:
+
+/usr/include/c++/13/bits/stl_tree.h:
+
+/usr/include/c++/13/bits/codecvt.h:
+
+/usr/include/c++/13/bits/valarray_array.h:
+
+/usr/include/c++/13/bits/atomic_lockfree_defines.h:
+
+/usr/include/c++/13/bits/atomic_base.h:
+
+/usr/include/c++/13/bits/align.h:
+
+/usr/include/c++/13/bits/allocated_ptr.h:
+
+/usr/include/c++/13/bit:
+
+/usr/include/c++/13/backward/auto_ptr.h:
+
+/usr/include/nlohmann/detail/meta/void_t.hpp:
+
+/usr/include/c++/13/atomic:
+
+/usr/include/c++/13/array:
+
+/usr/include/c++/13/algorithm:
+
+/usr/include/asm-generic/sockios.h:
+
+/usr/include/asm-generic/socket.h:
+
+/usr/include/asm-generic/posix_types.h:
 
 /usr/include/c++/13/queue:
 
@@ -1510,6 +1554,10 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 
 /usr/include/c++/13/bits/streambuf_iterator.h:
 
+/usr/include/c++/13/bits/locale_facets_nonio.h:
+
+/usr/include/x86_64-linux-gnu/bits/confname.h:
+
 /usr/include/c++/13/ratio:
 
 /usr/include/x86_64-linux-gnu/asm/posix_types.h:
@@ -1538,12 +1586,6 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 
 /usr/include/c++/13/bits/functional_hash.h:
 
-/usr/include/c++/13/bits/indirect_array.h:
-
-/usr/include/x86_64-linux-gnu/bits/environments.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h:
-
 /usr/include/nlohmann/detail/meta/identity_tag.hpp:
 
 /usr/include/c++/13/debug/assertions.h:
@@ -1563,14 +1605,6 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 /usr/include/c++/13/cstdio:
 
 /usr/include/c++/13/clocale:
-
-/usr/include/x86_64-linux-gnu/sys/ttydefaults.h:
-
-/usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h:
-
-/home/zgyx/my-Chatroom/netlib/net/TcpClient.h:
 
 /usr/include/c++/13/cerrno:
 
@@ -1634,35 +1668,25 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 
 /usr/include/c++/13/ext/alloc_traits.h:
 
+/usr/include/c++/13/bits/gslice_array.h:
+
+/usr/include/c++/13/new:
+
 /usr/include/c++/13/bits/alloc_traits.h:
 
 /usr/include/c++/13/bits/concept_check.h:
 
 /usr/include/c++/13/bits/exception_ptr.h:
 
+/usr/include/c++/13/bits/locale_conv.h:
+
+/usr/include/c++/13/bits/istream.tcc:
+
 /usr/include/c++/13/vector:
-
-/usr/include/x86_64-linux-gnu/bits/termios-c_oflag.h:
-
-/usr/include/c++/13/bits/erase_if.h:
 
 /usr/include/nlohmann/thirdparty/hedley/hedley_undef.hpp:
 
 /usr/include/c++/13/bits/cxxabi_forced.h:
-
-/usr/include/c++/13/iostream:
-
-/usr/include/c++/13/ext/type_traits.h:
-
-/usr/include/x86_64-linux-gnu/bits/termios-c_lflag.h:
-
-/usr/include/c++/13/bits/deque.tcc:
-
-/usr/include/x86_64-linux-gnu/bits/termios-c_cc.h:
-
-/usr/include/x86_64-linux-gnu/bits/endian.h:
-
-/usr/include/x86_64-linux-gnu/gnu/stubs.h:
 
 /usr/include/c++/13/cassert:
 
@@ -1672,13 +1696,17 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 
 /usr/include/x86_64-linux-gnu/bits/stdint-intn.h:
 
+/usr/include/x86_64-linux-gnu/bits/termios-baud.h:
+
 /usr/include/x86_64-linux-gnu/bits/types.h:
+
+/usr/include/assert.h:
+
+/home/zgyx/my-Chatroom/base/logOn.h:
 
 /usr/include/c++/13/type_traits:
 
 /usr/include/x86_64-linux-gnu/sys/single_threaded.h:
-
-/usr/include/c++/13/bits/memoryfwd.h:
 
 /usr/include/c++/13/bits/locale_facets.h:
 
@@ -1692,33 +1720,37 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 
 /home/zgyx/my-Chatroom/netlib/net/TimerQueue.h:
 
-/usr/include/asm-generic/posix_types.h:
-
-/usr/include/x86_64-linux-gnu/bits/termios-tcflow.h:
-
-/usr/include/c++/13/bits/basic_string.h:
-
 /usr/include/c++/13/bits/chrono.h:
 
 /usr/include/x86_64-linux-gnu/bits/endianness.h:
 
 /usr/include/c++/13/bits/invoke.h:
 
+/usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h:
+
+/usr/include/x86_64-linux-gnu/bits/environments.h:
+
 /usr/include/c++/13/istream:
 
 /home/zgyx/my-Chatroom/client/MessageManager.h:
 
-/usr/include/nlohmann/adl_serializer.hpp:
+/usr/include/c++/13/iostream:
 
-/usr/include/c++/13/bits/valarray_after.h:
+/usr/include/c++/13/ext/type_traits.h:
 
-/usr/include/c++/13/streambuf:
+/usr/include/x86_64-linux-gnu/bits/termios-c_lflag.h:
 
-/usr/include/x86_64-linux-gnu/bits/uintn-identity.h:
+/usr/include/c++/13/bits/deque.tcc:
 
-/usr/include/c++/13/bits/stl_set.h:
+/usr/include/x86_64-linux-gnu/gnu/stubs.h:
 
-/usr/include/c++/13/bits/ostream_insert.h:
+/usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h:
+
+/usr/include/c++/13/bits/ostream.tcc:
+
+/usr/include/locale.h:
+
+/home/zgyx/my-Chatroom/base/MegType.h:
 
 /usr/include/linux/posix_types.h:
 
@@ -1728,21 +1760,23 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h:
 
+/home/zgyx/my-Chatroom/client/TermiosGuard.h:
+
 /usr/include/c++/13/bits/enable_special_members.h:
 
 /usr/include/c++/13/bits/move.h:
 
-/usr/include/asm-generic/sockios.h:
-
 /usr/include/c++/13/bits/basic_string.tcc:
-
-/usr/include/c++/13/bits/allocated_ptr.h:
-
-/usr/include/c++/13/bit:
 
 /usr/include/alloca.h:
 
 /usr/include/c++/13/bits/hash_bytes.h:
+
+/usr/include/c++/13/iterator:
+
+/usr/include/c++/13/bits/ios_base.h:
+
+/usr/include/x86_64-linux-gnu/bits/termios-c_cflag.h:
 
 /home/zgyx/my-Chatroom/netlib/net/sigpipe.h:
 
@@ -1764,29 +1798,21 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 
 /usr/include/c++/13/bits/new_allocator.h:
 
+/usr/include/c++/13/bits/algorithmfwd.h:
+
+/usr/include/x86_64-linux-gnu/bits/long-double.h:
+
 /home/zgyx/my-Chatroom/netlib/net/Channel.h:
 
 /usr/include/nlohmann/detail/meta/std_fs.hpp:
 
 /usr/include/arpa/inet.h:
 
-/usr/include/c++/13/bits/atomic_base.h:
+/usr/include/linux/close_range.h:
 
 /usr/include/c++/13/bits/stringfwd.h:
 
 /usr/include/c++/13/backward/binders.h:
-
-/usr/include/features.h:
-
-/usr/include/c++/13/bits/stl_deque.h:
-
-/usr/include/nlohmann/detail/string_concat.hpp:
-
-/usr/include/x86_64-linux-gnu/bits/floatn-common.h:
-
-/usr/include/c++/13/bits/requires_hosted.h:
-
-/usr/include/c++/13/bits/locale_facets.tcc:
 
 /usr/include/nlohmann/detail/conversions/from_json.hpp:
 
@@ -1798,31 +1824,45 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 
 /usr/include/c++/13/bits/nested_exception.h:
 
+/usr/include/x86_64-linux-gnu/bits/endian.h:
+
+/usr/include/x86_64-linux-gnu/bits/termios-c_cc.h:
+
 /usr/include/c++/13/bits/basic_ios.tcc:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/gthr.h:
+
+/usr/include/nlohmann/adl_serializer.hpp:
+
+/usr/include/c++/13/bits/valarray_after.h:
+
+/usr/include/c++/13/streambuf:
+
+/home/zgyx/my-Chatroom/netlib/base/logger.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
+
+/usr/include/x86_64-linux-gnu/bits/uintn-identity.h:
 
 /usr/include/c++/13/bits/hashtable_policy.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/clock_t.h:
 
-/usr/include/x86_64-linux-gnu/bits/termios-c_cflag.h:
+/usr/include/c++/13/bits/stl_set.h:
 
-/usr/include/c++/13/iterator:
+/usr/include/c++/13/bits/ostream_insert.h:
 
-/usr/include/c++/13/bits/ios_base.h:
+/usr/include/features.h:
 
-/usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h:
+/usr/include/nlohmann/detail/string_concat.hpp:
 
-/usr/include/c++/13/bits/ostream.tcc:
+/usr/include/x86_64-linux-gnu/bits/floatn-common.h:
 
-/usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
+/usr/include/c++/13/bits/requires_hosted.h:
 
-/home/zgyx/my-Chatroom/netlib/base/logger.h:
+/usr/include/c++/13/bits/locale_facets.tcc:
 
-/usr/include/locale.h:
-
-/home/zgyx/my-Chatroom/base/MegType.h:
+/usr/include/c++/13/bits/stl_deque.h:
 
 /usr/include/ctype.h:
 
@@ -1836,6 +1876,8 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 
 /usr/include/c++/13/bits/locale_classes.tcc:
 
+/usr/include/c++/13/bits/memoryfwd.h:
+
 /usr/include/c++/13/utility:
 
 /usr/include/c++/13/bits/stl_heap.h:
@@ -1847,8 +1889,6 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 /usr/include/c++/13/bits/refwrap.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h:
-
-/usr/include/c++/13/bits/gslice.h:
 
 /usr/include/c++/13/stdexcept:
 
@@ -1864,6 +1904,18 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 
 /usr/include/c++/13/bits/stl_algobase.h:
 
+/usr/include/stdlib.h:
+
+/usr/include/termios.h:
+
+/usr/include/unistd.h:
+
+/usr/include/x86_64-linux-gnu/asm/socket.h:
+
+/usr/include/c++/13/cwchar:
+
+/usr/include/x86_64-linux-gnu/sys/select.h:
+
 /usr/include/c++/13/bits/shared_ptr_base.h:
 
 /usr/include/wchar.h:
@@ -1877,10 +1929,6 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 /usr/include/c++/13/bits/stl_iterator.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
-
-/usr/include/c++/13/bits/valarray_array.h:
-
-/usr/include/c++/13/bits/atomic_lockfree_defines.h:
 
 /usr/include/nlohmann/detail/input/position_t.hpp:
 
@@ -1896,9 +1944,15 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
 
-/home/zgyx/my-Chatroom/client/1.h:
+/usr/include/x86_64-linux-gnu/bits/getopt_core.h:
+
+/home/zgyx/my-Chatroom/netlib/net/TcpConnection.h:
 
 /usr/include/x86_64-linux-gnu/bits/locale.h:
+
+/usr/include/nlohmann/detail/abi_macros.hpp:
+
+/usr/include/x86_64-linux-gnu/bits/posix_opt.h:
 
 /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
 
@@ -1916,14 +1970,6 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 
 /usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h:
 
-/usr/include/asm-generic/socket.h:
-
-/usr/include/x86_64-linux-gnu/asm/socket.h:
-
-/usr/include/c++/13/cwchar:
-
-/usr/include/x86_64-linux-gnu/sys/select.h:
-
 /usr/include/netinet/tcp.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/FILE.h:
@@ -1936,6 +1982,26 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 
 /home/zgyx/my-Chatroom/base/user.h:
 
+/usr/include/x86_64-linux-gnu/bits/termios-c_iflag.h:
+
+/usr/include/c++/13/bits/erase_if.h:
+
+/usr/include/x86_64-linux-gnu/bits/termios-c_oflag.h:
+
+/home/zgyx/my-Chatroom/netlib/net/Socket.h:
+
+/usr/include/x86_64-linux-gnu/bits/termios-misc.h:
+
+/usr/include/c++/13/bits/basic_string.h:
+
+/usr/include/x86_64-linux-gnu/bits/termios-tcflow.h:
+
+/usr/include/asm-generic/errno.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
+
+/usr/include/x86_64-linux-gnu/bits/termios.h:
+
 /usr/include/x86_64-linux-gnu/bits/select.h:
 
 /usr/include/x86_64-linux-gnu/bits/time.h:
@@ -1947,6 +2013,10 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 /usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
 
 /usr/include/x86_64-linux-gnu/bits/timex.h:
+
+/usr/include/c++/13/bits/forward_list.tcc:
+
+/usr/include/x86_64-linux-gnu/c++/13/bits/cpu_defines.h:
 
 /usr/include/x86_64-linux-gnu/asm/sockios.h:
 
@@ -1992,17 +2062,13 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 
 /usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h:
 
-/usr/include/asm-generic/errno.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
-
 /usr/include/c++/13/ext/atomicity.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
 
-/usr/include/x86_64-linux-gnu/bits/termios-struct.h:
-
 /usr/include/nlohmann/detail/input/binary_reader.hpp:
+
+/usr/include/x86_64-linux-gnu/bits/termios-struct.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/time_t.h:
 
@@ -2014,9 +2080,9 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 
 /home/zgyx/my-Chatroom/netlib/base/Timestamp.h:
 
-/usr/include/x86_64-linux-gnu/bits/waitflags.h:
+/usr/include/x86_64-linux-gnu/bits/unistd_ext.h:
 
-/usr/include/c++/13/bits/align.h:
+/usr/include/x86_64-linux-gnu/bits/waitflags.h:
 
 /usr/include/c++/13/bits/exception_defines.h:
 
@@ -2025,6 +2091,14 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 /usr/include/x86_64-linux-gnu/bits/wordsize.h:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/atomic_word.h:
+
+/usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h:
+
+/home/zgyx/my-Chatroom/netlib/net/TcpClient.h:
+
+/usr/include/x86_64-linux-gnu/sys/ttydefaults.h:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/ctype_base.h:
 
@@ -2074,48 +2148,8 @@ client/CMakeFiles/client.dir/client.cc.o: /home/zgyx/my-Chatroom/client/client.c
 
 /home/zgyx/my-Chatroom/netlib/net/EventLoop.h:
 
-/home/zgyx/my-Chatroom/netlib/net/Socket.h:
-
 /home/zgyx/my-Chatroom/netlib/net/SocketOps.h:
-
-/home/zgyx/my-Chatroom/netlib/net/TcpConnection.h:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/c++allocator.h:
 
 /home/zgyx/my-Chatroom/netlib/net/TimerId.h:
-
-/home/zgyx/my-Chatroom/base/logOn.h:
-
-/usr/include/assert.h:
-
-/usr/include/c++/13/algorithm:
-
-/usr/include/c++/13/array:
-
-/usr/include/nlohmann/detail/meta/void_t.hpp:
-
-/usr/include/c++/13/atomic:
-
-/usr/include/c++/13/backward/auto_ptr.h:
-
-/usr/include/x86_64-linux-gnu/bits/long-double.h:
-
-/usr/include/c++/13/bits/algorithmfwd.h:
-
-/usr/include/c++/13/bits/stl_tree.h:
-
-/usr/include/c++/13/bits/codecvt.h:
-
-/usr/include/c++/13/bits/forward_list.h:
-
-/usr/include/x86_64-linux-gnu/c++/13/bits/cpu_defines.h:
-
-/usr/include/c++/13/bits/forward_list.tcc:
-
-/usr/include/c++/13/new:
-
-/usr/include/c++/13/bits/gslice_array.h:
-
-/usr/include/c++/13/bits/istream.tcc:
-
-/usr/include/c++/13/bits/locale_conv.h:

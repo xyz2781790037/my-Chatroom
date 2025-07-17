@@ -36,7 +36,7 @@ void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, 
                 std::cout << "你的账号邮箱为：" << jsonData["email"] << std::endl;
                 std::cout << "已发送验证码到你的邮箱" << std::endl;
                 jsonData["return"] = "verify";
-                conn->send(jsonData.dump() + "\n");
+                conn->send(MessageSplitter::encodeMessage(jsonData.dump()));
             }
             else if(jsonData["return"] == "true"){
                 std::cout << "你的密码为：" << jsonData["password"] << std::endl;

@@ -19,7 +19,7 @@ set(CLIENT_HEADERS
     UserUi.h
     ../base/user.h
     MessageManager.h
-    1.h
+    TermiosGuard.h
 )
 set(CLIENT_SOURCES
     client.cc

@@ -4,6 +4,7 @@
 client/CMakeFiles/client.dir/MessageManager.cc.o
  /home/zgyx/my-Chatroom/client/MessageManager.cc
  /home/zgyx/my-Chatroom/client/MessageManager.h
+ /home/zgyx/my-Chatroom/client/TermiosGuard.h
  /usr/include/alloca.h
  /usr/include/asm-generic/errno-base.h
  /usr/include/asm-generic/errno.h
@@ -120,6 +121,7 @@ client/CMakeFiles/client.dir/MessageManager.cc.o
  /usr/include/errno.h
  /usr/include/features-time64.h
  /usr/include/features.h
+ /usr/include/linux/close_range.h
  /usr/include/linux/errno.h
  /usr/include/locale.h
  /usr/include/pthread.h
@@ -128,21 +130,28 @@ client/CMakeFiles/client.dir/MessageManager.cc.o
  /usr/include/stdint.h
  /usr/include/stdio.h
  /usr/include/stdlib.h
+ /usr/include/termios.h
  /usr/include/time.h
+ /usr/include/unistd.h
  /usr/include/wchar.h
  /usr/include/wctype.h
  /usr/include/x86_64-linux-gnu/asm/errno.h
  /usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h
  /usr/include/x86_64-linux-gnu/bits/byteswap.h
+ /usr/include/x86_64-linux-gnu/bits/confname.h
  /usr/include/x86_64-linux-gnu/bits/cpu-set.h
  /usr/include/x86_64-linux-gnu/bits/endian.h
  /usr/include/x86_64-linux-gnu/bits/endianness.h
+ /usr/include/x86_64-linux-gnu/bits/environments.h
  /usr/include/x86_64-linux-gnu/bits/errno.h
  /usr/include/x86_64-linux-gnu/bits/floatn-common.h
  /usr/include/x86_64-linux-gnu/bits/floatn.h
+ /usr/include/x86_64-linux-gnu/bits/getopt_core.h
+ /usr/include/x86_64-linux-gnu/bits/getopt_posix.h
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h
  /usr/include/x86_64-linux-gnu/bits/locale.h
  /usr/include/x86_64-linux-gnu/bits/long-double.h
+ /usr/include/x86_64-linux-gnu/bits/posix_opt.h
  /usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h
  /usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h
  /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h
@@ -156,6 +165,16 @@ client/CMakeFiles/client.dir/MessageManager.cc.o
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h
  /usr/include/x86_64-linux-gnu/bits/struct_mutex.h
  /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h
+ /usr/include/x86_64-linux-gnu/bits/termios-baud.h
+ /usr/include/x86_64-linux-gnu/bits/termios-c_cc.h
+ /usr/include/x86_64-linux-gnu/bits/termios-c_cflag.h
+ /usr/include/x86_64-linux-gnu/bits/termios-c_iflag.h
+ /usr/include/x86_64-linux-gnu/bits/termios-c_lflag.h
+ /usr/include/x86_64-linux-gnu/bits/termios-c_oflag.h
+ /usr/include/x86_64-linux-gnu/bits/termios-misc.h
+ /usr/include/x86_64-linux-gnu/bits/termios-struct.h
+ /usr/include/x86_64-linux-gnu/bits/termios-tcflow.h
+ /usr/include/x86_64-linux-gnu/bits/termios.h
  /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h
  /usr/include/x86_64-linux-gnu/bits/time.h
  /usr/include/x86_64-linux-gnu/bits/time64.h
@@ -188,6 +207,7 @@ client/CMakeFiles/client.dir/MessageManager.cc.o
  /usr/include/x86_64-linux-gnu/bits/types/wint_t.h
  /usr/include/x86_64-linux-gnu/bits/typesizes.h
  /usr/include/x86_64-linux-gnu/bits/uintn-identity.h
+ /usr/include/x86_64-linux-gnu/bits/unistd_ext.h
  /usr/include/x86_64-linux-gnu/bits/waitflags.h
  /usr/include/x86_64-linux-gnu/bits/waitstatus.h
  /usr/include/x86_64-linux-gnu/bits/wchar.h
@@ -209,6 +229,7 @@ client/CMakeFiles/client.dir/MessageManager.cc.o
  /usr/include/x86_64-linux-gnu/sys/cdefs.h
  /usr/include/x86_64-linux-gnu/sys/select.h
  /usr/include/x86_64-linux-gnu/sys/single_threaded.h
+ /usr/include/x86_64-linux-gnu/sys/ttydefaults.h
  /usr/include/x86_64-linux-gnu/sys/types.h
  /usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h
  /usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h
@@ -226,6 +247,7 @@ client/CMakeFiles/client.dir/UserUi.cc.o
  /home/zgyx/my-Chatroom/base/logOn.h
  /home/zgyx/my-Chatroom/base/user.h
  /home/zgyx/my-Chatroom/client/MessageManager.h
+ /home/zgyx/my-Chatroom/client/TermiosGuard.h
  /home/zgyx/my-Chatroom/client/UserUi.h
  /home/zgyx/my-Chatroom/netlib/base/Timestamp.h
  /home/zgyx/my-Chatroom/netlib/base/noncopyable.h
@@ -493,6 +515,7 @@ client/CMakeFiles/client.dir/UserUi.cc.o
  /usr/include/stdlib.h
  /usr/include/string.h
  /usr/include/strings.h
+ /usr/include/termios.h
  /usr/include/time.h
  /usr/include/unistd.h
  /usr/include/wchar.h
@@ -558,6 +581,16 @@ client/CMakeFiles/client.dir/UserUi.cc.o
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h
  /usr/include/x86_64-linux-gnu/bits/struct_mutex.h
  /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h
+ /usr/include/x86_64-linux-gnu/bits/termios-baud.h
+ /usr/include/x86_64-linux-gnu/bits/termios-c_cc.h
+ /usr/include/x86_64-linux-gnu/bits/termios-c_cflag.h
+ /usr/include/x86_64-linux-gnu/bits/termios-c_iflag.h
+ /usr/include/x86_64-linux-gnu/bits/termios-c_lflag.h
+ /usr/include/x86_64-linux-gnu/bits/termios-c_oflag.h
+ /usr/include/x86_64-linux-gnu/bits/termios-misc.h
+ /usr/include/x86_64-linux-gnu/bits/termios-struct.h
+ /usr/include/x86_64-linux-gnu/bits/termios-tcflow.h
+ /usr/include/x86_64-linux-gnu/bits/termios.h
  /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h
  /usr/include/x86_64-linux-gnu/bits/time.h
  /usr/include/x86_64-linux-gnu/bits/time64.h
@@ -625,6 +658,7 @@ client/CMakeFiles/client.dir/UserUi.cc.o
  /usr/include/x86_64-linux-gnu/sys/single_threaded.h
  /usr/include/x86_64-linux-gnu/sys/socket.h
  /usr/include/x86_64-linux-gnu/sys/time.h
+ /usr/include/x86_64-linux-gnu/sys/ttydefaults.h
  /usr/include/x86_64-linux-gnu/sys/types.h
  /usr/include/x86_64-linux-gnu/sys/ucontext.h
  /usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h
@@ -848,8 +882,8 @@ client/CMakeFiles/client.dir/client.cc.o
  /home/zgyx/my-Chatroom/netlib/net/Socket.h
  /home/zgyx/my-Chatroom/netlib/net/SocketOps.h
  /home/zgyx/my-Chatroom/netlib/net/TcpConnection.h
- /home/zgyx/my-Chatroom/client/1.h
  /home/zgyx/my-Chatroom/client/MessageManager.h
+ /home/zgyx/my-Chatroom/client/TermiosGuard.h
  /home/zgyx/my-Chatroom/client/UserUi.h
  /home/zgyx/my-Chatroom/client/handleMeg.h
  /home/zgyx/my-Chatroom/netlib/base/Timestamp.h

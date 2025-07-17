@@ -35,7 +35,7 @@ inline void logon::ui()
             std::cout << "   3.退出" << std::endl;
             std::cout << "   4.找回密码 " << std::endl;
             std::string funcNum;
-            MessageSplitter::safeGetline(funcNum);
+            getline(std::cin,funcNum);
             selectFunc(funcNum);
             funcNum.clear();
         }
@@ -65,12 +65,14 @@ inline void logon::login(){
     Type::updataState(Type::Status::WAIT);
     std::string Account, passWord;
     std::cout << "账号: ";
-    MessageSplitter::safeGetline(Account);
+    getline(std::cin,Account);
     MessageSplitter::segstrspace(Account);
+    guard.encryption();
     std::cout << "密码: ";
-    MessageSplitter::safeGetline(passWord);
+    getline(std::cin,passWord);
     MessageSplitter::segstrspace(passWord);
-    User user(Account,passWord);
+    guard.removeEncryption();
+    User user(Account, passWord);
     auto conn = client_->connection();
     if (conn)
     {
@@ -87,22 +89,22 @@ inline void logon::Register()
     std::string registerAccount, registerPassword1, registerPassword2;
     std::string qqEmail;
     std::cout << "账号: ";
-    MessageSplitter::safeGetline(registerAccount);
+    getline(std::cin,registerAccount);
     MessageSplitter::segstrspace(registerAccount);
     std::cout << "密码: ";
-    MessageSplitter::safeGetline(registerPassword1);
+    getline(std::cin,registerPassword1);
     MessageSplitter::segstrspace(registerPassword1);
     std::cout << "再输入一次密码: ";
-    MessageSplitter::safeGetline(registerPassword2);
+    getline(std::cin,registerPassword2);
     MessageSplitter::segstrspace(registerPassword2);
     while(registerPassword2 != registerPassword1){
         std::cout << "与密码不符，请重新输入" << std::endl;
         std::cout << "再输入一次密码: ";
-        MessageSplitter::safeGetline(registerPassword2);
+        getline(std::cin,registerPassword2);
         MessageSplitter::segstrspace(registerPassword2);
     }
     std::cout << "请绑定qq邮箱: ";
-    MessageSplitter::safeGetline(qqEmail);
+    getline(std::cin,qqEmail);
     MessageSplitter::segstrspace(qqEmail);
     User person(registerAccount, registerPassword1, qqEmail);
     auto conn = client_->connection();
@@ -122,7 +124,7 @@ inline void logon::getPassword(){
     Type::updataState(Type::Status::WAIT);
     std::string account, qqemail, Vcode;
     std::cout << "输入你的账号：";
-    MessageSplitter::safeGetline(account);
+    getline(std::cin,account);
     auto conn = client_->connection();
     if (conn && conn->connected()){
         LOG_DEBUG << "开始进入服务器查找账号";
@@ -131,7 +133,7 @@ inline void logon::getPassword(){
             if (Type::getState() == Type::EXECUTE)
             {
                 std::cout << "请输入验证码(输入/resend重发): ";
-                MessageSplitter::safeGetline(Vcode);
+                getline(std::cin,Vcode);
                 if(Vcode == "/resend"){
                     User::resend(account, conn);
                     Type::updataState(Type::Status::WAIT);
