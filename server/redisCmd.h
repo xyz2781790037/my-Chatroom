@@ -20,6 +20,7 @@ public:
     std::string getData(std::string account, std::string dataname);
     int verifyUser(nlohmann::json &data);
     cpp_redis::reply see(nlohmann::json &data);
+    bool isfriend(std::string account,std::string name);
 
 private:
     void connect();

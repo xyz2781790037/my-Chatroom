@@ -2,6 +2,9 @@
 #define USERUI_H
 #include "../base/user.h"
 #include <string>
+#include "MessageManager.h"
+void handleSigInt(int character);
+extern MessageManager megManager_;
 const std::string COLOUR1 = "\033[1;34m";//蓝
 const std::string COLOUREND = "\033[0m";
 const std::string COLOUR2 = "\033[1;31m";//32深绿

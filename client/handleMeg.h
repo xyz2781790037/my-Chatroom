@@ -7,7 +7,8 @@
 #include "../base/MegType.h"
 #include "../base/user.h"
 #include "UserUi.h"
-class handleMeg{
+class handleMeg
+{
 public:
     void recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, Buffer *buf);
 private:
@@ -19,17 +20,17 @@ void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, 
     megSpl.append(buf);
     std::string msg;
     while (megSpl.nextMessage(msg)){
-        LOG_INFO << msg;
+        LOG_DEBUG << msg;
         auto jsonData = nlohmann::json::parse(msg);
         Type::types type = Type::getDataType(jsonData["type"]);
-        std::cout << "type:" << type << std::endl;
+        LOG_DEBUG << "type:" << type;
         if (type == Type::PRINT)
         {
             print(jsonData);
         }
         else if (type == Type::GETPWD)
         {
-            LOG_INFO << "进入getpwd";
+            LOG_DEBUG << "进入getpwd";
             if (jsonData["return"] == "email")
             {
                 std::cout << "你的账号邮箱为：" << jsonData["email"] << std::endl;
@@ -66,17 +67,20 @@ void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, 
                 std::cout << "好友：" << name.substr(5) << "(" << jsonData["myname"] << ")" << "状态：" << jsonData["mystate"] << "[" << jsonData["degree"] << "]" << std::endl;
             }
         }
+        else if(type == Type::MESSAGE){
+            megManager_.pushMessage(jsonData["sender"], jsonData["things"]);
+        }
     }
 }
 void handleMeg::print(nlohmann::json j)
 {
     std::cout << "收到服务器消息：" << j["meg"] << std::endl;
     if(j.contains("state")){
-        LOG_INFO << "state: " << j["state"];
+        LOG_DEBUG << "state: " << j["state"];
         Type::updataState(j["state"]);
     }
     else if(j.contains("userstate")){
-        LOG_INFO << "Ustate: " << j["userstate"];
+        LOG_DEBUG << "Ustate: " << j["userstate"];
         Type::updataUserState(j["userstate"]);
     }
 }

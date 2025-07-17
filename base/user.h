@@ -119,10 +119,10 @@ inline void User::preparation(nlohmann::json &j, std::string type, std::string t
 inline void User::send(nlohmann::json &j,const mulib::net::TcpClient::TcpConnectionPtr &conn,std::string category)
 {
     j["account"] = category + usrName;
-    LOG_INFO << j.dump();
+    LOG_DEBUG << j.dump();
     if(conn && conn->connected()){
         conn->send(j.dump() + "\n");
-        LOG_INFO << "111";
+        LOG_DEBUG << "111";
     }
     else{
         LOG_ERROR << "conn过期";

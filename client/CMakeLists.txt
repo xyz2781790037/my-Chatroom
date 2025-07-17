@@ -18,11 +18,14 @@ set(CLIENT_HEADERS
     handleMeg.h
     UserUi.h
     ../base/user.h
+    MessageManager.h
+    1.h
 )
 set(CLIENT_SOURCES
     client.cc
     UserUi.cc
     ../base/MegType.cc
+    MessageManager.cc
 )
 add_executable(client ${CLIENT_SOURCES})
 # 链接 cpp_redis 和 tacopie

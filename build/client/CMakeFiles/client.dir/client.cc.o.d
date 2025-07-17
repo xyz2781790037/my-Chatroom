@@ -355,4 +355,17 @@ client/CMakeFiles/client.dir/client.cc.o: \
  /home/zgyx/my-Chatroom/client/../netlib/base/logger.h \
  /home/zgyx/my-Chatroom/client/../base/MegType.h \
  /home/zgyx/my-Chatroom/client/../base/user.h \
- /home/zgyx/my-Chatroom/client/UserUi.h
+ /home/zgyx/my-Chatroom/client/UserUi.h \
+ /home/zgyx/my-Chatroom/client/MessageManager.h \
+ /home/zgyx/my-Chatroom/client/1.h /usr/include/termios.h \
+ /usr/include/x86_64-linux-gnu/bits/termios.h \
+ /usr/include/x86_64-linux-gnu/bits/termios-struct.h \
+ /usr/include/x86_64-linux-gnu/bits/termios-c_cc.h \
+ /usr/include/x86_64-linux-gnu/bits/termios-c_iflag.h \
+ /usr/include/x86_64-linux-gnu/bits/termios-c_oflag.h \
+ /usr/include/x86_64-linux-gnu/bits/termios-baud.h \
+ /usr/include/x86_64-linux-gnu/bits/termios-c_cflag.h \
+ /usr/include/x86_64-linux-gnu/bits/termios-c_lflag.h \
+ /usr/include/x86_64-linux-gnu/bits/termios-tcflow.h \
+ /usr/include/x86_64-linux-gnu/bits/termios-misc.h \
+ /usr/include/x86_64-linux-gnu/sys/ttydefaults.h

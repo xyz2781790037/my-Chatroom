@@ -191,11 +191,15 @@ int redisCmd::verifyUser(nlohmann::json &data){
     return 0;
 }
 cpp_redis::reply redisCmd::see(nlohmann::json &data){
-    auto reply = redisClient.hgetall("user:zeal");
+    auto reply = redisClient.hgetall(data["account"]);
     redisClient.sync_commit();
     auto result = reply.get();
     if (result.is_array())
     {
         return result;
     }
+    return cpp_redis::reply();
+}
+bool redisCmd::isfriend(std::string account, std::string name){
+    return getData(account, name) != "null";
 }

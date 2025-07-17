@@ -16,7 +16,9 @@ namespace Type{
         SHIP,
         MESSDATA,
         VERIFY,
-        SEE
+        SEE,
+        CHAT,
+        MESSAGE
     };
     enum Status
     {
@@ -28,7 +30,8 @@ namespace Type{
     {
         UWAIT,
         UEXECUTE,
-        URETURN
+        URETURN,
+        UCHAT
     };
     void updataState(Status state);
     Status getState();

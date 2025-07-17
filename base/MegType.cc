@@ -55,6 +55,12 @@ Type::types Type::getDataType(std::string datatype)
     else if(datatype == "see"){
         return SEE;
     }
+    else if(datatype == "chat"){
+        return CHAT;
+    }
+    else if(datatype == "message"){
+        return MESSAGE;
+    }
     else{
         LOG_FATAL << "getType error";
     }

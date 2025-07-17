@@ -130,6 +130,30 @@ client/fast:
 	cd /home/zgyx/my-Chatroom/build && $(MAKE) $(MAKESILENT) -f client/CMakeFiles/client.dir/build.make client/CMakeFiles/client.dir/build
 .PHONY : client/fast
 
+MessageManager.o: MessageManager.cc.o
+.PHONY : MessageManager.o
+
+# target to build an object file
+MessageManager.cc.o:
+	cd /home/zgyx/my-Chatroom/build && $(MAKE) $(MAKESILENT) -f client/CMakeFiles/client.dir/build.make client/CMakeFiles/client.dir/MessageManager.cc.o
+.PHONY : MessageManager.cc.o
+
+MessageManager.i: MessageManager.cc.i
+.PHONY : MessageManager.i
+
+# target to preprocess a source file
+MessageManager.cc.i:
+	cd /home/zgyx/my-Chatroom/build && $(MAKE) $(MAKESILENT) -f client/CMakeFiles/client.dir/build.make client/CMakeFiles/client.dir/MessageManager.cc.i
+.PHONY : MessageManager.cc.i
+
+MessageManager.s: MessageManager.cc.s
+.PHONY : MessageManager.s
+
+# target to generate assembly for a file
+MessageManager.cc.s:
+	cd /home/zgyx/my-Chatroom/build && $(MAKE) $(MAKESILENT) -f client/CMakeFiles/client.dir/build.make client/CMakeFiles/client.dir/MessageManager.cc.s
+.PHONY : MessageManager.cc.s
+
 UserUi.o: UserUi.cc.o
 .PHONY : UserUi.o
 
@@ -211,6 +235,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... client"
+	@echo "... MessageManager.o"
+	@echo "... MessageManager.i"
+	@echo "... MessageManager.s"
 	@echo "... UserUi.o"
 	@echo "... UserUi.i"
 	@echo "... UserUi.s"

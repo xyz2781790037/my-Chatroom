@@ -1,5 +1,6 @@
 #include "UserUi.h"
 #include "../base/logOn.h"
+MessageManager megManager_;
 Userui::Userui(std::shared_ptr<User> user, const mulib::net::TcpClient::TcpConnectionPtr &Conn) : user_(user), conn(Conn) {}
 
 void Userui::ui()
@@ -49,7 +50,9 @@ void Userui::selectFunc(std::string select){
     else if (select == "8"){
         myinformation();
     }
-    else if (select == "9"){
+    else if (select == "\u0003" || select == "9")
+    {
+
         online("offline");
         Presence = false;
         Type::updataState(Type::EXECUTE);
@@ -86,10 +89,10 @@ void Userui::myinformation(){
         std::string oldPassword,newPassword;
         while(1){
             std::cout << "请输入原密码：";
-            getline(std::cin,oldPassword);
+            MessageSplitter::safeGetline(oldPassword);
             if(oldPassword == user_->getPassword()){
                 std::cout << "请输入新密码：";
-                getline(std::cin, newPassword);
+                MessageSplitter::safeGetline(newPassword);
                 nlohmann::json j;
                 user_->preparation(j, "type", "revise");
                 user_->preparation(j, "password", newPassword);
@@ -105,7 +108,7 @@ void Userui::myinformation(){
     else if (select1 == "2"){
         std::cout << "请输入新的用户名：";
         std::string newmyname;
-        getline(std::cin, newmyname);
+        MessageSplitter::safeGetline(newmyname);
         nlohmann::json j;
         user_->preparation(j, "type", "revise");
         user_->preparation(j, "myname", newmyname);
@@ -124,19 +127,19 @@ void Userui::myinformation(){
 void Userui::deleteUser(){
     std::cout << "请输入账号：";
     std::string account, pwd,dd;
-    getline(std::cin, account);
+    MessageSplitter::safeGetline(account);
     if(account != user_->getUserName()){
         std::cout << COLOUR2 << "输入错误，请稍后再试" << COLOUREND << std::endl;
         return;
     }
     std::cout << "请输入密码：";
-    getline(std::cin, pwd);
+    MessageSplitter::safeGetline(pwd);
     if(pwd != user_->getPassword()){
         std::cout << COLOUR2 << "输入错误，请稍后再试" << COLOUREND << std::endl;
         return;
     }
     std::cout << "真的要注销" << user_->getUserName() << "这个账号吗[Y/n]";
-    getline(std::cin, dd);
+    MessageSplitter::safeGetline(dd);
     if(dd == "Y"){
         nlohmann::json j;
         user_->preparation(j, "type", "delete");
@@ -160,29 +163,84 @@ void Userui::seefriend(){
     user_->preparation(j, "see", "friend");
     user_->send(j, conn, "frie:");
     Type::updataUserState(Type::UWAIT);
+    std::string cmd;
     while (1)
     {
-        if (Type::getUserState() == Type::URETURN)
-        {
-            std::string cmd;
-            std::cout << "请输入指令(/c username): ";
+        if(Type::getUserState() == Type::URETURN){
+            std::vector<std::string> users;
+            users = megManager_.getUsersWithMessages();
+            for(auto user : users){
+                std::cout << "你收到了" << user.substr(5) << "的消息" << std::endl;
+            }
+        }
+        if (Type::getUserState() == Type::URETURN){
+            
+            std::cout << "请输入好友:";
             getline(std::cin, cmd);
-            if (cmd == "quit")
-            {
+            if (cmd == "/quit" || cmd == "\u0003"){
                 Type::updataUserState(Type::UEXECUTE);
                 break;
             }
-            if (handleCmd(cmd))
-            {
+            else{
+                nlohmann::json j;
+                user_->preparation(j, "type", "chat");
+                user_->preparation(j, "account",user_->getUserName());
+                user_->preparation(j, "name", "user:" + cmd);
+                user_->send(j, conn, "frie:");
                 Type::updataUserState(Type::UWAIT);
             }
+        }
+        else if(Type::getUserState() == Type::UCHAT){
+            std::atomic<bool> chatting(true);
+            std::thread recvThread([&]()
+                                   {
+                while (chatting) {
+                    std::queue<std::string> Messages;
+                    Messages = megManager_.fetchMessages("user:" + cmd);
+                    while(!Messages.empty()){
+                        std::cout << "\33[2K\r";
+                        std::cout << Messages.front() << std::endl;
+                        std::cout << "发送";
+                        std::cout << "\033[3C" << std::flush;
+                        Messages.pop();
+                    }
+                    std::this_thread::sleep_for(std::chrono::milliseconds(200));
+                } });
+            while (chatting){
+                std::string message;
+                std::cout << "发送:";
+                getline(std::cin, message);
+                if(message == "/quit"|| message == "\u0003"){
+                    Type::updataUserState(Type::URETURN);
+                    chatting = false;
+        
+                    cmd.clear();
+                    break;
+                }
+                else{
+                    if(cmd != user_->getUserName()){
+                        nlohmann::json j;
+                        user_->preparation(j, "type", "message");
+                        user_->preparation(j, "account", user_->getUserName());
+                        user_->preparation(j, "receive", "user:" + cmd);
+                        std::string things = "[" + user_->getUserMyname() + "]:" + message;
+                        user_->preparation(j, "things", things);
+                        user_->send(j, conn, "user:");
+                    }
+                    std::cout << "\033[A";   // 光标上移一行
+                    std::cout << "\33[2K\r"; // 清除整行 + 回到行首
+                    // 打印格式化后的聊天消息
+                    std::cout << "[" << user_->getUserMyname() << "]:" << message << std::endl;
+                }
+            }
+            recvThread.join();
         }
     }
 }
 void Userui::addfriend(){
     std::string name;
     std::cout << "请输入账号：";
-    getline(std::cin, name);
+    MessageSplitter::safeGetline(name);
     nlohmann::json j;
     user_->preparation(j, "type", "add");
     user_->preparation(j, "name", name);
@@ -198,8 +256,8 @@ void Userui::viewInformation(){
         if(Type::getUserState() == Type::URETURN){
             std::string cmd;
             std::cout << "请输入指令(/addfriend username yes/no): ";
-            getline(std::cin, cmd);
-            if(cmd == "quit"){
+            MessageSplitter::safeGetline(cmd);
+            if(cmd == "/quit" || cmd == "\u0003"){
                 Type::updataUserState(Type::UEXECUTE);
                 break;
             }

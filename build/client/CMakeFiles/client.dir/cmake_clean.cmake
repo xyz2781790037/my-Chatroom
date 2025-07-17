@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/client.dir/MessageManager.cc.o"
+  "CMakeFiles/client.dir/MessageManager.cc.o.d"
   "CMakeFiles/client.dir/UserUi.cc.o"
   "CMakeFiles/client.dir/UserUi.cc.o.d"
   "CMakeFiles/client.dir/__/base/MegType.cc.o"

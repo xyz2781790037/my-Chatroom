@@ -55,6 +55,25 @@ void handleData::Megcycle(const TcpConnectionPtr &conn, Buffer *buf){
             else if(type == Type::SEE){
                 see(conn,jsonData,redis);
             }
+            else if(type == Type::CHAT){
+                if(redis.isfriend(jsonData["account"], jsonData["name"])){
+                    conn->send(sendMeg("开始聊天", Type::UCHAT).dump() + "\n");
+                }
+                else{
+                    conn->send(sendMeg("用户不存在或好友不存在", Type::URETURN).dump() + "\n");
+                }
+            }
+            else if(type == Type::MESSAGE){
+                if(connectionmanger_.isOnline(jsonData["receive"])){
+                    nlohmann::json j;
+                    j["type"] = "message";
+                    j["sender"] = jsonData["account"];
+                    j["things"] = jsonData["things"];
+                    connectionmanger_.getConn(jsonData["receive"])->send(j.dump() + "\n");
+                }else{
+                    LOG_INFO << jsonData["receive"] << "不在线";
+                }
+            }
         }
         else
         {

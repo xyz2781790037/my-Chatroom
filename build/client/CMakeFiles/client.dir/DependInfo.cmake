@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/zgyx/my-Chatroom/client/MessageManager.cc" "client/CMakeFiles/client.dir/MessageManager.cc.o" "gcc" "client/CMakeFiles/client.dir/MessageManager.cc.o.d"
   "/home/zgyx/my-Chatroom/client/UserUi.cc" "client/CMakeFiles/client.dir/UserUi.cc.o" "gcc" "client/CMakeFiles/client.dir/UserUi.cc.o.d"
   "/home/zgyx/my-Chatroom/base/MegType.cc" "client/CMakeFiles/client.dir/__/base/MegType.cc.o" "gcc" "client/CMakeFiles/client.dir/__/base/MegType.cc.o.d"
   "/home/zgyx/my-Chatroom/client/client.cc" "client/CMakeFiles/client.dir/client.cc.o" "gcc" "client/CMakeFiles/client.dir/client.cc.o.d"

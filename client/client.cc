@@ -2,9 +2,12 @@
 #include "../netlib/net/TcpConnection.h"
 #include "../base/logOn.h"
 #include "handleMeg.h"
-int main(){
-    
-    mulib::base::Logger::setLogLevel(mulib::base::Logger::DEBUG);
+#include "1.h"
+int main()
+{
+
+    // mulib::base::Logger::setLogLevel(mulib::base::Logger::DEBUG);
+    TermiosGuard guard;
     mulib::net::EventLoop mainLoop;
     mulib::net::InetAddress addr("172.17.0.1", 8080);
     auto clientPtr = std::make_shared<mulib::net::TcpClient>(&mainLoop, addr);
@@ -21,7 +24,7 @@ int main(){
     } });
     handleMeg handlemeg_;
     clientPtr->setMessageCallback([&handlemeg_](const mulib::net::TcpClient::TcpConnectionPtr &conn, Buffer *buf, mulib::base::Timestamp) {  
-        LOG_INFO << "收到消息";
+        LOG_DEBUG << "收到消息";
         handlemeg_.recviveMeg(conn,buf);
         
     });
