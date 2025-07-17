@@ -10,8 +10,8 @@ struct TermiosGuard
         tcgetattr(STDIN_FILENO, &oldt); // 获取当前终端设置
         struct termios newt = oldt;
 
-        // 禁用 canonical 模式和 echo（即输入立即生效，不回显）
-        newt.c_lflag &= ~(ISIG); // ISIG 关闭 Ctrl+C 等信号
+        // 禁用 canonical 模式和 echo（即输入立即生效，不回显）ECHO ICANON
+        newt.c_lflag &= ~(ISIG | NOFLSH); // ISIG 关闭 Ctrl+C 等信号
 
         tcsetattr(STDIN_FILENO, TCSANOW, &newt); // 应用 raw 模式
     }
