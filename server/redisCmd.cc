@@ -203,3 +203,6 @@ cpp_redis::reply redisCmd::see(nlohmann::json &data){
 bool redisCmd::isfriend(std::string account, std::string name){
     return getData(account, name) != "null";
 }
+void redisCmd::storeMessages(std::string account, std::string message){
+    std::string key = "msge:" + account.
+}

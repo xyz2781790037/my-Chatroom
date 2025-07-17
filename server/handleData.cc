@@ -76,17 +76,17 @@ void handleData::Megcycle(const TcpConnectionPtr &conn, Buffer *buf)
             }
             else if (type == Type::MESSAGE)
             {
-                if (connectionmanger_.isOnline(jsonData["receive"]))
-                {
-                    nlohmann::json j;
-                    j["type"] = "message";
-                    j["sender"] = jsonData["account"];
-                    j["things"] = jsonData["things"];
+                nlohmann::json j;
+                j["type"] = "message";
+                j["sender"] = jsonData["account"];
+                j["things"] = jsonData["things"];
+                if (connectionmanger_.isOnline(jsonData["receive"])){
                     connectionmanger_.getConn(jsonData["receive"])->send(MessageSplitter::encodeMessage(j.dump()));
                 }
                 else
                 {
                     LOG_INFO << jsonData["receive"] << "不在线";
+                    redis.storeMessages();
                 }
             }
         }
