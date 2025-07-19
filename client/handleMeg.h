@@ -10,11 +10,13 @@
 class handleMeg
 {
 public:
-    void recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, Buffer *buf);
+    void recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, Buffer *buf, mulib::base::Timestamp recviveTime);
+
 private:
     void print(nlohmann::json j);
+    void handleNoreadMessage(nlohmann::json &jsonData, MessageManager &megManager_, const mulib::net::TcpClient::TcpConnectionPtr conn);
 };
-void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, Buffer *buf)
+inline void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, Buffer *buf, mulib::base::Timestamp recviveTime)
 {
     MessageSplitter megSpl;
     megSpl.append(buf);
@@ -48,7 +50,7 @@ void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, 
                 jsonData["account"], jsonData["password"], jsonData["email"]);
             userPtr->updataUserInformation(jsonData["myname"],jsonData["ID"]);
             auto Copyconn = conn;
-            auto ownPtr = std::make_shared<Userui>(userPtr, Copyconn);
+            auto ownPtr = std::make_shared<Userui>(userPtr, Copyconn,recviveTime);
             
             std::thread ownuiThread([ownPtr]() { 
                 ownPtr->ui(); });
@@ -64,17 +66,48 @@ void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, 
         else if(type == Type::SEE){
             if(jsonData["see"] == "friend"){
                 std::string name = jsonData["name"];
-                std::cout << "好友：" << name.substr(5) << "(" << jsonData["myname"] << ")" << "状态：" << jsonData["mystate"] << "[" << jsonData["degree"] << "]" << std::endl;
+                std::cout << "好友：" << name.substr(5) << "(" << jsonData["myname"] << ")" << "状态：" << jsonData["mystate"] << "[" << jsonData["degree"] << "条未读]" << std::endl;
             }
         }
         else if(type == Type::MESSAGE){
-            megManager_.pushMessage(jsonData["sender"], jsonData["things"]);
+            LOG_DEBUG << jsonData["from"] << "-" << jsonData["things"];
+            if(megManager_.pushMessage(jsonData["from"], jsonData["things"],100)){
+                nlohmann::json j;
+                j["type"] = "ship";
+                j["mystate"] = "offline";
+                j["account"] = jsonData["to"];
+                conn->send(MessageSplitter::encodeMessage(j.dump()));
+                LOG_INFO << "11111";
+                handleNoreadMessage(jsonData, megManager_, conn);
+                j["mystate"] = "online";
+                j["return"] = "1";
+                conn->send(MessageSplitter::encodeMessage(j.dump()));
+            }
         }
     }
 }
-void handleMeg::print(nlohmann::json j)
+inline void handleMeg::handleNoreadMessage(nlohmann::json &jsonData, MessageManager &megManager_, const mulib::net::TcpClient::TcpConnectionPtr conn)
 {
-    std::cout << "收到服务器消息：" << j["meg"] << std::endl;
+    nlohmann::json j;
+    std::string userr = jsonData["from"];
+    LOG_INFO << userr;
+    j["account"] = jsonData["from"];
+    j["receive"] = jsonData["to"];
+    j["type"] = "message";
+    std::queue<std::string> &megQueue = megManager_.fetchMessages(userr);
+    if (!megQueue.empty()){
+        j["things"] = megQueue.front();
+        megQueue.pop();
+        LOG_INFO << j.dump();
+        conn->send(MessageSplitter::encodeMessage(j.dump()));
+    }
+}
+inline void handleMeg::print(nlohmann::json j)
+{
+    std::string a = j["meg"];
+    if (!a.empty()){
+        std::cout << "消息：" << a << std::endl;
+    }
     if(j.contains("state")){
         LOG_DEBUG << "state: " << j["state"];
         Type::updataState(j["state"]);

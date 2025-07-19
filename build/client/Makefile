@@ -202,6 +202,30 @@ __/base/MegType.cc.s:
 	cd /home/zgyx/my-Chatroom/build && $(MAKE) $(MAKESILENT) -f client/CMakeFiles/client.dir/build.make client/CMakeFiles/client.dir/__/base/MegType.cc.s
 .PHONY : __/base/MegType.cc.s
 
+__/base/tool.o: __/base/tool.cc.o
+.PHONY : __/base/tool.o
+
+# target to build an object file
+__/base/tool.cc.o:
+	cd /home/zgyx/my-Chatroom/build && $(MAKE) $(MAKESILENT) -f client/CMakeFiles/client.dir/build.make client/CMakeFiles/client.dir/__/base/tool.cc.o
+.PHONY : __/base/tool.cc.o
+
+__/base/tool.i: __/base/tool.cc.i
+.PHONY : __/base/tool.i
+
+# target to preprocess a source file
+__/base/tool.cc.i:
+	cd /home/zgyx/my-Chatroom/build && $(MAKE) $(MAKESILENT) -f client/CMakeFiles/client.dir/build.make client/CMakeFiles/client.dir/__/base/tool.cc.i
+.PHONY : __/base/tool.cc.i
+
+__/base/tool.s: __/base/tool.cc.s
+.PHONY : __/base/tool.s
+
+# target to generate assembly for a file
+__/base/tool.cc.s:
+	cd /home/zgyx/my-Chatroom/build && $(MAKE) $(MAKESILENT) -f client/CMakeFiles/client.dir/build.make client/CMakeFiles/client.dir/__/base/tool.cc.s
+.PHONY : __/base/tool.cc.s
+
 client.o: client.cc.o
 .PHONY : client.o
 
@@ -244,6 +268,9 @@ help:
 	@echo "... __/base/MegType.o"
 	@echo "... __/base/MegType.i"
 	@echo "... __/base/MegType.s"
+	@echo "... __/base/tool.o"
+	@echo "... __/base/tool.i"
+	@echo "... __/base/tool.s"
 	@echo "... client.o"
 	@echo "... client.i"
 	@echo "... client.s"

@@ -61,6 +61,9 @@ Type::types Type::getDataType(std::string datatype)
     else if(datatype == "message"){
         return MESSAGE;
     }
+    else if(datatype == "offmeg"){
+        return OFFMEG;
+    }
     else{
         LOG_FATAL << "getType error";
     }

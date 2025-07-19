@@ -10,10 +10,9 @@ const std::string COLOUR2 = "\033[1;31m";//32深绿
 const std::string COLOUR3 = "\033[1;38m";// 37白色
 class Userui{
 public:
-    Userui(std::shared_ptr<User> user, const mulib::net::TcpClient::TcpConnectionPtr &Conn);
+    Userui(std::shared_ptr<User> user, const mulib::net::TcpClient::TcpConnectionPtr &Conn, mulib::base::Timestamp recviveTime);
 
     void ui();
-    void online(std::string ship);
 
 private:
     void selectFunc(std::string select);
@@ -24,10 +23,15 @@ private:
     void viewInformation();
     bool handleCmd(std::string cmd);
 
+    void online(std::string ship);
+    std::string headerFormat(std::string name);
+    void updataMessage();
+
     std::string concealPwd();
     bool Presence = true;
     std::shared_ptr<User> user_;
     const mulib::net::TcpClient::TcpConnectionPtr conn;
+    mulib::base::Timestamp recviveTime_;
 };
 
 #endif

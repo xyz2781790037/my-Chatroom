@@ -49,7 +49,7 @@ inline void logon::selectFunc(std::string funcnum)
     else if(funcnum == "2"){
         Register();
     }
-    else if(funcnum == "3" || funcnum == "\u0003"){
+    else if(funcnum == "3" || funcnum == "\u001b"){
         exitSystem();
     }
     else if(funcnum == "4"){

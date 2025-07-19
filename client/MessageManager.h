@@ -6,10 +6,9 @@
 #include <mutex>
 class MessageManager{
 public:
-    void pushMessage(const std::string &user, const std::string &msg);
-    std::queue<std::string> fetchMessages(const std::string &user);
+    bool pushMessage(const std::string &user, const std::string &msg, int CACHE_THRESHOLD);
+    std::queue<std::string>& fetchMessages(const std::string &user);
     bool hasMessages(const std::string &user) const;
-    std::vector<std::string> getUsersWithMessages() const;
 
 private:
     std::unordered_map<std::string, std::queue<std::string>> userMessage_;

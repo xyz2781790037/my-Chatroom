@@ -17,6 +17,7 @@ set(SERVER_HEADERS
     handleData.h
     redisCmd.h
     ../base/MegType.h
+    ../base/tool.h
     ConnectionManager.h
 )
 set(SERVER_SOURCES
@@ -24,6 +25,7 @@ set(SERVER_SOURCES
     handleData.cc
     redisCmd.cc
     ../base/MegType.cc
+    ../base/tool.cc
     ConnectionManager.cc
 )
 add_executable(server ${SERVER_SOURCES})

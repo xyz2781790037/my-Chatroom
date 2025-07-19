@@ -13,7 +13,7 @@ struct TermiosGuard
         newt = oldt;
 
         // 禁用 canonical 模式和 echo（即输入立即生效，不回显）ECHO ICANON
-        newt.c_lflag &= ~(ISIG); // ISIG 关闭 Ctrl+C 等信号
+        // newt.c_lflag &= ~(ISIG); // ISIG 关闭 Ctrl+C 等信号
         newt.c_cc[VEOF] = _POSIX_VDISABLE;
         tcsetattr(STDIN_FILENO, TCSANOW, &newt); // 应用 raw 模式
     }

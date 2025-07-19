@@ -2,29 +2,22 @@
 #include "TermiosGuard.h"
 #include <iostream>
 TermiosGuard guard;
-void MessageManager::pushMessage(const std::string &user, const std::string &msg){
+bool MessageManager::pushMessage(const std::string &user, const std::string &msg, int CACHE_THRESHOLD)
+{
     std::lock_guard<std::mutex> lock(mutex_);
     userMessage_[user].push(msg);
+    auto it = userMessage_.find(user);
+    if(it->second.size() >= CACHE_THRESHOLD){
+        return true;
+    }
+    return false;
 }
-std::queue<std::string> MessageManager::fetchMessages(const std::string &user){
+std::queue<std::string>& MessageManager::fetchMessages(const std::string &user){
     std::lock_guard<std::mutex> lock(mutex_);
-    auto &q = userMessage_[user];
-    std::queue<std::string> msgs;
-    std::swap(msgs, q);
-    return msgs;
+    return userMessage_[user];
 }
 bool MessageManager::hasMessages(const std::string &user) const{
     std::lock_guard<std::mutex> lock(mutex_);
     auto it = userMessage_.find(user);
     return it != userMessage_.end() && !it->second.empty();
-}
-std::vector<std::string> MessageManager::getUsersWithMessages() const{
-    std::lock_guard<std::mutex> lock(mutex_);
-    std::vector<std::string> users;
-    for (const auto &pair : userMessage_){
-        if (!pair.second.empty()){
-            users.push_back(pair.first);
-        }
-    }
-    return users;
 }

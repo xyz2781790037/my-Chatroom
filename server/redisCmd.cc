@@ -1,6 +1,7 @@
 #include "redisCmd.h"
 #include "../netlib/base/logger.h"
 #include "../base/logOn.h"
+#include "../base/tool.h"
 redisCmd::redisCmd(){
     connect();
 }
@@ -139,7 +140,7 @@ void redisCmd::addFriend(std::string account,std::string friendname){
     connect();
     std::string account1 = "frie:" + account;
     std::string name = "user:" + friendname;
-    redisClient.hset(account1, name, "ordinary");
+    redisClient.hset(account1, name, "0");
     redisClient.sync_commit();
 }
 void redisCmd::waitHandleMeg(std::string Key,nlohmann::json &data){
@@ -205,11 +206,76 @@ cpp_redis::reply redisCmd::see(nlohmann::json &data){
 bool redisCmd::isfriend(std::string account, std::string name){
     return getData(account, name) != "null";
 }
-void redisCmd::storeMessages(std::string sender, std::string message)
+void redisCmd::storeMessages(std::string sender,std::string account,std::string message)
 {
+    LOG_INFO << "storeMessage";
     connect();
-    std::string key = "msge:" + sender.substr(5);
-    std::vector<std::string> a = {message};
-    redisClient.lpush(key, a);
+    LOG_INFO << "存储新消息：" << message;
+    
+    std::string key = "offl:" + sender.substr(5);
+    LOG_INFO << key;
+    LOG_INFO << sender << " " << account;
+    int count = getRedisCount("frie:" + sender.substr(5), account);
+    redisClient.hset(key, account + std::to_string(count++), message);
     redisClient.sync_commit();
+    LOG_INFO << "count=" << count;
+    redisClient.hset("frie:" + sender.substr(5), account, std::to_string(count));
+    redisClient.sync_commit();
+}
+void redisCmd::sendOfflineMeg(nlohmann::json &data,const TcpConnectionPtr &conn){
+    std::string key = data["account"];
+    std::string field = data["name"];
+    LOG_INFO << "key=" << key << " field=" << field;
+    int count = getRedisCount(key, field);
+    redisClient.hset(key, field, "0");
+    LOG_INFO << "count=" << count;
+    for (int i = 0; i < count;i++){
+        std::string mesg = getRedisResult("offl:" + key.substr(5), field + std::to_string(i)).as_string();
+        conn->send(MessageSplitter::encodeMessage(mesg));
+        storeReadMeg(key, field, mesg);
+        LOG_INFO << "删除";
+        redisClient.hdel("offl:" + key.substr(5), {field + std::to_string(i)});
+        redisClient.sync_commit();
+    }
+}
+int redisCmd::getRedisCount(std::string key,std::string field){
+    return std::stoi(getRedisResult(key, field).as_string());
+}
+cpp_redis::reply redisCmd::getRedisResult(std::string key, std::string field){
+    auto reply = redisClient.hget(key, field);
+    redisClient.sync_commit();
+    auto result = reply.get();
+    if(result.is_string()){
+        return result;
+    }
+    return cpp_redis::reply();
+}
+void redisCmd::storeReadMeg(std::string sender, std::string account, std::string message){
+    std::string key = tool::swapsort(sender, account, "read:");
+    LOG_INFO << "存储新消息：" << message;
+    std::vector<std::string> v = {message};
+    redisClient.rpush(key, v);
+    redisClient.sync_commit();
+}
+void redisCmd::sendHistoryMeg(nlohmann::json &data, const TcpConnectionPtr &conn){
+    std::string a = data["account"];
+    std::string b = data["name"];
+    std::string key = tool::swapsort(a, b , "read:");
+    auto reply = redisClient.lrange(key, 0, -1);
+    redisClient.sync_commit();
+    auto result = reply.get();
+    for(const auto &item: result.as_array()){
+        conn->send(MessageSplitter::encodeMessage(item.as_string()));
+    }
+}
+void redisCmd::sendHisOffineMeg(nlohmann::json &data, const TcpConnectionPtr &conn){
+    std::string key = data["name"];
+    std::string field = data["account"];
+    int count = getRedisCount("frie:" + key.substr(5), "user:" + field.substr(5));
+    LOG_INFO << "count=" << count;
+    for (int i = 0; i < count;i++){
+        std::string mesg = getRedisResult("offl:" + key.substr(5), "user:" + field.substr(5) + std::to_string(i)).as_string();
+        LOG_INFO << "our send:" << mesg;
+        conn->send(MessageSplitter::encodeMessage(mesg));
+    }
 }

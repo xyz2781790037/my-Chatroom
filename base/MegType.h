@@ -18,7 +18,8 @@ namespace Type{
         VERIFY,
         SEE,
         CHAT,
-        MESSAGE
+        MESSAGE,
+        OFFMEG
     };
     enum Status
     {

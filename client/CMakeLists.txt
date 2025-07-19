@@ -18,6 +18,7 @@ set(CLIENT_HEADERS
     handleMeg.h
     UserUi.h
     ../base/user.h
+    ../base/tool.h
     MessageManager.h
     TermiosGuard.h
 )
@@ -25,6 +26,7 @@ set(CLIENT_SOURCES
     client.cc
     UserUi.cc
     ../base/MegType.cc
+    ../base/tool.cc
     MessageManager.cc
 )
 add_executable(client ${CLIENT_SOURCES})

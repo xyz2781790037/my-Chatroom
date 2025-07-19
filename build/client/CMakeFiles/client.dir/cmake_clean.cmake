@@ -5,6 +5,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/client.dir/UserUi.cc.o.d"
   "CMakeFiles/client.dir/__/base/MegType.cc.o"
   "CMakeFiles/client.dir/__/base/MegType.cc.o.d"
+  "CMakeFiles/client.dir/__/base/tool.cc.o"
+  "CMakeFiles/client.dir/__/base/tool.cc.o.d"
   "CMakeFiles/client.dir/client.cc.o"
   "CMakeFiles/client.dir/client.cc.o.d"
   "client"

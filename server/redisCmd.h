@@ -2,6 +2,7 @@
 #define REDISCMD_H
 #include <cpp_redis/cpp_redis>
 #include <nlohmann/json.hpp>
+#include "../netlib/net/TcpServer.h"
 class redisCmd{
 public:
     redisCmd();
@@ -21,11 +22,17 @@ public:
     int verifyUser(nlohmann::json &data);
     cpp_redis::reply see(nlohmann::json &data);
     bool isfriend(std::string account,std::string name);
-    void storeMessages(std::string sender, std::string message);
+    void storeMessages(std::string sender, std::string account,std::string message);
+    void sendOfflineMeg(nlohmann::json &data,const TcpConnectionPtr &conn);
+    void storeReadMeg(std::string sender, std::string account, std::string message);
+    void sendHistoryMeg(nlohmann::json &data, const TcpConnectionPtr &conn);
+    void sendHisOffineMeg(nlohmann::json &data, const TcpConnectionPtr &conn);
 
 private:
     void connect();
-    
+    int getRedisCount(std::string key, std::string field);
+    cpp_redis::reply getRedisResult(std::string key, std::string field);
+
     std::string getField(const std::string &account, const std::string &field);
     cpp_redis::client redisClient;
 };
