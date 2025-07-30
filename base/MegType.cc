@@ -100,6 +100,9 @@ Type::types Type::getDataType(std::string datatype)
     else if(datatype == "list"){
         return LIST;
     }
+    else if(datatype == "tcp"){
+        return TCP;
+    }
     else{
         LOG_FATAL << "getType error";
     }

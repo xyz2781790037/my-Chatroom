@@ -254,7 +254,7 @@ void Userui::seeFriend(){
                     }
                     user_->preparation(j, "things", things);
                     user_->send(j, conn, "user:");
-                    tool::clearInputLines(message);
+                    tool::clear();
                     if (cmd != user_->getUserName()){
                         std::cout << headerFormat("You") << message << std::endl;
                     }
@@ -621,7 +621,7 @@ void Userui::myGroup(){
                                     std::string things = headerFormat(user_->getUserMyname()) + message;
                                     user_->preparation(j, "things", things);
                                     user_->send(j, conn, "user:");
-                                    tool::clearInputLines(message);
+                                    tool::clear();
                                     std::cout << things << std::endl;
                                 }
                             }

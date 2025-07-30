@@ -41,3 +41,8 @@
 ```
 sudo apt install libreadline-dev
 ```
+安装json
+```
+sudo apt update
+sudo apt install nlohmann-json-dev
+```

@@ -31,7 +31,8 @@ namespace Type{
         CMD,
         FILE,
         LOOK,
-        LIST
+        LIST,
+        TCP
     };
     enum Status
     {

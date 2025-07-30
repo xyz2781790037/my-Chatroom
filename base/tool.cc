@@ -102,3 +102,7 @@ std::string tool::fileSize(int fileFd){
     }
     return "null";
 }
+void tool::clear(){
+    std::cout << "\33[A";
+    std::cout << "\r\33[2K";
+}

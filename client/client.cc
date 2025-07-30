@@ -24,6 +24,15 @@ int main(int argc, char *argv[])
         std::thread uiThread([&clientLog]() mutable
                              { clientLog.ui(); });
         uiThread.detach();
+        // std::thread Tcp([conn]() mutable{ 
+        //                     while(1){
+        //                         std::this_thread::sleep_for(std::chrono::seconds(15));
+        //                         nlohmann::json j;
+        //                         j["type"] = "tcp";
+        //                         conn->send(MessageSplitter::encodeMessage(j.dump()));
+        //                     }
+        //                 });
+        // Tcp.detach();
     } else {
         std::cout << "连接断开" << std::endl;
     } });

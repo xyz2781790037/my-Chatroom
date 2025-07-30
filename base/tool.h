@@ -19,6 +19,7 @@ namespace tool{
     void clearInputLines(const std::string &input);
     int getFilefd(std::string filename);
     std::string fileSize(int fileFd);
+    void clear();
 }
 
 #endif

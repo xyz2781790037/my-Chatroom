@@ -2,7 +2,9 @@
 ConnectionManager connectionmanger_;
 std::unordered_map<std::string, mulib::net::TcpConnectionPtr> findAllConn_;
 std::unordered_map<std::string, std::atomic<bool>> chatStatus_;
-void handleData::Megcycle(const TcpConnectionPtr &conn, MessageSplitter &megser, redisCmd &redis)
+std::unordered_map<mulib::net::TcpConnectionPtr, time_t > lastActiveTime;
+std::mutex timeMutex;
+void handleData::Megcycle(const TcpConnectionPtr &conn, MessageSplitter &megser, redisCmd &redis, mulib::base::Timestamp recviveTime)
 {
     std::string jsondata;
     std::cout << "Megcycle running in thread: " << std::this_thread::get_id() << std::endl;
@@ -338,6 +340,13 @@ void handleData::Megcycle(const TcpConnectionPtr &conn, MessageSplitter &megser,
                     }
                 }
                 conn->send(MessageSplitter::encodeMessage(sendMeg("----------------------", Type::URETURN).dump()));
+            }
+            else if(type == Type::TCP){
+                {
+                    std::lock_guard<std::mutex> lock(timeMutex);
+                    lastActiveTime[conn] = recviveTime.now().secondsSinceEpoch();
+                }
+                
             }
         }
         else

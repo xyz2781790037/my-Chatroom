@@ -12,7 +12,7 @@
 #include "../base/tool.h"
 class handleData{
 public:
-    void Megcycle(const TcpConnectionPtr &conn, MessageSplitter &megser, redisCmd &redis);
+    void Megcycle(const TcpConnectionPtr &conn, MessageSplitter &megser, redisCmd &redis, mulib::base::Timestamp recviveTime);
 
 private:
     void handleRegister(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
