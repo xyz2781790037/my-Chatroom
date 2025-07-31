@@ -40,6 +40,7 @@ void handleData::Megcycle(const TcpConnectionPtr &conn, MessageSplitter &megser,
             else if (type == Type::ADD){
                 LOG_INFO << "进入add";
                 addAll(conn, jsonData, redis);
+                LOG_INFO << "退出add";
             }
             else if (type == Type::SHIP){
                 LOG_INFO << "进入ship";
@@ -330,11 +331,14 @@ void handleData::Megcycle(const TcpConnectionPtr &conn, MessageSplitter &megser,
                             }
                         }
                         conn->send(MessageSplitter::encodeMessage(sendMeg(owner, Type::UWAIT).dump()));
+                        std::this_thread::sleep_for(std::chrono::microseconds(100));
                         for(auto ad: admin){
                             conn->send(MessageSplitter::encodeMessage(sendMeg(ad, Type::UWAIT).dump()));
+                            std::this_thread::sleep_for(std::chrono::microseconds(100));
                         }    
                         for(auto mem : member){
                             conn->send(MessageSplitter::encodeMessage(sendMeg(mem, Type::UWAIT).dump()));
+                            std::this_thread::sleep_for(std::chrono::microseconds(100));
                         }
 
                     }
@@ -365,6 +369,8 @@ void handleData::handleRegister(const TcpConnectionPtr &conn, nlohmann::json &js
         {
             conn->send(MessageSplitter::encodeMessage(sendMeg("注册成功！", Type::EXECUTE).dump()));
             LOG_INFO << "handleData::handleRegister: end";
+            std::string account = jsonData["account"];
+            redis.hset("frie:" + account.substr(5), account, "0");
         }
         else
         {
@@ -501,11 +507,20 @@ void handleData::addAll(const TcpConnectionPtr &conn, nlohmann::json &jsonData, 
             }
             else{
                 nlohmann::json js;
-                js["account"] = jsonData["account"];
+                std::string messkey = "mess:user:" + key.substr(5);
                 js["type"] = "addfriend";
                 js["result"] = "no";
-                redis.waitHandleMeg(lastname, js);
-                conn->send(MessageSplitter::encodeMessage(sendMeg("好友申请已发送！", Type::UEXECUTE).dump()));
+                js["account"] = "frie:" + name;
+                if(redis.lookmess(messkey, js)){
+                    js["account"] = jsonData["account"];
+
+                    redis.waitHandleMeg(lastname, js);
+                    conn->send(MessageSplitter::encodeMessage(sendMeg("好友申请已发送！", Type::UEXECUTE).dump()));
+                }
+                else{
+                    LOG_INFO << "2222";
+                    conn->send(MessageSplitter::encodeMessage(sendMeg("你俩成为好友！", Type::UEXECUTE).dump()));
+                }
             }
         }
         else{
@@ -574,7 +589,7 @@ void handleData::updataShip(const TcpConnectionPtr &conn, nlohmann::json &jsonDa
     else
     {
         LOG_INFO << jsonData["account"];
-        connectionmanger_.removeUserConn(jsonData["account"]);
+        connectionmanger_.removeUserConn(jsonData["account"],conn);
     }
 }
 void handleData::findmess(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis)

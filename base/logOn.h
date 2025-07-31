@@ -10,6 +10,7 @@
 #include "user.h"
 #include "MessageSplitter.h"
 #include "MegType.h"
+#include "../base/tool.h"
 #include <regex>
 #include <readline/readline.h>
 class logon{
@@ -19,7 +20,6 @@ public:
 
 private:
     void selectFunc(std::string funcnum);
-    bool isValidInput(const std::string &input,std::string pattern);
     void login();
     void Register();
     void exitSystem();
@@ -37,9 +37,14 @@ inline void logon::ui()
             std::cout << "   2.注册" << std::endl;
             std::cout << "   3.退出" << std::endl;
             std::cout << "   4.找回密码 " << std::endl;
-            char *funcNum = readline("选择:");
+            char *input = readline("选择:");
+            if (!input) {
+                std::cout << "读取失败，请重新输入。" << std::endl;
+                continue;
+            }
+            std::string funcNum(input);
+            free(input);
             selectFunc(funcNum);
-            free(funcNum);
         }
     }
 }
@@ -59,7 +64,6 @@ inline void logon::selectFunc(std::string funcnum)
     }
     else{
         std::cout << "输入错误,请重新输入" << std::endl;
-        sleep(1);
         system("clear");
     }
 }
@@ -92,14 +96,14 @@ inline void logon::Register()
     std::string qqEmail;
     std::cout << "账号: ";
     getline(std::cin,registerAccount);
-    while (!isValidInput(registerAccount, "^[a-zA-Z0-9_]{1,16}$"))
+    while (!tool::isValidInput(registerAccount, "^[a-zA-Z0-9_]{1,16}$"))
     {
         std::cout << "输入不合法,请重新数入" << std::endl;
         getline(std::cin,registerAccount);
     }
     std::cout << "密码: ";
     getline(std::cin,registerPassword1);
-    while (!isValidInput(registerPassword1,"^[a-zA-Z0-9_]{1,16}$")){
+    while (!tool::isValidInput(registerPassword1,"^[a-zA-Z0-9_]{1,16}$")){
         std::cout << "输入不合法,请重新数入" << std::endl;
         getline(std::cin,registerPassword1);
     }
@@ -112,7 +116,7 @@ inline void logon::Register()
     }
     std::cout << "请绑定qq邮箱: ";
     getline(std::cin,qqEmail);
-    while (!isValidInput(qqEmail, "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"))
+    while (!tool::isValidInput(qqEmail, "^(?=.{8,30}$)[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"))
     {
         std::cout << "输入不合法,请重新数入" << std::endl;
         getline(std::cin, qqEmail);
@@ -134,7 +138,7 @@ inline void logon::Register()
             else if(code == "/c"){
                 std::cout << "请绑定qq邮箱: ";
                 getline(std::cin, qqEmail);
-                while (!isValidInput(qqEmail, "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")){
+                while (!tool::isValidInput(qqEmail, "^(?=.{8,30}$)[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")){
                     std::cout << "输入不合法,请重新数入" << std::endl;
                     getline(std::cin, qqEmail);
                 }
@@ -204,9 +208,5 @@ inline void logon::getPassword(){
     else{
         std::cout << "服务器未运行，无法发送找回信息。\n";
     }
-}
-inline bool logon::isValidInput(const std::string& input,std::string patterns) {
-    std::regex pattern(patterns); // 只允许字母、数字、下划线
-    return std::regex_match(input, pattern);
 }
 #endif

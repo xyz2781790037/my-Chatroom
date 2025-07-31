@@ -455,12 +455,14 @@ void redisCmd::storeGroupMeg(nlohmann::json &data, std::string msg){
     redisClient.sync_commit();
 }
 void redisCmd::getGroupMeg(std::string key, std::string name, const TcpConnectionPtr &conn){
+    int count = 0;
     std::string nkey = "regp:" + key.substr(5);
     auto reply = redisClient.lrange(nkey, 0, -1);
     redisClient.sync_commit();
     auto result = reply.get();
     for(const auto& item : result.as_array()){
         conn->send(MessageSplitter::encodeMessage(item.as_string()));
+        LOG_INFO << ++count;
     }
     redisClient.hset(name, key.substr(5), "0");
     redisClient.sync_commit();
@@ -494,4 +496,23 @@ void redisCmd::delmember(std::string group, std::string user){
 void redisCmd::hpush(std::string key,std::string meg){
     redisClient.rpush(key, {meg});
     redisClient.sync_commit();
+}
+bool redisCmd::lookmess(std::string key, nlohmann::json &data){
+    auto reply = redisClient.lrange(key,0 ,-1);
+    redisClient.sync_commit();
+    auto result = reply.get();
+    if(result.is_array()){
+        for(const auto&item : result.as_array()){
+            if(item.as_string() == data.dump()){
+                LOG_INFO << item.as_string();
+                std::string name = data["account"];
+                hset(name, key.substr(5), "0");
+                hset("frie:" + key.substr(10), "user:" + name.substr(5), "0");
+                redisClient.lrem(key, 0, item.as_string());
+                redisClient.sync_commit();
+                return false;
+            }
+        }
+    }
+    return true;
 }

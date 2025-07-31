@@ -106,3 +106,7 @@ void tool::clear(){
     std::cout << "\33[A";
     std::cout << "\r\33[2K";
 }
+bool tool::isValidInput(const std::string& input,std::string patterns) {
+    std::regex pattern(patterns); // 只允许字母、数字、下划线
+    return std::regex_match(input, pattern);
+}

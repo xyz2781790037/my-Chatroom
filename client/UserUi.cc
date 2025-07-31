@@ -26,9 +26,15 @@ void Userui::ui()
             std::cout << "     8.我的信息" << std::endl;
             std::cout << "     9.退出登陆" << std::endl;
             std::cout << "     10.注销账号" << std::endl;
-            char *select = readline("");
+            char *input = readline("");
+            if (!input)
+            {
+                std::cout << "读取失败，请重新输入。" << std::endl;
+                continue;
+            }
+            std::string select(input);
+            free(input);
             selectFunc(select);
-            free(select);
         }
     }
 }
@@ -70,7 +76,6 @@ void Userui::selectFunc(std::string select){
     }
     else{
         std::cout << COLOUR2 << "输入错误，请重新输入" << COLOUREND << std::endl;
-        sleep(1);
         system("clear");
     }
 }
@@ -82,7 +87,7 @@ std::string Userui::concealPwd(){
     return a;
 }
 void Userui::myinformation(){
-    LOG_INFO << user_->getUserEmail();
+    LOG_DEBUG << user_->getUserEmail();
     std::cout << COLOUR3 << "账号：" << user_->getUserName() << COLOUREND << std::endl;
     std::cout << COLOUR3 << "ID ：" << user_->getUserId() << COLOUREND << std::endl;
     std::cout << COLOUR3 << "邮箱：" << user_->getUserEmail() << COLOUREND << std::endl;
@@ -99,6 +104,10 @@ void Userui::myinformation(){
             guard.encryption();
             std::cout << "请输入原密码：";
             getline(std::cin,oldPassword);
+            while (!tool::isValidInput(oldPassword, "^[a-zA-Z0-9_]{1,16}$")){
+                std::cout << "输入不合法,请重新数入" << std::endl;
+                getline(std::cin, oldPassword);
+            }
             guard.removeEncryption();
             if(oldPassword == user_->getPassword()){
                 std::cout << "\n请输入新密码：";
@@ -119,6 +128,11 @@ void Userui::myinformation(){
         std::cout << "请输入新的用户名：";
         std::string newmyname;
         getline(std::cin,newmyname);
+        while (!tool::isValidInput(newmyname, "^[\\u4e00-\\u9fa5a-zA-Z0-9_]+$"))
+        {
+            std::cout << "输入不合法,请重新数入" << std::endl;
+            getline(std::cin, newmyname);
+        }
         nlohmann::json j;
         user_->preparation(j, "type", "revise");
         user_->preparation(j, "myname", newmyname);
@@ -232,6 +246,7 @@ void Userui::seeFriend(){
                     continue;
                 }
                 else if(message[0] == '/'){
+                    tool::segExcessiveSpace(message);
                     if(message == "/file"){
                         tool::clearInputLines(message);
                         fileSystem(" user:" + cmd);
@@ -243,21 +258,29 @@ void Userui::seeFriend(){
                     }
                 }
                 else{
-                    nlohmann::json j;
-                    user_->preparation(j, "type", "message");
-                    user_->preparation(j, "receive", "user:" + cmd);
-                    std::string things;
-                    if (cmd == user_->getUserName()){
-                        things = headerFormat("You") + message;
-                    }else{
-                        things = headerFormat(user_->getUserMyname()) + message;
+                    if (!tool::isValidInput(message, "^[\\u4e00-\\u9fa5a-zA-Z0-9_[:punct:] ]*$"))
+                    {
+                        tool::clear();
+                        std::cout << "输入包含非法字符，请重新输入！" << std::endl;
                     }
-                    user_->preparation(j, "things", things);
-                    user_->send(j, conn, "user:");
-                    tool::clear();
-                    if (cmd != user_->getUserName()){
-                        std::cout << headerFormat("You") << message << std::endl;
+                    else{
+                        nlohmann::json j;
+                        user_->preparation(j, "type", "message");
+                        user_->preparation(j, "receive", "user:" + cmd);
+                        std::string things;
+                        if (cmd == user_->getUserName()){
+                            things = headerFormat("You") + message;
+                        }else{
+                            things = headerFormat(user_->getUserMyname()) + message;
+                        }
+                        user_->preparation(j, "things", things);
+                        user_->send(j, conn, "user:");
+                        tool::clear();
+                        if (cmd != user_->getUserName()){
+                            std::cout << headerFormat("You") << message << std::endl;
+                        }
                     }
+                    
                 }
             }
             recvThread.join();
@@ -386,6 +409,10 @@ void Userui::managerFriend(){
                     if (name == "\u001b"){
                         break;
                     }
+                    else if(name == user_->getUserName()){
+                        std::cout << "不能删除自己" << std::endl;
+                        break;
+                    }
                     nlohmann::json j;
                     user_->preparation(j, "type", "delfriend");
                     user_->preparation(j, "name", "user:" + name);
@@ -401,6 +428,11 @@ void Userui::managerFriend(){
                     std::cout << "请选择你要拉黑的好友：";
                     getline(std::cin, name);
                     if (name == "\u001b"){
+                        break;
+                    }
+                    else if (name == user_->getUserName())
+                    {
+                        std::cout << "不能拉黑自己" << std::endl;
                         break;
                     }
                     nlohmann::json j;
@@ -450,6 +482,9 @@ void Userui::managerGroup(){
                     user_->preparation(j, "count", std::to_string(count));
                     user_->send(j, conn, "user:");
                     break;
+                }
+                else if(number == user_->getUserName()){
+                    continue;
                 }
                 user_->preparation(j, "member" + std::to_string(count), "user:" + number);
                 count++;
@@ -615,14 +650,21 @@ void Userui::myGroup(){
                                     }
                                 }
                                 else{
-                                    nlohmann::json j;
-                                    user_->preparation(j, "type", "gmessage");
-                                    user_->preparation(j, "group", "grop:" + name);
-                                    std::string things = headerFormat(user_->getUserMyname()) + message;
-                                    user_->preparation(j, "things", things);
-                                    user_->send(j, conn, "user:");
-                                    tool::clear();
-                                    std::cout << things << std::endl;
+                                    if (!tool::isValidInput(message, "^[\\u4e00-\\u9fa5a-zA-Z0-9_[:punct:] ]*$")){
+                                        tool::clear();
+                                        std::cout << "❌ 输入包含非法字符，请重新输入！" << std::endl;
+                                    }
+                                    else{
+                                        nlohmann::json j;
+                                        user_->preparation(j, "type", "gmessage");
+                                        user_->preparation(j, "group", "grop:" + name);
+                                        std::string things = headerFormat(user_->getUserMyname()) + message;
+                                        user_->preparation(j, "things", things);
+                                        user_->send(j, conn, "user:");
+                                        tool::clear();
+                                        std::cout << things << std::endl;
+                                    }
+                                    
                                 }
                             }
                                 
@@ -718,6 +760,11 @@ void Userui::fileSystem(std::string name){
         getline(std::cin, input);
         if (input == "\u001b" || input == "/quit"){
             break;
+        }
+        if (!tool::isValidInput(input, "^[\\u4e00-\\u9fa5a-zA-Z0-9_[:punct:] ]*$")){
+            tool::clear();
+            std::cout << "输入包含非法字符，请重新输入！" << std::endl;
+            continue;
         }
         tool::segExcessiveSpace(input);
         LOG_DEBUG << input;

@@ -401,9 +401,6 @@ client/CMakeFiles/client.dir/UserUi.cc.o: \
  /usr/include/x86_64-linux-gnu/bits/statx-generic.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_statx_timestamp.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_statx.h \
- /home/zgyx/my-Chatroom/client/../base/logOn.h \
- /home/zgyx/my-Chatroom/client/../base/user.h \
- /home/zgyx/my-Chatroom/client/../base/MegType.h \
  /usr/include/c++/13/regex /usr/include/c++/13/bitset \
  /usr/include/c++/13/stack /usr/include/c++/13/bits/stl_stack.h \
  /usr/include/c++/13/bits/regex_constants.h \
@@ -417,6 +414,10 @@ client/CMakeFiles/client.dir/UserUi.cc.o: \
  /usr/include/c++/13/bits/regex.h /usr/include/c++/13/bits/regex.tcc \
  /usr/include/c++/13/bits/regex_executor.h \
  /usr/include/c++/13/bits/regex_executor.tcc \
+ /home/zgyx/my-Chatroom/client/../base/logOn.h \
+ /home/zgyx/my-Chatroom/client/../base/user.h \
+ /home/zgyx/my-Chatroom/client/../base/MegType.h \
+ /home/zgyx/my-Chatroom/client/../base/../base/tool.h \
  /usr/include/readline/readline.h /usr/include/readline/rlstdc.h \
  /usr/include/readline/rltypedefs.h /usr/include/readline/keymaps.h \
  /usr/include/readline/chardefs.h /usr/include/readline/tilde.h \

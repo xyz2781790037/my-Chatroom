@@ -21,20 +21,30 @@ Epoller::~Epoller()
 }
 
 mulib::base::Timestamp Epoller::poll(int timeoutMs, ChannelList &activeChannels){
-    int numEvents = epoll_wait(epollfd_, events_.data(), events_.size(), timeoutMs);
     Timestamp now(Timestamp::now());
+    while(1){
+        int numEvents = epoll_wait(epollfd_, events_.data(), events_.size(), timeoutMs);
+        now = Timestamp::now();
     if(numEvents > 0){
         fillActiveChannels(numEvents, activeChannels);
         if(numEvents == events_.size()){
             events_.resize(2 * events_.size());
         }
+        break;
     }
     else if(numEvents == 0){
         LOG_INFO << "Epoller::epoll: nothing happend!";
+        break;
     }
     else{
-        LOG_WARN << "Epoller::epoll: ret < 0";
+        if (errno == EINTR) {
+            continue;  // 被信号打断，重试
+        }
+        LOG_WARN << "Epoller::epoll: ret < 0" << strerror(errno);
+        break;
     }
+    }
+    
     return now;
 }
 void Epoller::fillActiveChannels(int numEvents, ChannelList &activeChannels) const{

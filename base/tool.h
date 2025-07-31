@@ -8,6 +8,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <iomanip>
+#include <regex>
 #include "../netlib/base/logger.h"
 namespace tool{
     std::string swapsort(std::string a, std::string b, std::string type);
@@ -20,6 +21,7 @@ namespace tool{
     int getFilefd(std::string filename);
     std::string fileSize(int fileFd);
     void clear();
+    bool isValidInput(const std::string &input, std::string patterns);
 }
 
 #endif

@@ -42,9 +42,11 @@ public:
     std::string getLevel(std::string groupname, std::string username);
     void delmember(std::string group, std::string user);
     void hpush(std::string key, std::string meg);
+    bool lookmess(std::string key, nlohmann::json &data);
 
 private:
-    void connect();
+    void
+    connect();
     int getRedisCount(std::string key, std::string field);
     cpp_redis::reply getRedisResult(std::string key, std::string field);
 
