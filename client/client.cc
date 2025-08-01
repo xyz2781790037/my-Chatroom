@@ -8,6 +8,7 @@
 int main(int argc, char *argv[])
 {
     ThreadPool pool(16);
+    signal(SIGPIPE, SIG_IGN);
     TermiosGuard guard;
     // mulib::base::Logger::setLogLevel(mulib::base::Logger::DEBUG);
     auto mainLoop = std::make_shared<mulib::net::EventLoop>();
@@ -54,17 +55,25 @@ int main(int argc, char *argv[])
         MessageSplitter megSpl;
         megSpl.append(msg);
         sendFile_.recvMeg(megSpl,recviveTime);
-    });
-    client1Ptr->setMessageCallback([&handlemeg_,&pool](const mulib::net::TcpClient::TcpConnectionPtr &conn, Buffer *buf, mulib::base::Timestamp recviveTime) {
+    });MessageSplitter megSpl;
+    client1Ptr->setMessageCallback([&handlemeg_, &pool, &megSpl](const mulib::net::TcpClient::TcpConnectionPtr &conn, Buffer *buf, Timestamp recviveTime) {
         LOG_DEBUG << "gchat收到消息";
         std::string buf_ = buf->retrieveAllAsString();
-        pool.enqueue([conn,recviveTime,&handlemeg_,buf_]{
-            MessageSplitter megSpl;
-            megSpl.append(buf_);
-            handlemeg_.recviveMeg(conn, recviveTime, megSpl);
+        megSpl.append(buf_);
+    
+        // 主线程中先拆好包
+        std::vector<std::string> messages;
+        std::string msg;
+        while (megSpl.nextMessage(msg)) {
+            messages.push_back(msg);
+        }
+    
+        // 拷贝消息进线程池处理（避免跨线程访问 megSpl）
+        pool.enqueue([conn, recviveTime, &handlemeg_, messages = std::move(messages)] {
+            for (const auto& msg : messages) {
+                handlemeg_.recviveMeg(conn, recviveTime, msg);
+            }
         });
-        
-        
     });
     client2Ptr->connect();
     client1Ptr->connect();

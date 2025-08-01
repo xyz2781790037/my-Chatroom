@@ -217,6 +217,7 @@ void Userui::seeFriend(){
                 while (chatting) {
                     std::queue<std::string> Messages = megManager_.fetchMessages(tool::swapsort("user:" + cmd,"user:" + user_->getUserName(),"read:"));
                     while(!Messages.empty()){
+                        LOG_DEBUG << "\033[1;35m" << std::this_thread::get_id() << "\033[0m";
                         std::cout << "\33[2K\r";
                         std::cout << Messages.front() << std::endl;
                         std::cout << "发送:";
@@ -258,12 +259,7 @@ void Userui::seeFriend(){
                     }
                 }
                 else{
-                    if (!tool::isValidInput(message, "^[\\u4e00-\\u9fa5a-zA-Z0-9_[:punct:] ]*$"))
-                    {
-                        tool::clear();
-                        std::cout << "输入包含非法字符，请重新输入！" << std::endl;
-                    }
-                    else{
+                    
                         nlohmann::json j;
                         user_->preparation(j, "type", "message");
                         user_->preparation(j, "receive", "user:" + cmd);
@@ -279,7 +275,7 @@ void Userui::seeFriend(){
                         if (cmd != user_->getUserName()){
                             std::cout << headerFormat("You") << message << std::endl;
                         }
-                    }
+                    
                     
                 }
             }
@@ -650,11 +646,6 @@ void Userui::myGroup(){
                                     }
                                 }
                                 else{
-                                    if (!tool::isValidInput(message, "^[\\u4e00-\\u9fa5a-zA-Z0-9_[:punct:] ]*$")){
-                                        tool::clear();
-                                        std::cout << "❌ 输入包含非法字符，请重新输入！" << std::endl;
-                                    }
-                                    else{
                                         nlohmann::json j;
                                         user_->preparation(j, "type", "gmessage");
                                         user_->preparation(j, "group", "grop:" + name);
@@ -663,7 +654,6 @@ void Userui::myGroup(){
                                         user_->send(j, conn, "user:");
                                         tool::clear();
                                         std::cout << things << std::endl;
-                                    }
                                     
                                 }
                             }
@@ -760,11 +750,6 @@ void Userui::fileSystem(std::string name){
         getline(std::cin, input);
         if (input == "\u001b" || input == "/quit"){
             break;
-        }
-        if (!tool::isValidInput(input, "^[\\u4e00-\\u9fa5a-zA-Z0-9_[:punct:] ]*$")){
-            tool::clear();
-            std::cout << "输入包含非法字符，请重新输入！" << std::endl;
-            continue;
         }
         tool::segExcessiveSpace(input);
         LOG_DEBUG << input;

@@ -7,7 +7,9 @@ void sendFile::sendMeg(std::string message){
 void sendFile::recvMeg(MessageSplitter &megSpl,mulib::base::Timestamp recviveTime){
     std::string buf;
     while (megSpl.nextMessage(buf)){
-        if(buf.substr(0,3) == "150" || buf.substr(0,3) == "151"){
+        LOG_INFO << buf;
+        if (buf.substr(0, 3) == "150" || buf.substr(0, 3) == "151")
+        {
             int pos = buf.find_first_of(':');
             int portPos = buf.find(':',pos + 1);
             std::string ip = buf.substr(4, pos - 4);
@@ -21,6 +23,7 @@ void sendFile::recvMeg(MessageSplitter &megSpl,mulib::base::Timestamp recviveTim
             }
             if(fileFd < 0){
                 sendMeg("cloe");
+                LOG_INFO << "文件打开失败";
                 continue;
             }
             int dataFd = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -28,8 +31,17 @@ void sendFile::recvMeg(MessageSplitter &megSpl,mulib::base::Timestamp recviveTim
                 LOG_FATAL << "SocketOps: Create socket failed!";
                 exit(EXIT_FAILURE);
             }
-            InetAddress clientAddr(ip,std::stoi(port));
-            socket::connect(dataFd, clientAddr.getSockAddr());
+            sockaddr_in clientAddr;
+            clientAddr.sin_family = AF_INET;
+            clientAddr.sin_port = htons(std::stoi(port));
+            inet_pton(AF_INET, "10.30.0.127", &clientAddr.sin_addr);
+            int flags = fcntl(dataFd, F_GETFL, 0);
+            fcntl(dataFd, F_SETFL, flags & ~O_NONBLOCK);
+            if(::connect(dataFd, (sockaddr*)&clientAddr,sizeof(clientAddr)) < 0){
+                LOG_ERROR << "connect fail" << "\033[1;34m" << strerror(errno) << "\033[0m";
+                continue;
+            }
+            LOG_INFO << "connect success";
             if (buf.substr(0, 3) == "150"){
                 stor(fileFd, dataFd);
             }
@@ -64,7 +76,7 @@ void sendFile::stor(int &fileFd,int &dataFd){
     while (offset < st.st_size){
         bytes_sent = sendfile(dataFd, fileFd, &offset, 1024);
         if (bytes_sent < 0){
-            std::cerr << "Error send file" << std::endl;
+            std::cerr << "Error send file->" << strerror(errno) << std::endl;
             close(fileFd);
             return;
         }

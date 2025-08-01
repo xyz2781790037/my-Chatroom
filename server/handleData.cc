@@ -107,12 +107,20 @@ void handleData::Megcycle(const TcpConnectionPtr &conn, MessageSplitter &megser,
                 int sum = 0;
                 int result1 = redis.see(jsonData["account"]);
                 int result2 = redis.see(jsonData["group"]);
+                std::string account = jsonData["account"];
+                std::string key = "mess:user:" + account.substr(5);
+                auto result3 = redis.getVerifyLen(key);
                 sum = result1 + result2;
                 nlohmann::json j;
                 std::string meg = "你有" + std::to_string(sum) + "条未读消息";
+                std::string meg2 = "你有" + std::to_string(result3) + "条验证消息";
                 LOG_INFO << meg;
                 if (sum != 0)
                 {
+                    if(result3 != 0){
+                        conn->send(MessageSplitter::encodeMessage(sendMeg(meg2, Type::UEXECUTE).dump()));
+                        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+                    }
                     conn->send(MessageSplitter::encodeMessage(sendMeg(meg, Type::UEXECUTE).dump()));
                 }
                 else

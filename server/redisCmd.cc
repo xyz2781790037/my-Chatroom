@@ -516,3 +516,13 @@ bool redisCmd::lookmess(std::string key, nlohmann::json &data){
     }
     return true;
 }
+int redisCmd::getVerifyLen(std::string key){
+    LOG_INFO << key;
+    auto reply = redisClient.llen(key);
+    redisClient.sync_commit();
+    auto result = reply.get();
+    if(result.is_integer()){
+        return result.as_integer();
+    }
+    return 0;
+}

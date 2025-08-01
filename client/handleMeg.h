@@ -10,7 +10,7 @@
 class handleMeg
 {
 public:
-    void recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, mulib::base::Timestamp recviveTime, MessageSplitter &megSpl);
+    void recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, mulib::base::Timestamp recviveTime, std::string msg);
     void getConn(const mulib::net::TcpClient::TcpConnectionPtr conn);
 
 private:
@@ -21,9 +21,7 @@ private:
 inline void handleMeg::getConn(const mulib::net::TcpClient::TcpConnectionPtr conn){
     ftpConn = conn;
 }
-inline void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, mulib::base::Timestamp recviveTime, MessageSplitter &megSpl){
-    std::string msg;
-    while (megSpl.nextMessage(msg)){
+inline void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, mulib::base::Timestamp recviveTime, std::string msg){
         LOG_DEBUG << msg;
         auto jsonData = nlohmann::json::parse(msg);
         Type::types type = Type::getDataType(jsonData["type"]);
@@ -84,6 +82,7 @@ inline void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr 
             }
         }
         else if(type == Type::MESSAGE){
+            LOG_DEBUG << "\033[1;35m" << std::this_thread::get_id() << "\033[0m";
             LOG_DEBUG << jsonData["from"] << "-" << jsonData["things"];
             std::string key = tool::swapsort(jsonData["from"],jsonData["to"],"read:");
             if(megManager_.pushMessage(key, jsonData["things"],300000)){
@@ -105,11 +104,13 @@ inline void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr 
         else if (type == Type::GMESSAGE){
             LOG_DEBUG << jsonData["from"] << "-" << jsonData["things"];
             std::string key = jsonData["from"];
-            if (groupMegManager_.pushMessage(key,jsonData["things"],3000000)){
+            LOG_DEBUG << "\033[1;35m" << std::this_thread::get_id() << "\033[0m";
+            if (groupMegManager_.pushMessage(key, jsonData["things"], 3000000))
+            {
                 LOG_DEBUG << "1234556";
             }
         }
-    }
+    
 }
 inline void handleMeg::handleNoreadMessage(nlohmann::json &jsonData, const mulib::net::TcpClient::TcpConnectionPtr conn){
     nlohmann::json j;

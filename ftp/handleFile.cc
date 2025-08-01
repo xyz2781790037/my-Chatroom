@@ -44,6 +44,9 @@ void handleFile::handleInput(std::string input){
             sendMeg(message);
             InetAddress peerAddr;
             int connFd = acceptSocket_->accept1(&peerAddr);
+            if(connFd <= 0){
+                LOG_ERROR << "accept fail->" << "\033[1;34m" << strerror(errno) << "\033[0m";
+            }
             stor(fileFd,connFd);
         }
         else{
@@ -80,22 +83,19 @@ void handleFile::handleInput(std::string input){
 void handleFile::stor(int &fileFd,int &connFd){
     int read_bytes = 0;
     char buffers[1024];
-    LOG_INFO << "reading ";
+    LOG_INFO << "read start";
     while ((read_bytes = read(connFd, buffers, sizeof(buffers))) > 0){
-        if (write(fileFd, buffers, read_bytes) != read_bytes)
-        {
+        if (write(fileFd, buffers, read_bytes) != read_bytes){
             LOG_ERROR << "write fail:" << strerror(errno);
             close(fileFd);
             return;
         }
     }
-    if (read_bytes == 0)
-    {
+    if (read_bytes == 0){
         LOG_INFO << "read end";
         close(fileFd);
     }
-    else
-    {
+    else{
         LOG_ERROR << "read fail:" << strerror(errno);
         close(fileFd);
     }

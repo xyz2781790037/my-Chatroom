@@ -40,9 +40,12 @@ int main(){
                     }
     
                 // 主线程中关闭连接（不能直接从线程里调用关闭）
-                for (mulib::net::TcpConnectionPtr oneConn : toClose) {
+                for (mulib::net::TcpConnectionPtr &oneConn : toClose) {
                     mainLoop.runInLoop([oneConn]() {
-                        if (oneConn) oneConn->shutdown();
+                        if (oneConn){
+                            oneConn->shutdown();
+                            oneConn->forceClose();
+                        } 
                     });
                 }
             }

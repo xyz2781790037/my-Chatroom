@@ -7,7 +7,7 @@
 #include <cstdint>
 #include <cstring>
 #include <limits>
-
+#include "threadPool.h"
 extern TermiosGuard guard;
 class MessageSplitter
 {
@@ -23,6 +23,7 @@ public:
 private:
     std::string buffer_;
     std::queue<std::string> messages_;
+    ThreadPool pool;
 };
 inline void MessageSplitter::append(std::string buffer)
 {
@@ -43,6 +44,8 @@ inline void MessageSplitter::append(std::string buffer)
 
         std::string msg = buffer_.substr(sizeof(int32_t), len);
         buffer_.erase(0, sizeof(int32_t) + len);
+        // LOG_INFO << msg;
+        // LOG_INFO << "\033[1;35m" << buffer_ << "\033[0m";
         messages_.push(msg);
     }
     

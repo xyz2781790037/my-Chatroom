@@ -43,6 +43,7 @@ public:
     void delmember(std::string group, std::string user);
     void hpush(std::string key, std::string meg);
     bool lookmess(std::string key, nlohmann::json &data);
+    int getVerifyLen(std::string key);
 
 private:
     void
