@@ -364,6 +364,18 @@ void redisCmd::sendHisOffineMeg(nlohmann::json &data, const TcpConnectionPtr &co
 void redisCmd::delFriend(std::string user, std::string name){
     std::vector<std::string> field = {name};
     std::vector<std::string> field2 = {"user:" + user.substr(5)};
+    std::string key = tool::swapsort(user, name, "read:");
+    redisClient.del({key});
+    redisClient.sync_commit();
+    int count1 = std::stoi(getData(user, name));
+    for (int i = 0; i < count1;i++){
+        redisClient.hdel("offl:" + user.substr(5), {name + std::to_string(i)});
+    }
+    int count2 = std::stoi(getData("frie:" + name.substr(5), "user:" + user.substr(5)));
+    for (int i = 0; i < count2; i++)
+    {
+        redisClient.hdel("offl:" + name.substr(5), {"user:" + user.substr(5) + std::to_string(i)});
+    }
     LOG_INFO << "will del user=" << user << " name=" << name;
     redisClient.hdel(user, field);
     redisClient.hdel("frie:" + name.substr(5), field2);
