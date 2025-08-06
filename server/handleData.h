@@ -10,9 +10,10 @@
 #include "../base/logOn.h"
 #include "ConnectionManager.h"
 #include "../base/tool.h"
-class handleData{
+class handleData
+{
 public:
-    void Megcycle(const TcpConnectionPtr &conn, MessageSplitter &megser, redisCmd &redis, mulib::base::Timestamp recviveTime);
+    void Megcycle(const TcpConnectionPtr &conn, std::string &meg, redisCmd &redis, mulib::base::Timestamp recviveTime);
 
 private:
     void handleRegister(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);

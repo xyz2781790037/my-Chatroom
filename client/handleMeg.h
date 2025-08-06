@@ -7,6 +7,7 @@
 #include "../base/MegType.h"
 #include "../base/user.h"
 #include "UserUi.h"
+#include <atomic>
 class handleMeg
 {
 public:
@@ -53,7 +54,8 @@ inline void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr 
             auto ownPtr = std::make_shared<Userui>(userPtr, Copyconn,ftpConn,recviveTime);
             
             std::thread ownuiThread([ownPtr]() { 
-                ownPtr->ui(); });
+                ownPtr->ui();
+             });
             ownuiThread.detach();
         }
         else if(type == Type::MESSDATA){
@@ -101,6 +103,8 @@ inline void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr 
                 j["return"] = "1";
                 conn->send(MessageSplitter::encodeMessage(j.dump()));
             }
+            messageReminder = true;
+            chatCv.notify_one();
         }
         else if(type == Type::SEEGROUP){
             std::cout << "群聊：" << jsonData["name"] << "[" << jsonData["amount"] << "条消息]" << std::endl; 

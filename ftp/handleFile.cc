@@ -21,9 +21,10 @@ std::string handleFile::analysis(std::string &type, std::string input){
 int handleFile::createFile(std::string file){
     int pos = file.find_last_of('/');
     std::string fileName = file.substr(pos + 1);
+    int pos1 = fileName.find_last_of('.');
     recviveTime_ = recviveTime_.now();
     fileTimeMap[fileName] = recviveTime_;
-    fileName += recviveTime_.toFormattedString().substr(0, 19);
+    fileName = fileName.substr(0,pos1) + "_" + recviveTime_.toFormattedString().substr(0, 19) + fileName.substr(pos1);
     chdir("/home/zgyx/myServer/uploads");
     int fileFd = open(fileName.c_str(), O_WRONLY | O_CREAT | O_TRUNC, 0644);
     if(fileFd < 0){

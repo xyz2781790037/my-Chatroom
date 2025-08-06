@@ -11,17 +11,18 @@ void onConnection(const mulib::net::TcpConnectionPtr &conn)
         std::cout << "new conncetion\033[1;35m"<< conn << "\033[0m" << std::endl;
     }
 }
-void onMessage(const TcpConnectionPtr &conn, mulib::base::Timestamp recviveTime, std::shared_ptr<handleData> &handledata_, MessageSplitter &megser, redisCmd &redis)
+void onMessage(const TcpConnectionPtr &conn, mulib::base::Timestamp recviveTime, std::shared_ptr<handleData> handledata_, std::string meg, redisCmd &redis)
 {
-    handledata_->Megcycle(conn, megser,redis,recviveTime);
+    handledata_->Megcycle(conn, meg,redis,recviveTime);
 }
 int main(){
-    ThreadPool pool(128);
+    // mulib::base::Logger::setLogLevel(mulib::base::Logger::DEBUG);
+    ThreadPool pool(32);
     auto handledata_ = std::make_shared<handleData>();
     mulib::net::EventLoop mainLoop;
     mulib::net::InetAddress addr(8080);
     mulib::net::TcpServer server(&mainLoop, "GChat", addr);
-    server.setThreadNum(32);
+    server.setThreadNum(16);
     server.setConnectionCallback([&mainLoop](const mulib::net::TcpConnectionPtr &conn){
         onConnection(conn);
         std::thread([&mainLoop]() {
@@ -63,16 +64,16 @@ int main(){
             }
         }
     });
-    server.setMessageCallback([&handledata_, &pool](const TcpConnectionPtr &conn, Buffer *buf, mulib::base::Timestamp recviveTime) {
+    server.setMessageCallback([handledata_, &pool](const TcpConnectionPtr &conn, Buffer *buf, mulib::base::Timestamp recviveTime) {
         std::string msg = buf->retrieveAllAsString();
-
-        // pool.enqueue([conn, recviveTime, &handledata_, msg]
-        //              {
-            thread_local redisCmd redis;
-            MessageSplitter megser;
-            megser.append(msg);
-            onMessage(conn,recviveTime,handledata_,megser,redis); 
-        // });
+            conn->splitter_.append(msg);
+            std::string buf_;
+            while (conn->splitter_.nextMessage(buf_)){
+                pool.enqueue([conn, recviveTime, handledata_, buf_]{    
+                    thread_local redisCmd redis;
+                    onMessage(conn, recviveTime, handledata_, buf_, redis);
+                });
+            }
      });
     server.start();
     mainLoop.loop(-1);

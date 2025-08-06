@@ -10,9 +10,16 @@
 #include "user.h"
 #include "MessageSplitter.h"
 #include "MegType.h"
-#include "../base/tool.h"
+#include "tool.h"
 #include <regex>
 #include <readline/readline.h>
+#include <condition_variable>
+#include <mutex>
+#include "../client/UserUi.h"
+extern std::mutex g_ui_mtx;
+extern std::condition_variable g_ui_cv;
+
+extern std::atomic<bool> uiStart;
 class logon{
 public:
     logon(std::shared_ptr<mulib::net::TcpClient> client) : client_(client) {}
@@ -26,10 +33,15 @@ private:
     void getPassword();
     std::shared_ptr<mulib::net::TcpClient> client_;
 };
+inline std::mutex g_ui_mtx;
+inline std::condition_variable g_ui_cv;
+
 inline void logon::ui()
 {
     Type::updataState(Type::Status::EXECUTE);
-    while(true){
+    uiStart = true;
+    while(1){
+        
         if (Type::getState() == Type::EXECUTE)
         {
             std::cout << "   chatroom" << std::endl;
@@ -45,6 +57,11 @@ inline void logon::ui()
             std::string funcNum(input);
             free(input);
             selectFunc(funcNum);
+        }
+        {
+            std::unique_lock lock(g_ui_mtx);
+            g_ui_cv.wait(lock, []
+                         { return Type::getState() == Type::EXECUTE  || uiStart == true; });
         }
     }
 }

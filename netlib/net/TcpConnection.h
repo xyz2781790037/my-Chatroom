@@ -6,6 +6,7 @@
 #include "InetAddress.h"
 #include "Socket.h"
 #include "Buffer.h"
+#include "../../base/MessageSplitter.h"
 
 namespace mulib{
     namespace net{
@@ -44,6 +45,7 @@ namespace mulib{
 
             void shutdown();
             void forceClose();
+            MessageSplitter splitter_;
 
         private:
             enum StateE
@@ -78,6 +80,7 @@ namespace mulib{
             size_t highWaterMark_;
             Buffer inputBuffer_;
             Buffer outputBuffer_;
+
         };
     }
 }

@@ -70,7 +70,7 @@ void sendFile::recvMeg(MessageSplitter &megSpl,mulib::base::Timestamp recviveTim
             
             fileName = fileName.substr(pos5 + 1);
             int pos6 = fileName.find_last_of('.');
-            fileName = fileName.substr(0,pos6) + filetime + fileName.substr(pos6);
+            fileName = fileName.substr(0,pos6) + "_" + filetime + fileName.substr(pos6);
             sendmain(fileName, from, to, myname, fileSize, recviveTime);
         }
     }

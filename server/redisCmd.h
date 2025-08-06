@@ -3,6 +3,8 @@
 #include <cpp_redis/cpp_redis>
 #include <nlohmann/json.hpp>
 #include "../netlib/net/TcpServer.h"
+extern std::unordered_map<std::string, std::vector<std::string>> messageQueue;
+extern std::map<std::string, std::mutex> key_mutexes;
 class redisCmd{
 public:
     redisCmd();
@@ -24,7 +26,7 @@ public:
     bool isfriend(std::string account,std::string name);
     void storeMessages(std::string sender, std::string account,std::string message);
     void sendOfflineMeg(nlohmann::json &data,const TcpConnectionPtr &conn);
-    void storeReadMeg(std::string sender, std::string account, std::string message,std::string key);
+    void storeReadMeg(std::vector<std::string> message, std::string key);
     void sendHistoryMeg(nlohmann::json &data, const TcpConnectionPtr &conn);
     void sendHisOffineMeg(nlohmann::json &data, const TcpConnectionPtr &conn);
     void delFriend(std::string user, std::string name);

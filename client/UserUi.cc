@@ -1,15 +1,20 @@
 #include "UserUi.h"
 #include "../base/logOn.h"
 #include "sendFile.h"
+std::atomic<bool> uiStart;
 MessageManager megManager_;
 MessageManager groupMegManager_;
+
+std::atomic<bool> messageReminder(false);
+std::condition_variable chatCv;
+
 Userui::Userui(std::shared_ptr<User> user, const mulib::net::TcpClient::TcpConnectionPtr &Conn, const mulib::net::TcpClient::TcpConnectionPtr ftpConn, mulib::base::Timestamp recviveTime) : user_(user), conn(Conn), recviveTime_(recviveTime),
 ftpConn(ftpConn) {}
 void Userui::ui()
 {
     Presence = true;
     online("online");
-    
+    uiStart = false;
     while (Presence){
         LOG_DEBUG << "type=" << Type::getUserState();
         if (Type::getUserState() == Type::UEXECUTE)
@@ -69,7 +74,9 @@ void Userui::selectFunc(std::string select){
 
         online("offline");
         Presence = false;
+        uiStart = true;
         Type::updataState(Type::EXECUTE);
+        g_ui_cv.notify_one();
     }
     else if(select == "10"){
         deleteUser();
@@ -215,6 +222,9 @@ void Userui::seeFriend(){
         }
         else if(Type::getUserState() == Type::UCHAT){
             std::atomic<bool> chatting(true);
+            char *a = new char[4096 * 4096];
+            bool chatlong = false;
+            std::mutex chatMtx;
             std::thread recvThread([&]()
                                    {
                 while (chatting) {
@@ -223,15 +233,28 @@ void Userui::seeFriend(){
                         LOG_DEBUG << "\033[1;35m" << std::this_thread::get_id() << "\033[0m";
                         std::cout << "\33[2K\r";
                         std::cout << Messages.front() << std::endl;
-                        std::cout << "发送:";
-                        std::cout << "\033[0C" << std::flush;
-                        Messages.pop();
+                        Messages.pop(); 
                     }
+                    {
+                        std::unique_lock lock(chatMtx);
+                        chatCv.wait(lock, [&chatting]
+                                     { return messageReminder || chatting == false; });
+                    }
+                    LOG_INFO << "1";
+                    if (chatting == false) break;
+                    LOG_INFO << "12";
+                    messageReminder = false;
                 } });
             while (chatting){
                 std::string message;
-                std::cout << "发送:";
-                getline(std::cin, message);
+                // std::cout << "发送:";
+                if(!chatlong){
+                    getline(std::cin, message);
+                }
+                else{
+                    a = readline("发送:");
+                    message.append(a);
+                }
                 recviveTime_ = recviveTime_.now();
                 if(message == "/quit"|| message == "\u001b"){
                     Type::updataUserState(Type::USAT);
@@ -242,6 +265,7 @@ void Userui::seeFriend(){
                     user_->preparation(j, "return", "1");
                     user_->send(j, conn, "user:");
                     cmd.clear();
+                    chatCv.notify_one();
                     break;
                 }
                 else if(message.empty()){
@@ -256,6 +280,14 @@ void Userui::seeFriend(){
                         fileSystem(" user:" + cmd);
                         tool::clearInputLines(message);
                     }
+                    else if(message == "/long"){
+                        chatlong = true;
+                        continue;
+                    }
+                    else if(message == "/short"){
+                        chatlong = false;
+                        continue;
+                    }
                     else{
                         tool::clearInputLines(message);
                         std::cout << "输入错误" << std::endl;
@@ -265,7 +297,7 @@ void Userui::seeFriend(){
                     
                     nlohmann::json j;
                     user_->preparation(j, "type", "message");
-                    user_->preparation(j, "receive", "user:" + cmd);
+                    user_->preparation(j, "to", "user:" + cmd);
                     std::string things;
                     if (cmd == user_->getUserName()){
                         things = headerFormat("You") + message;
@@ -274,13 +306,15 @@ void Userui::seeFriend(){
                         things = headerFormat(user_->getUserMyname()) + message;
                     }
                     user_->preparation(j, "things", things);
-                    user_->send(j, conn, "user:");
+                    user_->preparation(j, "from", "user:" + user_->getUserName());
+                    user_->send(j, conn);
                     tool::clear();
                     if (cmd != user_->getUserName()){
                         std::cout << headerFormat("You") << message << std::endl;
                     }
                 }
             }
+            free(a);
             recvThread.join();
         }
     }
@@ -326,12 +360,15 @@ void Userui::viewInformation(){
                 name.append(Name);
                 std::cout << "是否同意[Y/n]";
                 getline(std::cin, result);
-                if(result == tool::tolowerStr("Y") || result == "\n"){
+                if(tool::tolowerStr(result) == "y" || result.empty()){
                     
                     cmd = "/af " + name + " yes";
                 }
-                else{
+                else if(tool::tolowerStr(result) == "n"){
                     cmd = "/af " + name + " no";
+                }
+                else{
+                    cmd = "/af nn nn";
                 }
                 free(Name);
             }
@@ -343,12 +380,15 @@ void Userui::viewInformation(){
                 name.append(Name);
                 std::cout << "是否同意[Y/n]";
                 getline(std::cin, result);
-                if(result == tool::tolowerStr(result) || result == "\n"){
+                if(tool::tolowerStr(result) == "y" || result.empty()){
                     
                     cmd = "/ag " + name + " yes";
                 }
-                else{
+                else if(tool::tolowerStr(result) == "n"){
                     cmd = "/ag " + name + " no";
+                }
+                else{
+                    cmd = "/af nn nn";
                 }
                 free(Name);
             }
@@ -358,14 +398,18 @@ void Userui::viewInformation(){
                 name.append(Name);
                 std::cout << "是否同意[Y/n]";
                 getline(std::cin, result);
-                if (result == tool::tolowerStr(result) || result == "\n")
+                LOG_INFO << result;
+                if (tool::tolowerStr(result) == "y" || result.empty())
                 {
 
                     cmd = "/iv " + name + " yes";
                 }
-                else
+                else if(tool::tolowerStr(result) == "n")
                 {
                     cmd = "/iv " + name + " no";
+                }
+                else{
+                    cmd = "/af nn nn";
                 }
                 free(Name);
             }
