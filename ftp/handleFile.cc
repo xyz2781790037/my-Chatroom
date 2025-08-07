@@ -21,9 +21,15 @@ std::string handleFile::analysis(std::string &type, std::string input){
 int handleFile::createFile(std::string file){
     int pos = file.find_last_of('/');
     std::string fileName = file.substr(pos + 1);
+    LOG_INFO << fileName;
     while(std::filesystem::exists("/home/zgyx/myServer/uploads/" + fileName)){
         int pos1 = fileName.find_last_of('.');
-        fileName = fileName.substr(0,pos1) + "(1)" + fileName.substr(pos1);
+        if(pos1 > 0){
+            fileName = fileName.substr(0,pos1) + "(1)" + fileName.substr(pos1);
+        }
+        else{
+            fileName += "(1)";
+        }
     }
     fileTimeMap[ftpConn] = fileName;
     chdir("/home/zgyx/myServer/uploads");
@@ -36,6 +42,7 @@ int handleFile::createFile(std::string file){
     return fileFd;
 }
 void handleFile::handleInput(std::string input){
+    LOG_INFO << "\033[1;35m" << input << "\033[0m";
     std::string type;
     std::string fileName = analysis(type, input);
     std::shared_ptr<mulib::net::TcpConnection> Conn;

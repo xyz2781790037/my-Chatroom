@@ -16,10 +16,10 @@ TcpClient::TcpClient(EventLoop *loop, const InetAddress &serverAddr)
       nextConnId_(1){
     connector_->setNewConnectionCallback([this](int sockfd)
                                          { newConnection(sockfd); });
-    LOG_INFO << "TcpClient::TcpClient[" << this << "] - connector " << connector_.get();
+    LOG_DEBUG << "TcpClient::TcpClient[" << this << "] - connector " << connector_.get();
 }
 void TcpClient::connect(){
-    LOG_INFO << "TcpClient::connect[" << this << "] - connecting to "
+    LOG_DEBUG << "TcpClient::connect[" << this << "] - connecting to "
              << connector_->serverAddress().toHostPort();
     connect_ = true;
     connector_->start();

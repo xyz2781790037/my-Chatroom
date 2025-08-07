@@ -17,10 +17,10 @@ int main(){
     mulib::net::TcpServer server(mainLoop.get(), "FTP", addr);
     server.setThreadNum(32);
     server.setConnectionCallback(onConnection);
-    server.setMessageCallback([&pool,&handleFile_,&mainLoop](const TcpConnectionPtr &conn, Buffer *buf, mulib::base::Timestamp recviveTime) {
+    MessageSplitter megser;
+    server.setMessageCallback([&pool,&handleFile_,&mainLoop,&megser](const TcpConnectionPtr &conn, Buffer *buf, mulib::base::Timestamp recviveTime) {
             std::string msg = buf->retrieveAllAsString();
             LOG_INFO << msg;
-            MessageSplitter megser;
             megser.append(msg);
             std::string a;
             handleFile_->getConn(conn);

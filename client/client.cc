@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     logon clientLog(client1Ptr);
     client1Ptr->setConnectionCallback([&clientLog,&sendFile_](const mulib::net::TcpClient::TcpConnectionPtr &conn) {
     if (conn->connected()) {
-        std::cout << "连接服务器成功，可以开始交互" << std::endl;
+        LOG_DEBUG << "连接服务器成功，可以开始交互";
         sendFile_.getmainConn(conn);
         std::thread uiThread([&clientLog]() mutable
                              { clientLog.ui(); });
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
     handleMeg handlemeg_;
     client2Ptr->setConnectionCallback([&sendFile_,&handlemeg_](const mulib::net::TcpClient::TcpConnectionPtr &conn)  {
         if (conn->connected()) {
-            std::cout << "连接FTP成功，可以开始交互" << std::endl;
+            LOG_DEBUG << "连接FTP成功，可以开始交互";
             sendFile_.getConn(conn);
             handlemeg_.getConn(conn);
         } else {

@@ -133,12 +133,12 @@ void handleData::Megcycle(const TcpConnectionPtr &conn, std::string &meg, redisC
                 LOG_INFO << meg;
                 if (sum != 0)
                 {
-                    if (result3 != 0)
-                    {
-                        conn->send(MessageSplitter::encodeMessage(sendMeg(meg2, Type::UEXECUTE).dump()));
-                        std::this_thread::sleep_for(std::chrono::milliseconds(1));
-                    }
                     conn->send(MessageSplitter::encodeMessage(sendMeg(meg, Type::UEXECUTE).dump()));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(1));
+                }
+                if (result3 != 0)
+                {
+                    conn->send(MessageSplitter::encodeMessage(sendMeg(meg2, Type::UEXECUTE).dump()));
                 }
                 else
                 {
