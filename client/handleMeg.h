@@ -91,18 +91,8 @@ inline void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr 
             LOG_DEBUG << "\033[1;35m" << std::this_thread::get_id() << "\033[0m";
             LOG_DEBUG << jsonData["from"] << "-" << jsonData["things"];
             std::string key = tool::swapsort(jsonData["from"],jsonData["to"],"read:");
-            if(megManager_.pushMessage(key, jsonData["things"],3000000)){
-                nlohmann::json j;
-                j["type"] = "ship";
-                j["mystate"] = "offline";
-                j["account"] = jsonData["to"];
-                conn->send(MessageSplitter::encodeMessage(j.dump()));
-                LOG_INFO << "11111";
-                handleNoreadMessage(jsonData, conn);
-                j["mystate"] = "online";
-                j["return"] = "1";
-                conn->send(MessageSplitter::encodeMessage(j.dump()));
-            }
+            if(megManager_.pushMessage(key, jsonData["things"],3000000))
+                ;
             messageReminder = true;
             chatCv.notify_one();
         }
@@ -114,9 +104,7 @@ inline void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr 
             std::string key = jsonData["from"];
             LOG_DEBUG << "\033[1;35m" << std::this_thread::get_id() << "\033[0m";
             if (groupMegManager_.pushMessage(key, jsonData["things"], 3000000))
-            {
-                LOG_DEBUG << "1234556";
-            }
+                ;
             gmessageReminder = true;
             gchatCv.notify_one();
         }

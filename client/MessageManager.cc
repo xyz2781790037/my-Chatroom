@@ -7,9 +7,6 @@ bool MessageManager::pushMessage(const std::string &user, const std::string &msg
 
     auto it = userMessage_.find(user);
     if (it != userMessage_.end()) {
-        if (it->second.size() >= CACHE_THRESHOLD) {
-            return true;
-        }
         it->second.push(msg);
     } else {
         userMessage_[user].push(msg);
