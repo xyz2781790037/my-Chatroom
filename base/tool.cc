@@ -77,7 +77,21 @@ int tool::getFilefd(std::string filename){
     if(fileFd < 0){
         if(errno != ENOENT){
             LOG_ERROR << "open failed:" << strerror(errno);
+            close(fileFd);
         }
+        return -1;
+    }
+    struct stat st;
+    if (fstat(fileFd, &st) == -1){
+        perror("fstat");
+        close(fileFd);
+        return -1;
+    }
+
+    if (!S_ISREG(st.st_mode)){
+        // 不是普通文件，关闭并拒绝使用
+        close(fileFd);
+        errno = EISDIR;
         return -1;
     }
     return fileFd;

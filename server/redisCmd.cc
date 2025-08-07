@@ -2,6 +2,8 @@
 #include "../netlib/base/logger.h"
 #include "../base/logOn.h"
 #include "../base/tool.h"
+std::mutex storeMtx;
+std::mutex storeMtx2;
 redisCmd::redisCmd()
 {
     connect();
@@ -327,20 +329,23 @@ void redisCmd::storeMessages(std::string sender, std::string account, std::strin
 {
     connect();
     LOG_INFO << "storeMessage";
-    connect();
     LOG_INFO << "存储新消息：" << message;
 
     std::string key = "offl:" + sender.substr(5);
     LOG_INFO << key;
     LOG_INFO << sender << " " << account;
-    int count = getRedisCount("frie:" + sender.substr(5), account);
-    redisClient.hset(key, account + std::to_string(count++), message);
-    redisClient.sync_commit();
-    LOG_INFO << "count=" << count;
-    redisClient.hset("frie:" + sender.substr(5), account, std::to_string(count));
-    redisClient.sync_commit();
+    {
+        std::unique_lock lock(storeMtx);
+        int count = getRedisCount("frie:" + sender.substr(5), account);
+        redisClient.hset(key, account + std::to_string(count++), message);
+        redisClient.sync_commit();
+        LOG_INFO << "count=" << count;
+        redisClient.hset("frie:" + sender.substr(5), account, std::to_string(count));
+        redisClient.sync_commit();
+    }
+    
 }
-void redisCmd::sendOfflineMeg(nlohmann::json &data, const TcpConnectionPtr &conn)
+void redisCmd::sendOfflineMeg(nlohmann::json &data, const TcpConnectionPtr conn)
 {
 
     std::string key = data["account"];
@@ -386,13 +391,12 @@ void redisCmd::storeReadMeg(std::vector<std::string> messages, std::string key)
     redisClient.rpush(key, messages);
     redisClient.sync_commit();
 }
-void redisCmd::sendHistoryMeg(nlohmann::json &data, const TcpConnectionPtr &conn)
+void redisCmd::sendHistoryMeg(nlohmann::json &data, const TcpConnectionPtr conn)
 {
     int count = 0;
     std::string a = data["account"];
     std::string b = data["name"];
     std::string key = tool::swapsort(a, b, "read:");
-    LOG_INFO << "历史消息key=" << key;
     auto reply = redisClient.lrange(key, 0, -1);
     redisClient.sync_commit();
     auto result = reply.get();
@@ -446,7 +450,7 @@ void redisCmd::black(std::string user, std::string name)
     redisClient.hset(field, name, "0");
     redisClient.sync_commit();
 }
-void redisCmd::sendBlackMeg(nlohmann::json &data, const TcpConnectionPtr &conn)
+void redisCmd::sendBlackMeg(nlohmann::json &data, const TcpConnectionPtr conn)
 {
     std::string a = data["account"];
     std::string b = data["name"];
@@ -538,13 +542,13 @@ bool redisCmd::ismygroup(std::string name, std::string account)
 }
 void redisCmd::storeGroupMeg(nlohmann::json &data, std::string msg)
 {
-    std::string name = data["group"];
+    std::string name = data["from"];
     std::string sender = data["account"];
     LOG_INFO << "redisCmd::offline group message";
     redisClient.rpush("regp:" + name.substr(5), {msg});
     redisClient.sync_commit();
 }
-void redisCmd::getGroupMeg(std::string key, std::string name, const TcpConnectionPtr &conn)
+void redisCmd::getGroupMeg(std::string key, std::string name, const TcpConnectionPtr conn)
 {
     int count = 0;
     std::string nkey = "regp:" + key.substr(5);

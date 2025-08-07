@@ -39,6 +39,7 @@ target_link_libraries(server
     pthread
     nlohmann_json::nlohmann_json
     CURL::libcurl
+    profiler
 )
 target_include_directories(server PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}

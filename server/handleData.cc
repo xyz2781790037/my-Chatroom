@@ -6,19 +6,61 @@ std::unordered_map<mulib::net::TcpConnectionPtr, time_t> lastActiveTime;
 std::unordered_map<std::string, std::vector<std::string>> messageQueue;
 std::mutex timeMutex;
 std::map<std::string, std::mutex> key_mutexes;
+ThreadPool pool(16);
 void handleData::Megcycle(const TcpConnectionPtr &conn, std::string &meg, redisCmd &redis, mulib::base::Timestamp recviveTime)
 {
     LOG_DEBUG << "Megcycle running in thread: " << std::this_thread::get_id() << std::endl;
     if (meg[0] == '{' && meg[meg.size() - 1] == '}')
     {
-        LOG_INFO << "\033[1;35m" << meg << "\033[0m";
+        LOG_DEBUG << "\033[1;35m" << meg << "\033[0m";
         auto jsonData = nlohmann::json::parse(meg);
-        if (jsonData.contains("type"))
-        {
+        if (jsonData.contains("type")){
             LOG_DEBUG << "JSON 正常";
             Type::types type = Type::getDataType(jsonData["type"]);
             LOG_DEBUG << "type is :" << type;
-            if (type == Type::REGISTER)
+            if (type == Type::MESSAGE){
+                // if (!redis.isAccount(b))
+                // {
+                //     conn->send(MessageSplitter::encodeMessage(sendMeg("帐号已注销，请前往管理好友删除", Type::URETURN).dump()));
+                //     return;
+                // }
+                // if (redis.getData("blak:" + b.substr(5), "user:" + a.substr(5)) != "null")
+                // {
+                //     conn->send(MessageSplitter::encodeMessage(sendMeg("\33\r[2K系统：发出但被拒收\n", Type::URETURN, "1").dump()));
+                //     return;
+                // }
+                if (connectionmanger_.isOnline(jsonData["to"])){
+                    LOG_DEBUG << jsonData["to"] << "在线";
+                    connectionmanger_.getConn(jsonData["to"])->send(MessageSplitter::encodeMessage(jsonData.dump()));
+                    pool.enqueue([jsonData,&redis] {
+                        std::string a = jsonData["from"];
+                        std::string b = jsonData["to"];
+                        std::string key1 = tool::spellName(a, b, "chat:");
+                        std::string key2 = tool::spellName(b, a, "chat:");
+                        LOG_DEBUG << "key1=" << key1;
+                        LOG_DEBUG << "key2=" << key2;
+                        if (chatStatus_[key1] && chatStatus_[key2]){
+                        std::string key = tool::swapsort(a, b, "read:");
+                            redis.storeReadMeg({jsonData.dump()}, key);
+                        
+                        }
+                        else{
+                            LOG_DEBUG << "在线但不在界面";
+                            redis.storeMessages(b, a, jsonData.dump());
+                        }
+                    });
+                    
+                    
+                }
+                else{
+                    std::string a = jsonData["from"];
+                    std::string b = jsonData["to"];
+                    LOG_DEBUG << jsonData["to"] << "不在线";
+
+                    redis.storeMessages(b, a, jsonData.dump());
+                }
+            }
+            else if (type == Type::REGISTER)
             {
                 LOG_INFO << "进入register";
                 handleRegister(conn, jsonData, redis);
@@ -73,53 +115,6 @@ void handleData::Megcycle(const TcpConnectionPtr &conn, std::string &meg, redisC
             else if (type == Type::CHAT)
             {
                 sendOfflineMeg(conn, jsonData, redis);
-            }
-            else if (type == Type::MESSAGE)
-            {
-                std::string a = jsonData["from"];
-                std::string b = jsonData["to"];
-                if (!redis.isAccount(b))
-                {
-                    conn->send(MessageSplitter::encodeMessage(sendMeg("帐号已注销，请前往管理好友删除", Type::URETURN).dump()));
-                    return;
-                }
-                if (redis.getData("blak:" + b.substr(5), "user:" + a.substr(5)) != "null")
-                {
-                    conn->send(MessageSplitter::encodeMessage(sendMeg("\33\r[2K系统：发出但被拒收\n", Type::URETURN, "1").dump()));
-                    return;
-                }
-                if (connectionmanger_.isOnline(jsonData["to"]))
-                {
-                    LOG_DEBUG << jsonData["to"] << "在线";
-                    connectionmanger_.getConn(jsonData["to"])->send(MessageSplitter::encodeMessage(jsonData.dump()));
-                    std::string key1 = tool::spellName(a, b, "chat:");
-                    std::string key2 = tool::spellName(b, a, "chat:");
-                    LOG_DEBUG << "key1=" << key1;
-                    LOG_DEBUG << "key2=" << key2;
-                    if (chatStatus_[key1] && chatStatus_[key2]){
-                        std::string key = tool::swapsort(a, b, "read:");
-                        {
-                            std::lock_guard<std::mutex> lock(key_mutexes[key]);
-                            messageQueue[key].push_back(jsonData.dump());
-                            if (messageQueue[key].size() >= 100){
-                                redis.storeReadMeg({jsonData.dump()}, key);
-                                messageQueue.erase(key);
-                            }
-                        }
-                        
-                    }
-                    else
-                    {
-                        LOG_DEBUG << "在线但不在界面";
-                        redis.storeMessages(b, a, jsonData.dump());
-                    }
-                }
-                else
-                {
-                    LOG_DEBUG << jsonData["to"] << "不在线";
-
-                    redis.storeMessages(b, a, jsonData.dump());
-                }
             }
             else if (type == Type::OFFMEG)
             {
@@ -318,17 +313,13 @@ void handleData::Megcycle(const TcpConnectionPtr &conn, std::string &meg, redisC
             }
             else if (type == Type::GMESSAGE)
             {
-                nlohmann::json j;
-                j["from"] = jsonData["group"];
-                j["things"] = jsonData["things"];
-                j["type"] = jsonData["type"];
                 std::string account = jsonData["account"];
-                if (redis.getData(jsonData["group"], account) != "null")
+                if (redis.getData(jsonData["from"], account) != "null")
                 {
-                    redis.storeGroupMeg(jsonData, j.dump());
+                    redis.storeGroupMeg(jsonData, jsonData.dump());
 
-                    std::string groupname = jsonData["group"];
-                    auto result = redis.seeGroup(jsonData["group"]);
+                    std::string groupname = jsonData["from"];
+                    auto result = redis.seeGroup(jsonData["from"]);
                     if (result != cpp_redis::reply())
                     {
                         const auto &arr = result.as_array();
@@ -336,20 +327,24 @@ void handleData::Megcycle(const TcpConnectionPtr &conn, std::string &meg, redisC
                         {
                             if (arr[i].as_string() != account)
                             {
-                                LOG_INFO << j.dump();
-                                std::string key = tool::spellName(jsonData["group"], arr[i].as_string(), "grop:");
+                                LOG_INFO << jsonData.dump();
+                                std::string key = tool::spellName(jsonData["from"], arr[i].as_string(), "grop:");
                                 if (chatStatus_[key])
                                 {
-                                    connectionmanger_.getConn(arr[i].as_string())->send(MessageSplitter::encodeMessage(j.dump()));
+                                    connectionmanger_.getConn(arr[i].as_string())->send(MessageSplitter::encodeMessage(jsonData.dump()));
                                 }
                                 else
                                 {
                                     std::string account1 = arr[i].as_string();
                                     std::string key = "mygp:" + account1.substr(5);
-                                    int count = std::stoi(redis.getData(key, groupname.substr(5)));
-                                    LOG_INFO << "key=" << key << "count=" << count;
-                                    count++;
-                                    redis.hset(key, groupname.substr(5), std::to_string(count));
+                                    {
+                                        std::unique_lock lock(storeMtx2);
+                                        int count = std::stoi(redis.getData(key, groupname.substr(5)));
+                                        LOG_INFO << "key=" << key << "count=" << count;
+                                        count++;
+                                        redis.hset(key, groupname.substr(5), std::to_string(count));
+                                    }
+                                    
                                 }
                                 // std::this_thread::sleep_for(std::chrono::milliseconds(1));
                             }
@@ -444,6 +439,7 @@ void handleData::Megcycle(const TcpConnectionPtr &conn, std::string &meg, redisC
                 {
                     std::lock_guard<std::mutex> lock(timeMutex);
                     lastActiveTime[conn] = recviveTime.now().secondsSinceEpoch();
+                    LOG_INFO << "收到heartbeat来自->" << conn;
                 }
             }
         }

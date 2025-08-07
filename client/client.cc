@@ -30,7 +30,11 @@ int main(int argc, char *argv[])
                                 std::this_thread::sleep_for(std::chrono::seconds(15));
                                 nlohmann::json j;
                                 j["type"] = "tcp";
-                                conn->send(MessageSplitter::encodeMessage(j.dump()));
+                                std::string a = j.dump();
+                                conn->getLoop()->runInLoop([conn, &a]() {
+                                    conn->send(MessageSplitter::encodeMessage(a));
+                                });
+                                
                             }
                         });
         Tcp.detach();
@@ -49,12 +53,24 @@ int main(int argc, char *argv[])
             std::cout << "FTP连接断开" << std::endl;
         }
      });
-     client2Ptr->setMessageCallback([&sendFile_](const mulib::net::TcpClient::TcpConnectionPtr &conn, Buffer *buf, mulib::base::Timestamp recviveTime) {  
+     MessageSplitter megSpl1;
+     client2Ptr->setMessageCallback([&sendFile_,&megSpl1,&pool](const mulib::net::TcpClient::TcpConnectionPtr &conn, Buffer *buf, mulib::base::Timestamp recviveTime) {  
         LOG_DEBUG << "ftp收到消息";
-        std::string msg = buf->retrieveAllAsString();
-        MessageSplitter megSpl;
-        megSpl.append(msg);
-        sendFile_.recvMeg(megSpl,recviveTime);
+        std::string msg1 = buf->retrieveAllAsString();
+        
+        megSpl1.append(msg1);
+        std::vector<std::string> messages;
+        std::string msg;
+        while (megSpl1.nextMessage(msg)) {
+            messages.push_back(msg);
+        }
+        pool.enqueue([messages = std::move(messages),&sendFile_,recviveTime]{
+            for(const auto &item : messages){
+                sendFile_.recvMeg(item,recviveTime);
+            }
+            
+        });
+            
     });MessageSplitter megSpl;
     client1Ptr->setMessageCallback([&handlemeg_, &pool, &megSpl](const mulib::net::TcpClient::TcpConnectionPtr &conn, Buffer *buf, Timestamp recviveTime) {
         LOG_DEBUG << "gchat收到消息";

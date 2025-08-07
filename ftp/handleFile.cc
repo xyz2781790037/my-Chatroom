@@ -3,10 +3,10 @@
 #include <future>
 #include <sys/stat.h>
 #include <sys/sendfile.h>
-void handleFile::getConn(const std::shared_ptr<mulib::net::TcpConnection> conn, mulib::base::Timestamp recviveTime)
+#include <filesystem>
+void handleFile::getConn(const std::shared_ptr<mulib::net::TcpConnection> conn)
 {
     ftpConn = conn;
-    recviveTime_ = recviveTime;
 }
 void handleFile::sendMeg(std::string message){
     ftpConn->send(MessageSplitter::encodeMessage(message));
@@ -21,10 +21,11 @@ std::string handleFile::analysis(std::string &type, std::string input){
 int handleFile::createFile(std::string file){
     int pos = file.find_last_of('/');
     std::string fileName = file.substr(pos + 1);
-    int pos1 = fileName.find_last_of('.');
-    recviveTime_ = recviveTime_.now();
-    fileTimeMap[fileName] = recviveTime_;
-    fileName = fileName.substr(0,pos1) + "_" + recviveTime_.toFormattedString().substr(0, 19) + fileName.substr(pos1);
+    while(std::filesystem::exists("/home/zgyx/myServer/uploads/" + fileName)){
+        int pos1 = fileName.find_last_of('.');
+        fileName = fileName.substr(0,pos1) + "(1)" + fileName.substr(pos1);
+    }
+    fileTimeMap[ftpConn] = fileName;
     chdir("/home/zgyx/myServer/uploads");
     int fileFd = open(fileName.c_str(), O_WRONLY | O_CREAT | O_TRUNC, 0644);
     if(fileFd < 0){
@@ -53,6 +54,7 @@ void handleFile::handleInput(std::string input){
                 LOG_ERROR << "accept fail->" << "\033[1;34m" << strerror(errno) << "\033[0m";
             }
             stor(fileFd,connFd);
+            LOG_INFO << "接收完毕";
         }
         else{
             LOG_ERROR << "创建文件失败";
@@ -73,7 +75,7 @@ void handleFile::handleInput(std::string input){
         }
     }
     else if(type == "info"){
-        std::string message = "999 " + input.substr(5) + "\n\r" + fileTimeMap[input.substr(input.find_last_of('/') + 1)].toFormattedString().substr(0,19);
+        std::string message = "999 " + input.substr(5) + "\n\r" + fileTimeMap[ftpConn];
         LOG_INFO << message;
         sendMeg(message);
     }

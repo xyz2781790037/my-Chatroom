@@ -16,7 +16,7 @@ class sendFile
 {
 public:
     void sendMeg(std::string message);
-    void recvMeg(MessageSplitter &megSpl, mulib::base::Timestamp recviveTime);
+    void recvMeg(std::string, mulib::base::Timestamp recviveTime);
     void getConn(const mulib::net::TcpClient::TcpConnectionPtr conn);
     void getmainConn(const mulib::net::TcpClient::TcpConnectionPtr mainconn);
     mulib::net::TcpClient::TcpConnectionPtr returnConn();

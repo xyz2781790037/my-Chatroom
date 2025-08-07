@@ -3,6 +3,8 @@
 #include <cpp_redis/cpp_redis>
 #include <nlohmann/json.hpp>
 #include "../netlib/net/TcpServer.h"
+extern std::mutex storeMtx;
+extern std::mutex storeMtx2;
 extern std::unordered_map<std::string, std::vector<std::string>> messageQueue;
 extern std::map<std::string, std::mutex> key_mutexes;
 class redisCmd{
@@ -25,13 +27,13 @@ public:
     int see(std::string data);
     bool isfriend(std::string account,std::string name);
     void storeMessages(std::string sender, std::string account,std::string message);
-    void sendOfflineMeg(nlohmann::json &data,const TcpConnectionPtr &conn);
+    void sendOfflineMeg(nlohmann::json &data,const TcpConnectionPtr conn);
     void storeReadMeg(std::vector<std::string> message, std::string key);
-    void sendHistoryMeg(nlohmann::json &data, const TcpConnectionPtr &conn);
+    void sendHistoryMeg(nlohmann::json &data, const TcpConnectionPtr conn);
     void sendHisOffineMeg(nlohmann::json &data, const TcpConnectionPtr &conn);
     void delFriend(std::string user, std::string name);
     void black(std::string user, std::string name);
-    void sendBlackMeg(nlohmann::json &data, const TcpConnectionPtr &conn);
+    void sendBlackMeg(nlohmann::json &data, const TcpConnectionPtr conn);
     void createGroup(nlohmann::json &data);
     void joinGroup(std::string key, std::string account,std::string rank);
     bool isgroup(std::string name);
@@ -39,7 +41,7 @@ public:
     cpp_redis::reply seeGroup(std::string key);
     bool ismygroup(std::string name, std::string account);
     void storeGroupMeg(nlohmann::json &data, std::string msg);
-    void getGroupMeg(std::string key, std::string name, const TcpConnectionPtr &conn);
+    void getGroupMeg(std::string key, std::string name, const TcpConnectionPtr conn);
     void hset(std::string key, std::string field, std::string count);
     void hdel(std::string key, std::string field);
     std::string getLevel(std::string groupname, std::string username);

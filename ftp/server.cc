@@ -23,7 +23,7 @@ int main(){
             MessageSplitter megser;
             megser.append(msg);
             std::string a;
-            handleFile_->getConn(conn, recviveTime);
+            handleFile_->getConn(conn);
             while(megser.nextMessage(a))
             handleFile_->handleInput(a);
         });

@@ -2,28 +2,44 @@
 #include <nlohmann/json.hpp>
 #include "handleData.h"
 #include "../base/threadPool.h"
+
+// #include <signal.h>
+// #include <gperftools/profiler.h>
+// void signalHandler(int signum)
+// {
+//     std::cout << "\n 捕获到 Ctrl+C (SIGINT)，停止 profiler\n";
+//     ProfilerStop();
+//     exit(signum);
+// }
+
 extern ConnectionManager connectionmanger_;
 extern std::mutex timeMutex;
 extern std::unordered_map<mulib::net::TcpConnectionPtr, time_t> lastActiveTime;
 void onConnection(const mulib::net::TcpConnectionPtr &conn)
 {
-    if (conn->connected()){
-        std::cout << "new conncetion\033[1;35m"<< conn << "\033[0m" << std::endl;
+    if (conn->connected())
+    {
+        std::cout << "new conncetion\033[1;35m" << conn << "\033[0m" << std::endl;
     }
 }
-void onMessage(const TcpConnectionPtr &conn, mulib::base::Timestamp recviveTime, std::shared_ptr<handleData> handledata_, std::string meg, redisCmd &redis)
+void onMessage(const TcpConnectionPtr conn, mulib::base::Timestamp recviveTime, std::shared_ptr<handleData> handledata_, std::string meg, redisCmd &redis)
 {
-    handledata_->Megcycle(conn, meg,redis,recviveTime);
+    handledata_->Megcycle(conn, meg, redis, recviveTime);
 }
-int main(){
+int main()
+{
+    // ProfilerStart("cpu.prof");
+    // ::signal(SIGINT, signalHandler);
+
     // mulib::base::Logger::setLogLevel(mulib::base::Logger::DEBUG);
-    ThreadPool pool(32);
+    ThreadPool pool(28);
     auto handledata_ = std::make_shared<handleData>();
     mulib::net::EventLoop mainLoop;
     mulib::net::InetAddress addr(8080);
     mulib::net::TcpServer server(&mainLoop, "GChat", addr);
     server.setThreadNum(16);
-    server.setConnectionCallback([&mainLoop](const mulib::net::TcpConnectionPtr &conn){
+    server.setConnectionCallback([&mainLoop](const mulib::net::TcpConnectionPtr &conn)
+                                 {
         onConnection(conn);
         std::thread([&mainLoop]() {
             while (true) {
@@ -31,15 +47,16 @@ int main(){
                 time_t now = std::time(nullptr);
                 std::vector<mulib::net::TcpConnectionPtr> toClose;
 
-                for (auto &[conn, lastTime] : lastActiveTime)
-                {
-                    if (now - lastTime > 60)
-                    { // 超过60秒没消息
-                        LOG_INFO << "连接 " << conn << " 超时，将关闭";
-                        toClose.push_back(conn);
+                for (auto it = lastActiveTime.begin(); it != lastActiveTime.end();){
+                    if (now - it->second > 60){
+                        toClose.push_back(it->first);
+                        it = lastActiveTime.erase(it);
                     }
+                    else{
+                        ++it;
                     }
-                    
+                }
+
                 // 主线程中关闭连接（不能直接从线程里调用关闭）
                 for (mulib::net::TcpConnectionPtr &oneConn : toClose) {
                     mainLoop.runInLoop([oneConn]() {
@@ -62,9 +79,9 @@ int main(){
                 redis.hset(account,"mystate","offline");
                 connectionmanger_.removeUserConn(account, conn);
             }
-        }
-    });
-    server.setMessageCallback([handledata_, &pool](const TcpConnectionPtr &conn, Buffer *buf, mulib::base::Timestamp recviveTime) {
+        } });
+    server.setMessageCallback([handledata_, &pool](const TcpConnectionPtr &conn, Buffer *buf, mulib::base::Timestamp recviveTime)
+                              {
         std::string msg = buf->retrieveAllAsString();
             conn->splitter_.append(msg);
             std::string buf_;
@@ -73,8 +90,7 @@ int main(){
                     thread_local redisCmd redis;
                     onMessage(conn, recviveTime, handledata_, buf_, redis);
                 });
-            }
-     });
+            } });
     server.start();
     mainLoop.loop(-1);
     return 0;

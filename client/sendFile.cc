@@ -4,9 +4,8 @@
 void sendFile::sendMeg(std::string message){
     ftpConn->send(MessageSplitter::encodeMessage(message));
 }
-void sendFile::recvMeg(MessageSplitter &megSpl,mulib::base::Timestamp recviveTime){
-    std::string buf;
-    while (megSpl.nextMessage(buf)){
+void sendFile::recvMeg(std::string buf,mulib::base::Timestamp recviveTime){
+    // if (megSpl.nextMessage(buf)){
         LOG_DEBUG << buf;
         if (buf.substr(0, 3) == "150" || buf.substr(0, 3) == "151")
         {
@@ -24,7 +23,7 @@ void sendFile::recvMeg(MessageSplitter &megSpl,mulib::base::Timestamp recviveTim
             if(fileFd < 0){
                 sendMeg("cloe");
                 LOG_DEBUG << "文件打开失败";
-                continue;
+                return;
             }
             int dataFd = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
             if (dataFd < 0){
@@ -39,7 +38,7 @@ void sendFile::recvMeg(MessageSplitter &megSpl,mulib::base::Timestamp recviveTim
             fcntl(dataFd, F_SETFL, flags & ~O_NONBLOCK);
             if(::connect(dataFd, (sockaddr*)&clientAddr,sizeof(clientAddr)) < 0){
                 LOG_ERROR << "connect fail:" << "\033[1;34m" << strerror(errno) << "\033[0m";
-                continue;
+                return;
             }
             LOG_DEBUG << "connect success";
             if (buf.substr(0, 3) == "150"){
@@ -66,14 +65,10 @@ void sendFile::recvMeg(MessageSplitter &megSpl,mulib::base::Timestamp recviveTim
             int pos4 = buf.find(' ', pos33 + 1);
             std::string fileSize = buf.substr(pos3 + 1, pos4 - pos3 - 1);
             std::string fileName = buf.substr(pos4 + 1);
-            int pos5 = fileName.find_last_of('/');
-            
-            fileName = fileName.substr(pos5 + 1);
-            int pos6 = fileName.find_last_of('.');
-            fileName = fileName.substr(0,pos6) + "_" + filetime + fileName.substr(pos6);
+            fileName = filetime;
             sendmain(fileName, from, to, myname, fileSize, recviveTime);
         }
-    }
+    // }
 }
 void sendFile::stor(int &fileFd,int &dataFd){
     struct stat st;
@@ -140,11 +135,11 @@ void sendFile::sendmain(std::string fileName,std::string from, std::string to, s
     nlohmann::json j;
     recviveTime = recviveTime.now();
     j["type"] = "message";
-    j["account"] = "user:" + from;
+    j["from"] = "user:" + from;
     std::string things = "[" + recviveTime.toFormattedString().substr(0, 16) + "-" + myname + "]:发送了文件:" + fileName;
     j["things"] = things;
     if (to.substr(0, 4) == "user"){
-        j["receive"] = to;
+        j["to"] = to;
     }
     else{
         j["group"] = to;

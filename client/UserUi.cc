@@ -6,8 +6,9 @@ MessageManager megManager_;
 MessageManager groupMegManager_;
 
 std::atomic<bool> messageReminder(false);
+std::atomic<bool> gmessageReminder(false);
 std::condition_variable chatCv;
-
+std::condition_variable gchatCv;
 Userui::Userui(std::shared_ptr<User> user, const mulib::net::TcpClient::TcpConnectionPtr &Conn, const mulib::net::TcpClient::TcpConnectionPtr ftpConn, mulib::base::Timestamp recviveTime) : user_(user), conn(Conn), recviveTime_(recviveTime),
 ftpConn(ftpConn) {}
 void Userui::ui()
@@ -240,9 +241,7 @@ void Userui::seeFriend(){
                         chatCv.wait(lock, [&chatting]
                                      { return messageReminder || chatting == false; });
                     }
-                    LOG_INFO << "1";
                     if (chatting == false) break;
-                    LOG_INFO << "12";
                     messageReminder = false;
                 } });
             while (chatting){
@@ -651,6 +650,7 @@ void Userui::myGroup(){
             else if (a == "1"){
                 user_->preparation(j, "rank", "all");
                 user_->send(j, conn, "mygp:");
+                std::mutex chatMtx;
                 while(1){
                     if (Type::getUserState() == Type::URETURN){
                         std::cout << "请选择群聊：";
@@ -680,7 +680,13 @@ void Userui::myGroup(){
                                     std::cout << "\033[0C" << std::flush;
                                     Messages.pop();
                                 }
-                                // std::this_thread::sleep_for(std::chrono::milliseconds(200));
+                                {
+                                    std::unique_lock lock(chatMtx);
+                                    gchatCv.wait(lock, [&chatting]
+                                                 { return gmessageReminder || chatting == false; });
+                                }
+                                if (chatting == false) break;
+                                gmessageReminder = false;
                             }
                         });
                         Type::updataUserState(Type::USAT);
@@ -698,6 +704,7 @@ void Userui::myGroup(){
                                     user_->preparation(j, "group", "grop:" + name);
                                     user_->preparation(j, "return", "0");
                                     user_->send(j, conn, "user:");
+                                    gchatCv.notify_one();
                                     break;
                                 }else if(message.empty()){
                                 std::cout << "\033[A";   // 光标上移一行
@@ -768,7 +775,7 @@ void Userui::myGroup(){
                                 else{
                                     nlohmann::json j;
                                     user_->preparation(j, "type", "gmessage");
-                                    user_->preparation(j, "group", "grop:" + name);
+                                    user_->preparation(j, "from", "grop:" + name);
                                     std::string things = headerFormat(user_->getUserMyname()) + message;
                                     user_->preparation(j, "things", things);
                                     user_->send(j, conn, "user:");

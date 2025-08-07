@@ -13,7 +13,7 @@
 #include <atomic>
 class handleFile{
 public:
-    void getConn(const std::shared_ptr<mulib::net::TcpConnection> conn, mulib::base::Timestamp recviveTime);
+    void getConn(const std::shared_ptr<mulib::net::TcpConnection> conn);
     void sendMeg(std::string message);
     void handleInput(std::string input);
 
@@ -30,7 +30,6 @@ private:
     std::unique_ptr<mulib::net::Channel> acceptChannel_; // 接收连接的 Channel
     EventLoop *loop_;
     std::atomic<bool> flag;
-    mulib::base::Timestamp recviveTime_;
-    std::unordered_map<std::string, mulib::base::Timestamp> fileTimeMap;
+    std::unordered_map<std::shared_ptr<mulib::net::TcpConnection>, std::string> fileTimeMap;
 };
 #endif
