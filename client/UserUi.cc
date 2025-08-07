@@ -136,9 +136,10 @@ void Userui::myinformation(){
         std::cout << "请输入新的用户名：";
         std::string newmyname;
         getline(std::cin,newmyname);
-        while (!tool::isValidInput(newmyname, "^[\\u4e00-\\u9fa5a-zA-Z0-9_]+$"))
+        while (!tool::isValidInput(newmyname, "^[\u4e00-\u9fa5a-zA-Z0-9.]{1,16}$"))
         {
             std::cout << "输入不合法,请重新数入" << std::endl;
+            std::cout << "请输入新的用户名：";
             getline(std::cin, newmyname);
         }
         nlohmann::json j;
@@ -397,7 +398,6 @@ void Userui::viewInformation(){
                 name.append(Name);
                 std::cout << "是否同意[Y/n]";
                 getline(std::cin, result);
-                LOG_INFO << result;
                 if (tool::tolowerStr(result) == "y" || result.empty())
                 {
 

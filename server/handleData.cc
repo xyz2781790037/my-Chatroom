@@ -24,11 +24,13 @@ void handleData::Megcycle(const TcpConnectionPtr &conn, std::string &meg, redisC
                 //     conn->send(MessageSplitter::encodeMessage(sendMeg("帐号已注销，请前往管理好友删除", Type::URETURN).dump()));
                 //     return;
                 // }
-                // if (redis.getData("blak:" + b.substr(5), "user:" + a.substr(5)) != "null")
-                // {
-                //     conn->send(MessageSplitter::encodeMessage(sendMeg("\33\r[2K系统：发出但被拒收\n", Type::URETURN, "1").dump()));
-                //     return;
-                // }
+                std::string a = jsonData["from"];
+                std::string b = jsonData["to"];
+                if (redis.getData("blak:" + b.substr(5), "user:" + a.substr(5)) != "null")
+                {
+                    conn->send(MessageSplitter::encodeMessage(sendMeg("\33\r[2K系统：发出但被拒收\n", Type::URETURN, "1").dump()));
+                    return;
+                }
                 if (connectionmanger_.isOnline(jsonData["to"])){
                     LOG_DEBUG << jsonData["to"] << "在线";
                     connectionmanger_.getConn(jsonData["to"])->send(MessageSplitter::encodeMessage(jsonData.dump()));
