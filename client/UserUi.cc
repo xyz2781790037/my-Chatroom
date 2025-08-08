@@ -767,6 +767,15 @@ void Userui::myGroup(){
                                         fileSystem(" grop:" + name);
                                         Type::updataUserState(Type::USAT);
                                     }
+                                    else if(message == "/h"){
+                                        nlohmann::json j;
+                                        user_->preparation(j, "type", "history");
+                                        std::string key = "regp:" + name;
+                                        user_->preparation(j, "account", key);
+                                        user_->preparation(j, "name", "mygp:" + user_->getUserName());
+                                        user_->send(j, conn);
+                                        std::cout << "正在加载历史消息" << std::endl;
+                                    }
                                     else if (message.substr(0, 5) == "/del "){
                                         nlohmann::json j;
                                         user_->preparation(j, "type", "cmd");

@@ -438,7 +438,13 @@ void handleData::Megcycle(const TcpConnectionPtr conn, std::string &meg, redisCm
                 conn->send(MessageSplitter::encodeMessage(sendMeg("----------------------", Type::URETURN).dump()));
             }
             else if(type == Type::HISTORY){
-                redis.sendHistoryMeg(jsonData, conn);
+                std::string key = jsonData["account"];
+                if(key.substr(0,5) == "read:"){
+                    redis.sendHistoryMeg(jsonData, conn);
+                }
+                else{
+                    redis.getGroupMeg(key, jsonData["name"], conn, 0);
+                }
             }
             else if (type == Type::TCP)
             {

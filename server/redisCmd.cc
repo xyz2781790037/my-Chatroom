@@ -546,11 +546,11 @@ void redisCmd::storeGroupMeg(nlohmann::json &data, std::string msg)
     redisClient.rpush("regp:" + name.substr(5), {msg});
     redisClient.sync_commit();
 }
-void redisCmd::getGroupMeg(std::string key, std::string name, const TcpConnectionPtr conn)
+void redisCmd::getGroupMeg(std::string key, std::string name, const TcpConnectionPtr conn,int amount)
 {
     int count = 0;
     std::string nkey = "regp:" + key.substr(5);
-    auto reply = redisClient.lrange(nkey, 0, -1);
+    auto reply = redisClient.lrange(nkey, amount, -1);
     redisClient.sync_commit();
     auto result = reply.get();
     for (const auto &item : result.as_array())

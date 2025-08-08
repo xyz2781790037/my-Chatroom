@@ -41,7 +41,7 @@ public:
     cpp_redis::reply seeGroup(std::string key);
     bool ismygroup(std::string name, std::string account);
     void storeGroupMeg(nlohmann::json &data, std::string msg);
-    void getGroupMeg(std::string key, std::string name, const TcpConnectionPtr conn);
+    void getGroupMeg(std::string key, std::string name, const TcpConnectionPtr conn,int amount);
     void hset(std::string key, std::string field, std::string count);
     void hdel(std::string key, std::string field);
     std::string getLevel(std::string groupname, std::string username);
