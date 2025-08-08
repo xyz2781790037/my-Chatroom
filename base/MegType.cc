@@ -103,6 +103,9 @@ Type::types Type::getDataType(std::string datatype)
     else if(datatype == "tcp"){
         return TCP;
     }
+    else if(datatype == "history"){
+        return HISTORY;
+    }
     else{
         LOG_FATAL << "getType error";
     }

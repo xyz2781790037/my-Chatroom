@@ -394,9 +394,7 @@ void redisCmd::storeReadMeg(std::vector<std::string> messages, std::string key)
 void redisCmd::sendHistoryMeg(nlohmann::json &data, const TcpConnectionPtr conn)
 {
     int count = 0;
-    std::string a = data["account"];
-    std::string b = data["name"];
-    std::string key = tool::swapsort(a, b, "read:");
+    std::string key = data["account"];
     auto reply = redisClient.lrange(key, 0, -1);
     redisClient.sync_commit();
     auto result = reply.get();
@@ -640,4 +638,19 @@ int redisCmd::getVerifyLen(std::string key)
         return result.as_integer();
     }
     return 0;
+}
+void redisCmd::sendHisMeg1(nlohmann::json &data, const TcpConnectionPtr conn){
+    std::string allStr;
+    std::string a = data["account"];
+    std::string b = data["name"];
+    std::string key = tool::swapsort(a, b, "read:");
+    auto reply = redisClient.lrange(key, -100, -1);
+    redisClient.sync_commit();
+    auto result = reply.get();
+    if (result.is_array()){
+        for (const auto &item : result.as_array()){
+            allStr += MessageSplitter::encodeMessage(item.as_string());
+        }
+        conn->send(allStr);
+    }
 }

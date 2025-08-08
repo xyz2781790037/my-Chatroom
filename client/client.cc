@@ -7,7 +7,7 @@
 #include "sendFile.h"
 int main(int argc, char *argv[])
 {
-    ThreadPool pool(16);
+    ThreadPool pool(32);
     signal(SIGPIPE, SIG_IGN);
     TermiosGuard guard;
     // mulib::base::Logger::setLogLevel(mulib::base::Logger::DEBUG);
@@ -75,8 +75,9 @@ int main(int argc, char *argv[])
     client1Ptr->setMessageCallback([&handlemeg_, &pool, &megSpl](const mulib::net::TcpClient::TcpConnectionPtr &conn, Buffer *buf, Timestamp recviveTime) {
         LOG_DEBUG << "gchat收到消息";
         std::string buf_ = buf->retrieveAllAsString();
+        // LOG_INFO << "\033[1;35m" << buf_ << "\033[0m";
         megSpl.append(buf_);
-    
+
         // 主线程中先拆好包
         std::vector<std::string> messages;
         std::string msg;

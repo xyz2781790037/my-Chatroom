@@ -16,6 +16,7 @@ const std::string COLOUREND = "\033[0m";
 const std::string COLOUR2 = "\033[1;31m";//32深绿
 const std::string COLOUR3 = "\033[1;38m";// 37白色
 const std::string COLOUR4 = "\033[1;33m"; // 黄色
+extern std::unordered_map<std::string, bool> chatName;
 class Userui{
 public:
     Userui(std::shared_ptr<User> user, const mulib::net::TcpClient::TcpConnectionPtr &Conn, const mulib::net::TcpClient::TcpConnectionPtr ftpConn, mulib::base::Timestamp recviveTime);

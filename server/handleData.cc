@@ -7,7 +7,8 @@ std::unordered_map<std::string, std::vector<std::string>> messageQueue;
 std::mutex timeMutex;
 std::map<std::string, std::mutex> key_mutexes;
 ThreadPool pool(16);
-void handleData::Megcycle(const TcpConnectionPtr &conn, std::string &meg, redisCmd &redis, mulib::base::Timestamp recviveTime)
+
+void handleData::Megcycle(const TcpConnectionPtr conn, std::string &meg, redisCmd &redis, mulib::base::Timestamp recviveTime)
 {
     LOG_DEBUG << "Megcycle running in thread: " << std::this_thread::get_id() << std::endl;
     if (meg[0] == '{' && meg[meg.size() - 1] == '}')
@@ -23,7 +24,7 @@ void handleData::Megcycle(const TcpConnectionPtr &conn, std::string &meg, redisC
                 // {
                 //     conn->send(MessageSplitter::encodeMessage(sendMeg("帐号已注销，请前往管理好友删除", Type::URETURN).dump()));
                 //     return;
-                // }
+                // // }
                 std::string a = jsonData["from"];
                 std::string b = jsonData["to"];
                 if (redis.getData("blak:" + b.substr(5), "user:" + a.substr(5)) != "null")
@@ -436,6 +437,9 @@ void handleData::Megcycle(const TcpConnectionPtr &conn, std::string &meg, redisC
                 }
                 conn->send(MessageSplitter::encodeMessage(sendMeg("----------------------", Type::URETURN).dump()));
             }
+            else if(type == Type::HISTORY){
+                redis.sendHistoryMeg(jsonData, conn);
+            }
             else if (type == Type::TCP)
             {
                 {
@@ -821,7 +825,7 @@ void handleData::sendOfflineMeg(const TcpConnectionPtr &conn, nlohmann::json &js
 {
     if (redis.isfriend(jsonData["account"], jsonData["name"]))
     {
-        redis.sendHistoryMeg(jsonData, conn);
+        redis.sendHisMeg1(jsonData, conn);
         redis.sendOfflineMeg(jsonData, conn);
         redis.sendHisOffineMeg(jsonData, conn);
         redis.sendBlackMeg(jsonData, conn);

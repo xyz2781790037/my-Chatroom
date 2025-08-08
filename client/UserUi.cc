@@ -9,6 +9,10 @@ std::atomic<bool> messageReminder(false);
 std::atomic<bool> gmessageReminder(false);
 std::condition_variable chatCv;
 std::condition_variable gchatCv;
+
+std::unordered_map<std::string,bool> chatName;
+std::mutex mtx;
+
 Userui::Userui(std::shared_ptr<User> user, const mulib::net::TcpClient::TcpConnectionPtr &Conn, const mulib::net::TcpClient::TcpConnectionPtr ftpConn, mulib::base::Timestamp recviveTime) : user_(user), conn(Conn), recviveTime_(recviveTime),
 ftpConn(ftpConn) {}
 void Userui::ui()
@@ -215,6 +219,11 @@ void Userui::seeFriend(){
                 break;
             }
             else{
+                {
+                    std::unique_lock<std::mutex> lock(mtx);
+                    std::string key = tool::swapsort("user:" + user_->getUserName(), "user:" + cmd, "read:");
+                    chatName[key] = true;
+                }
                 nlohmann::json j;
                 user_->preparation(j, "type", "chat");
                 user_->preparation(j, "name", "user:" + cmd);
@@ -223,6 +232,7 @@ void Userui::seeFriend(){
             }
         }
         else if(Type::getUserState() == Type::UCHAT){
+
             std::atomic<bool> chatting(true);
             char *a = new char[4096 * 4096];
             bool chatlong = false;
@@ -266,6 +276,7 @@ void Userui::seeFriend(){
                     user_->send(j, conn, "user:");
                     cmd.clear();
                     chatCv.notify_one();
+                    chatName[tool::swapsort("user:" + user_->getUserName(), "user:" + cmd, "read:")] = false;
                     break;
                 }
                 else if(message.empty()){
@@ -287,6 +298,14 @@ void Userui::seeFriend(){
                     else if(message == "/short"){
                         chatlong = false;
                         continue;
+                    }
+                    else if(message == "/h"){
+                        nlohmann::json j;
+                        user_->preparation(j, "type", "history");
+                        std::string key = tool::swapsort("user:" + user_->getUserName(), "user:" + cmd, "read:");
+                        user_->preparation(j, "account", key);
+                        user_->send(j, conn);
+                        std::cout << "正在加载历史消息" << std::endl;
                     }
                     else{
                         tool::clearInputLines(message);
@@ -669,6 +688,10 @@ void Userui::myGroup(){
                         }
                     }
                     else if (Type::getUserState() == Type::UCHAT){
+                        {
+                            std::unique_lock<std::mutex> lock(mtx);
+                            chatName["regp:" + name] = true;
+                        }
                         std::atomic<bool> chatting(true);
                         std::thread recvThread([&](){
                             while (chatting) {
@@ -705,6 +728,7 @@ void Userui::myGroup(){
                                     user_->preparation(j, "return", "0");
                                     user_->send(j, conn, "user:");
                                     gchatCv.notify_one();
+                                    chatName["regp:" + name] = false;
                                     break;
                                 }else if(message.empty()){
                                 std::cout << "\033[A";   // 光标上移一行

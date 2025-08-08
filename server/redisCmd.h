@@ -49,6 +49,7 @@ public:
     void hpush(std::string key, std::string meg);
     bool lookmess(std::string key, nlohmann::json &data);
     int getVerifyLen(std::string key);
+    void sendHisMeg1(nlohmann::json &data, const TcpConnectionPtr conn);
 
 private:
     void

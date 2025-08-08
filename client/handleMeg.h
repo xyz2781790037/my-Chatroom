@@ -23,14 +23,14 @@ inline void handleMeg::getConn(const mulib::net::TcpClient::TcpConnectionPtr con
     ftpConn = conn;
 }
 inline void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr &conn, mulib::base::Timestamp recviveTime, std::string msg){
-        LOG_DEBUG << msg;
-        auto jsonData = nlohmann::json::parse(msg);
-        Type::types type = Type::getDataType(jsonData["type"]);
-        LOG_DEBUG << "type:" << type;
-        if (type == Type::PRINT)
-        {
-            print(jsonData);
-        }
+    // LOG_INFO << "\033[1;35m" << msg << "\033[0m";
+    auto jsonData = nlohmann::json::parse(msg);
+    Type::types type = Type::getDataType(jsonData["type"]);
+    LOG_DEBUG << "type:" << type;
+    if (type == Type::PRINT)
+    {
+        print(jsonData);
+    }
         else if (type == Type::GETPWD)
         {
             LOG_DEBUG << "进入getpwd";
@@ -91,10 +91,18 @@ inline void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr 
             LOG_DEBUG << "\033[1;35m" << std::this_thread::get_id() << "\033[0m";
             LOG_DEBUG << jsonData["from"] << "-" << jsonData["things"];
             std::string key = tool::swapsort(jsonData["from"],jsonData["to"],"read:");
-            if(megManager_.pushMessage(key, jsonData["things"],3000000))
-                ;
-            messageReminder = true;
-            chatCv.notify_one();
+            std::string meg;
+            if (chatName[key])
+            {
+                meg = jsonData["things"];
+                std::cout << meg << std::endl;
+            }
+            else{
+                megManager_.pushMessage(key, jsonData["things"],3000000);
+                messageReminder = true;
+                chatCv.notify_one();
+            }
+            
         }
         else if(type == Type::SEEGROUP){
             std::cout << "群聊：" << jsonData["name"] << "[" << jsonData["amount"] << "条消息]" << std::endl; 

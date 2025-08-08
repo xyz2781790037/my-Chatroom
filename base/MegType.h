@@ -32,7 +32,8 @@ namespace Type{
         FILE,
         LOOK,
         LIST,
-        TCP
+        TCP,
+        HISTORY
     };
     enum Status
     {
