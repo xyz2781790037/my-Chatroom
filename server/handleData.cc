@@ -304,7 +304,7 @@ void handleData::Megcycle(const TcpConnectionPtr conn, std::string &meg, redisCm
             {
                 if (redis.ismygroup(jsonData["name"], jsonData["account"]))
                 {
-                    redis.getGroupMeg(jsonData["name"], jsonData["account"], conn);
+                    redis.getGroupMeg(jsonData["name"], jsonData["account"], conn,100);
                     std::string key = tool::spellName(jsonData["name"], jsonData["account"], "grop:");
                     chatStatus_[key] = true;
                     conn->send(MessageSplitter::encodeMessage(sendMeg("开始聊天", Type::UCHAT).dump()));
