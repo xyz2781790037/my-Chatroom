@@ -7,7 +7,6 @@
 #include "../base/MegType.h"
 #include "../base/MessageSplitter.h"
 #include "../base/verCode.h"
-#include "../base/logOn.h"
 #include "ConnectionManager.h"
 #include "../base/tool.h"
 class handleData

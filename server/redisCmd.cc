@@ -1,6 +1,6 @@
 #include "redisCmd.h"
 #include "../netlib/base/logger.h"
-#include "../base/logOn.h"
+#include "../base/MegType.h"
 #include "../base/tool.h"
 std::mutex storeMtx;
 std::mutex storeMtx2;

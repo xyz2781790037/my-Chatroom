@@ -37,7 +37,7 @@ namespace mulib{
             void setHighWaterMarkCallback(const HighWaterMarkCallback &cb, size_t highWaterMark){
                 highWaterMarkCallback_ = cb;
                 highWaterMark_ = highWaterMark;
-            }
+            } // 当发送缓冲区大小超过 highWaterMark 阈值时触发
 
             void connectEstablished();
             void connectDestroyed();
@@ -80,7 +80,6 @@ namespace mulib{
             size_t highWaterMark_;
             Buffer inputBuffer_;
             Buffer outputBuffer_;
-
         };
     }
 }
