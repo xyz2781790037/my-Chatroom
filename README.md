@@ -47,12 +47,58 @@
 > 8. *优化发消息逻辑，增加发消息速度*
 > 9. *修改进入聊天加载100条历史消息*
 
-安装readline
+### 环境准备
+Linux系统（推荐 Ubuntu 等）
+#### 客户端需要配置
+
+#####  安装readline
 ```
 sudo apt install libreadline-dev
 ```
-安装json
+#####  安装json
 ```
 sudo apt update
 sudo apt install nlohmann-json-dev
+```
+
+#### 服务端需要配置cpp_redis
+##### 安装cpp_redis
+- 安装依赖
+```
+sudo apt update
+sudo apt install cmake g++ make libssl-dev
+```
+- 安装库
+``` 
+git clone https://github.com/Cylix/cpp_redis.git
+cd cpp_redis
+git submodule update --init --recursive  # 拉取 tacopie 子模块
+```
+- 编译和安装
+```
+mkdir build && cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+make -j32
+sudo make install
+```
+##### CURL::libcurl
+```
+sudo apt update
+sudo apt install libcurl4-openssl-dev
+```
+### 运行
+#### 运行服务器
+```
+cd build/server
+./server
+```
+#### 运行ftp
+```
+cd build/ftp
+./ftp
+```
+#### 启用客户端
+```
+cd build/client
+./client [ip]
 ```
