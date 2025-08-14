@@ -15,6 +15,7 @@
 class sendFile
 {
 public:
+    sendFile(std::string ip) : IP(ip){}
     void sendMeg(std::string message);
     void recvMeg(std::string, mulib::base::Timestamp recviveTime);
     void getConn(const mulib::net::TcpClient::TcpConnectionPtr conn);
@@ -28,5 +29,6 @@ private:
     mulib::net::TcpClient::TcpConnectionPtr mainConn;
     int createFile(std::string file);
     void sendmain(std::string fileName, std::string from, std::string to, std::string myname, std::string fileSize, mulib::base::Timestamp recviveTime);
+    std::string IP;
 };
 #endif

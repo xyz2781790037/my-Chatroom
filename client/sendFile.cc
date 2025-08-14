@@ -33,7 +33,7 @@ void sendFile::recvMeg(std::string buf,mulib::base::Timestamp recviveTime){
             sockaddr_in clientAddr;
             clientAddr.sin_family = AF_INET;
             clientAddr.sin_port = htons(std::stoi(port));
-            inet_pton(AF_INET, "10.30.0.127", &clientAddr.sin_addr);
+            inet_pton(AF_INET, IP.c_str(), &clientAddr.sin_addr);
             int flags = fcntl(dataFd, F_GETFL, 0);
             fcntl(dataFd, F_SETFL, flags & ~O_NONBLOCK);
             if(::connect(dataFd, (sockaddr*)&clientAddr,sizeof(clientAddr)) < 0){

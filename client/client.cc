@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     mulib::net::InetAddress addr2(argv[1], 8088);
     auto client1Ptr = std::make_shared<mulib::net::TcpClient>(mainLoop.get(), addr);
     auto client2Ptr = std::make_shared<mulib::net::TcpClient>(mainLoop.get(), addr2);
-    sendFile sendFile_;
+    sendFile sendFile_(argv[1]);
     logon clientLog(client1Ptr);
     client1Ptr->setConnectionCallback([&clientLog,&sendFile_](const mulib::net::TcpClient::TcpConnectionPtr &conn) {
     if (conn->connected()) {

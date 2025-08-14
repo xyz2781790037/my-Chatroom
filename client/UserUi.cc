@@ -746,6 +746,17 @@ void Userui::myGroup(){
                                         std::cout << "/del username" << std::endl;
                                         Type::updataUserState(Type::USAT);
                                     }
+                                    else if (message == "/h")
+                                    {
+                                        nlohmann::json j;
+                                        user_->preparation(j, "type", "history");
+                                        std::string key = "regp:" + name;
+                                        user_->preparation(j, "account", key);
+                                        user_->preparation(j, "name", "mygp:" + user_->getUserName());
+                                        user_->send(j, conn);
+                                        std::cout << "正在加载历史消息" << std::endl;
+                                        
+                                    }
                                     else if (message.size() < 5 || message.find_first_of(' ') != message.find_last_of(' ')){
                                         std::cout << "系统：" << COLOUR4 << "指令不合法!" << COLOUREND << std::endl;
                                         Type::updataUserState(Type::USAT);
@@ -766,15 +777,6 @@ void Userui::myGroup(){
                                     else if(message == "/file"){
                                         fileSystem(" grop:" + name);
                                         Type::updataUserState(Type::USAT);
-                                    }
-                                    else if(message == "/h"){
-                                        nlohmann::json j;
-                                        user_->preparation(j, "type", "history");
-                                        std::string key = "regp:" + name;
-                                        user_->preparation(j, "account", key);
-                                        user_->preparation(j, "name", "mygp:" + user_->getUserName());
-                                        user_->send(j, conn);
-                                        std::cout << "正在加载历史消息" << std::endl;
                                     }
                                     else if (message.substr(0, 5) == "/del "){
                                         nlohmann::json j;

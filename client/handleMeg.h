@@ -111,10 +111,16 @@ inline void handleMeg::recviveMeg(const mulib::net::TcpClient::TcpConnectionPtr 
             LOG_DEBUG << jsonData["from"] << "-" << jsonData["things"];
             std::string key = jsonData["from"];
             LOG_DEBUG << "\033[1;35m" << std::this_thread::get_id() << "\033[0m";
-            if (groupMegManager_.pushMessage(key, jsonData["things"], 3000000))
-                ;
-            gmessageReminder = true;
-            gchatCv.notify_one();
+            std::string meg;
+            if (chatName[key]){
+                meg = jsonData["things"];
+                std::cout << meg << std::endl;
+            }
+            else{
+                groupMegManager_.pushMessage(key, jsonData["things"], 3000000);
+                gmessageReminder = true;
+                gchatCv.notify_one();
+            }
         }
     
 }
