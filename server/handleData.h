@@ -29,6 +29,20 @@ private:
     void see(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
     void sendOfflineMeg(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
     void handleCmd(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
+    void offMeg(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
+    void endChat(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
+    void deleteEnd(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
+    void balckName(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
+    void createGroup(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
+    void deleteGroup(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
+    void seeGroup(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
+    void gChat(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
+    void handlegMessage(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
+    void handleFile(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
+    void lookFile(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
+    void list(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
+    void seeHistory(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
+    void heartTcp(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis, mulib::base::Timestamp recviveTime);
 
     std::string code;
 };

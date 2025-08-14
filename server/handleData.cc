@@ -20,11 +20,6 @@ void handleData::Megcycle(const TcpConnectionPtr conn, std::string &meg, redisCm
             Type::types type = Type::getDataType(jsonData["type"]);
             LOG_DEBUG << "type is :" << type;
             if (type == Type::MESSAGE){
-                // if (!redis.isAccount(b))
-                // {
-                //     conn->send(MessageSplitter::encodeMessage(sendMeg("帐号已注销，请前往管理好友删除", Type::URETURN).dump()));
-                //     return;
-                // // }
                 std::string a = jsonData["from"];
                 std::string b = jsonData["to"];
                 if (redis.getData("blak:" + b.substr(5), "user:" + a.substr(5)) != "null")
@@ -121,243 +116,39 @@ void handleData::Megcycle(const TcpConnectionPtr conn, std::string &meg, redisCm
             }
             else if (type == Type::OFFMEG)
             {
-                int sum = 0;
-                int result1 = redis.see(jsonData["account"]);
-                int result2 = redis.see(jsonData["group"]);
-                std::string account = jsonData["account"];
-                std::string key = "mess:user:" + account.substr(5);
-                auto result3 = redis.getVerifyLen(key);
-                sum = result1 + result2;
-                nlohmann::json j;
-                std::string meg = "你有" + std::to_string(sum) + "条未读消息";
-                std::string meg2 = "你有" + std::to_string(result3) + "条验证消息";
-                LOG_INFO << meg;
-                if (sum != 0)
-                {
-                    conn->send(MessageSplitter::encodeMessage(sendMeg(meg, Type::UEXECUTE).dump()));
-                    std::this_thread::sleep_for(std::chrono::milliseconds(1));
-                }
-                if (result3 != 0)
-                {
-                    conn->send(MessageSplitter::encodeMessage(sendMeg(meg2, Type::UEXECUTE).dump()));
-                }
-                else
-                {
-                    conn->send(MessageSplitter::encodeMessage(sendMeg("", Type::UEXECUTE).dump()));
-                }
+                offMeg(conn, jsonData, redis);
             }
             else if (type == Type::ENDCHAT)
             {
-                std::string key;
-                if (jsonData["return"] == "1")
-                {
-                    key = tool::spellName(jsonData["account"], jsonData["name"], "chat:");
-                }
-                else if (jsonData["return"] == "0")
-                {
-                    key = tool::spellName(jsonData["group"], jsonData["account"], "grop:");
-                }
-                LOG_INFO << "end key=" << key;
-                chatStatus_[key] = false;
+                endChat(conn, jsonData, redis);
             }
             else if (type == Type::DELFRIEND)
             {
-                if (redis.isfriend(jsonData["account"], jsonData["name"]))
-                {
-                    redis.delFriend(jsonData["account"], jsonData["name"]);
-                    conn->send(MessageSplitter::encodeMessage(sendMeg("删除成功！", Type::URETURN).dump()));
-                }
-                else
-                {
-                    conn->send(MessageSplitter::encodeMessage(sendMeg("好友或用户不存在！", Type::URETURN).dump()));
-                }
+                deleteEnd(conn, jsonData, redis);
             }
             else if (type == Type::BLACK)
             {
-                if (jsonData.contains("return"))
-                {
-                    if (redis.getData(jsonData["account"], jsonData["name"]) != "null")
-                    {
-                        redis.hdel(jsonData["account"], jsonData["name"]);
-                        conn->send(MessageSplitter::encodeMessage(sendMeg("已解除拉黑", Type::USAT).dump()));
-                    }
-                    else
-                    {
-                        conn->send(MessageSplitter::encodeMessage(sendMeg("名单上不存在", Type::USAT).dump()));
-                    }
-                    return;
-                }
-                if (redis.isfriend(jsonData["account"], jsonData["name"]))
-                {
-                    redis.black(jsonData["account"], jsonData["name"]);
-                    conn->send(MessageSplitter::encodeMessage(sendMeg("已拉黑", Type::URETURN).dump()));
-                }
-                else
-                {
-                    conn->send(MessageSplitter::encodeMessage(sendMeg("好友或用户不存在！", Type::URETURN).dump()));
-                }
+                balckName(conn, jsonData, redis);
             }
             else if (type == Type::CREATEGROUP)
             {
-                if (redis.isgroup(jsonData["name"]) == false)
-                {
-                    redis.createGroup(jsonData);
-                    conn->send(MessageSplitter::encodeMessage(sendMeg("创建成功！", Type::UEXECUTE).dump()));
-                }
-                else
-                {
-                    conn->send(MessageSplitter::encodeMessage(sendMeg("群聊已存在", Type::UEXECUTE).dump()));
-                }
+                createGroup(conn, jsonData, redis);
             }
             else if (type == Type::DELGROUP)
             {
-                std::string key = jsonData["name"];
-                if (redis.isgroup(jsonData["name"]) == false)
-                {
-                    conn->send(MessageSplitter::encodeMessage(sendMeg("群聊不存在", Type::UWAIT).dump()));
-                    return;
-                }
-                if (redis.getData("grop:" + key, jsonData["account"]) == "null")
-                {
-                    conn->send(MessageSplitter::encodeMessage(sendMeg("你没有加入该群", Type::UWAIT).dump()));
-                    return;
-                }
-                if ((redis.getData("grop:" + key, jsonData["account"]) == "member" || redis.getData("grop:" + key, jsonData["account"]) == "admin") && !jsonData.contains("return"))
-                {
-                    conn->send(MessageSplitter::encodeMessage(sendMeg("你正在退出群聊", Type::URETURN).dump()));
-                    return;
-                }
-                if (redis.getData("grop:" + key, jsonData["account"]) == "owner" && !jsonData.contains("return"))
-                {
-                    conn->send(MessageSplitter::encodeMessage(sendMeg("你是群主，退出后将解散群聊", Type::URETURN).dump()));
-                }
-                else if (redis.getData("grop:" + key, jsonData["account"]) == "owner" && jsonData.contains("return"))
-                {
-                    redis.delPerson(jsonData["name"], jsonData["account"], "owner");
-                    conn->send(MessageSplitter::encodeMessage(sendMeg("解散成功", Type::URETURN).dump()));
-                }
-                else
-                {
-                    redis.delPerson(jsonData["name"], jsonData["account"], "member");
-                    conn->send(MessageSplitter::encodeMessage(sendMeg("退出成功", Type::URETURN).dump()));
-                }
+                deleteGroup(conn, jsonData, redis);
             }
             else if (type == Type::SEEGROUP)
             {
-                auto result = redis.seeGroup(jsonData["account"]);
-                LOG_INFO << "退出seegroup";
-                if (result != cpp_redis::reply())
-                {
-                    const auto &arr = result.as_array();
-                    LOG_INFO << "rank=" << jsonData["rank"];
-                    if (jsonData["rank"] == "all")
-                    {
-                        for (int i = 0; i + 1 < arr.size(); i += 2)
-                        {
-                            nlohmann::json j;
-                            j["name"] = arr[i].as_string();
-                            j["amount"] = arr[i + 1].as_string();
-                            j["type"] = "seegroup";
-                            LOG_INFO << "发送:" << j.dump();
-                            conn->send(MessageSplitter::encodeMessage(j.dump()));
-                            std::this_thread::sleep_for(std::chrono::milliseconds(1));
-                        }
-                    }
-                    else if (jsonData["rank"] == "owner")
-                    {
-                        std::string account = jsonData["account"];
-                        std::string field = "user:" + account.substr(5);
-                        for (int i = 0; i + 1 < arr.size(); i += 2)
-                        {
-                            nlohmann::json j;
-                            j["name"] = arr[i].as_string();
-                            if (redis.getData("grop:" + arr[i].as_string(), field) == "owner")
-                            {
-                                j["type"] = "seegroup";
-                                LOG_INFO << "发送:" << j.dump();
-                                conn->send(MessageSplitter::encodeMessage(j.dump()));
-                                std::this_thread::sleep_for(std::chrono::milliseconds(1));
-                            }
-                        }
-                    }
-                    else
-                    {
-                        std::string account = jsonData["account"];
-                        std::string field = "user:" + account.substr(5);
-                        for (int i = 0; i + 1 < arr.size(); i += 2)
-                        {
-                            nlohmann::json j;
-                            j["name"] = arr[i].as_string();
-                            if (redis.getData("grop:" + arr[i].as_string(), field) != "owner")
-                            {
-                                j["type"] = "seegroup";
-                                LOG_INFO << "发送:" << j.dump();
-                                conn->send(MessageSplitter::encodeMessage(j.dump()));
-                                std::this_thread::sleep_for(std::chrono::milliseconds(1));
-                            }
-                        }
-                    }
-                }
-                conn->send(MessageSplitter::encodeMessage(sendMeg("----------------------", Type::URETURN).dump()));
+                seeGroup(conn, jsonData, redis);
             }
             else if (type == Type::GCHAT)
             {
-                if (redis.ismygroup(jsonData["name"], jsonData["account"]))
-                {
-                    redis.getGroupMeg(jsonData["name"], jsonData["account"], conn,100);
-                    std::string key = tool::spellName(jsonData["name"], jsonData["account"], "grop:");
-                    chatStatus_[key] = true;
-                    conn->send(MessageSplitter::encodeMessage(sendMeg("开始聊天", Type::UCHAT).dump()));
-                }
-                else
-                {
-                    conn->send(MessageSplitter::encodeMessage(sendMeg("群聊不存在", Type::URETURN).dump()));
-                }
+                gChat(conn, jsonData, redis);
             }
             else if (type == Type::GMESSAGE)
             {
-                std::string account = jsonData["account"];
-                if (redis.getData(jsonData["from"], account) != "null")
-                {
-                    redis.storeGroupMeg(jsonData, jsonData.dump());
-
-                    std::string groupname = jsonData["from"];
-                    auto result = redis.seeGroup(jsonData["from"]);
-                    if (result != cpp_redis::reply())
-                    {
-                        const auto &arr = result.as_array();
-                        for (int i = 0; i + 1 < arr.size(); i += 2)
-                        {
-                            if (arr[i].as_string() != account)
-                            {
-                                LOG_INFO << jsonData.dump();
-                                std::string key = tool::spellName(jsonData["from"], arr[i].as_string(), "grop:");
-                                if (chatStatus_[key])
-                                {
-                                    connectionmanger_.getConn(arr[i].as_string())->send(MessageSplitter::encodeMessage(jsonData.dump()));
-                                }
-                                else
-                                {
-                                    std::string account1 = arr[i].as_string();
-                                    std::string key = "mygp:" + account1.substr(5);
-                                    {
-                                        std::unique_lock lock(storeMtx2);
-                                        int count = std::stoi(redis.getData(key, groupname.substr(5)));
-                                        LOG_INFO << "key=" << key << "count=" << count;
-                                        count++;
-                                        redis.hset(key, groupname.substr(5), std::to_string(count));
-                                    }
-                                    
-                                }
-                                // std::this_thread::sleep_for(std::chrono::milliseconds(1));
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    conn->send(MessageSplitter::encodeMessage(sendMeg("\33[2K\r你已被移除群聊，无法发消息\n", Type::UserStatus::USAT, "1").dump()));
-                }
+                handlegMessage(conn, jsonData, redis);
             }
             else if (type == Type::CMD)
             {
@@ -365,94 +156,22 @@ void handleData::Megcycle(const TcpConnectionPtr conn, std::string &meg, redisCm
             }
             else if (type == Type::FILE)
             {
-                std::string key = jsonData["value"];
-                LOG_INFO << "FILE::key = " << key;
-                redis.hset(key, jsonData["fileName"], jsonData["size"]);
+                handleFile(conn, jsonData, redis);
             }
             else if (type == Type::LOOK)
             {
-                if (redis.getData(jsonData["key"], jsonData["name"]) != "null")
-                {
-                    LOG_INFO << "存在文件";
-                    conn->send(MessageSplitter::encodeMessage(sendMeg("", Type::URETURN).dump()));
-                }
-                else
-                {
-                    conn->send(MessageSplitter::encodeMessage(sendMeg("", Type::USAT).dump()));
-                }
+                lookFile(conn, jsonData, redis);
             }
             else if (type == Type::LIST)
             {
-                auto result = redis.seeGroup(jsonData["key"]);
-                if (result != cpp_redis::reply())
-                {
-                    const auto &arr = result.as_array();
-                    std::string pan = jsonData["account"];
-                    if (pan[0] == '1')
-                    {
-                        for (int i = 0; i + 1 < arr.size(); i += 2)
-                        {
-                            std::string fileName = arr[i].as_string();
-                            std::string fileSize = arr[i + 1].as_string();
-                            conn->send(MessageSplitter::encodeMessage(sendMeg(fileName + "   " + fileSize, Type::UWAIT).dump()));
-                            std::this_thread::sleep_for(std::chrono::microseconds(100));
-                        }
-                    }
-                    else if (pan[0] == '2')
-                    {
-                        std::vector<std::string> admin;
-                        std::vector<std::string> member;
-                        std::string owner;
-                        for (int i = 0; i + 1 < arr.size(); i += 2)
-                        {
-                            std::string name = arr[i].as_string();
-                            std::string rank = arr[i + 1].as_string();
-                            std::string myname = redis.getData(name, "myname");
-                            if (rank == "owner")
-                            {
-                                owner = "\033[1;33m" + myname + "(" + name.substr(5) + ")" + " [群主]\033[0m";
-                            }
-                            else if (rank == "admin")
-                            {
-                                admin.push_back("\033[1;32m" + myname + "(" + name.substr(5) + ")" + " [管理员]\033[0m");
-                            }
-                            else if (rank == "member")
-                            {
-                                member.push_back("\033[1;38m" + myname + "(" + name.substr(5) + ")" + " [成员]\033[0m");
-                            }
-                        }
-                        conn->send(MessageSplitter::encodeMessage(sendMeg(owner, Type::UWAIT).dump()));
-                        std::this_thread::sleep_for(std::chrono::microseconds(100));
-                        for (auto ad : admin)
-                        {
-                            conn->send(MessageSplitter::encodeMessage(sendMeg(ad, Type::UWAIT).dump()));
-                            std::this_thread::sleep_for(std::chrono::microseconds(100));
-                        }
-                        for (auto mem : member)
-                        {
-                            conn->send(MessageSplitter::encodeMessage(sendMeg(mem, Type::UWAIT).dump()));
-                            std::this_thread::sleep_for(std::chrono::microseconds(100));
-                        }
-                    }
-                }
-                conn->send(MessageSplitter::encodeMessage(sendMeg("----------------------", Type::URETURN).dump()));
+                list(conn, jsonData, redis);
             }
             else if(type == Type::HISTORY){
-                std::string key = jsonData["account"];
-                if(key.substr(0,5) == "read:"){
-                    redis.sendHistoryMeg(jsonData, conn);
-                }
-                else{
-                    redis.getGroupMeg(key, jsonData["name"], conn, 0);
-                }
+                seeHistory(conn, jsonData, redis);
             }
             else if (type == Type::TCP)
             {
-                {
-                    std::lock_guard<std::mutex> lock(timeMutex);
-                    lastActiveTime[conn] = recviveTime.now().secondsSinceEpoch();
-                    LOG_INFO << "收到heartbeat来自->" << conn;
-                }
+                heartTcp(conn, jsonData, redis,recviveTime);
             }
         }
         else
@@ -725,6 +444,7 @@ void handleData::findmess(const TcpConnectionPtr &conn, nlohmann::json &jsonData
 {
     std::string name = jsonData["account"];
     LOG_INFO << "findmess";
+    std::string sum;
     if (name.substr(0, 10) == "mess:user:")
     {
         cpp_redis::reply result = redis.findmess(name);
@@ -736,10 +456,11 @@ void handleData::findmess(const TcpConnectionPtr &conn, nlohmann::json &jsonData
                 j["use"] = j["type"];
                 j["type"] = "messdata";
                 LOG_INFO << j.dump();
-                conn->send(MessageSplitter::encodeMessage(j.dump()));
-                std::this_thread::sleep_for(std::chrono::milliseconds(1));
+                sum += MessageSplitter::encodeMessage(j.dump());
+                
             }
         }
+        conn->send(sum);
     }
     else
     {
@@ -763,13 +484,14 @@ void handleData::findmess(const TcpConnectionPtr &conn, nlohmann::json &jsonData
                         j["type"] = "messdata";
                         j["name"] = item;
                         LOG_INFO << j.dump();
-                        conn->send(MessageSplitter::encodeMessage(j.dump()));
+                        sum += MessageSplitter::encodeMessage(j.dump());
                     }
                 }
             }
         }
-        conn->send(MessageSplitter::encodeMessage(sendMeg("--------------------------", Type::URETURN).dump()));
+        conn->send(sum);
     }
+    conn->send(MessageSplitter::encodeMessage(sendMeg("--------------------------", Type::URETURN).dump()));
 }
 void handleData::verify(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis)
 {
@@ -798,6 +520,7 @@ void handleData::verify(const TcpConnectionPtr &conn, nlohmann::json &jsonData, 
 }
 void handleData::see(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis)
 {
+    std::string sum;
     cpp_redis::reply result = redis.seeGroup(jsonData["account"]);
     const auto &arr = result.as_array();
     for (size_t i = 0; i + 1 < arr.size(); i += 2)
@@ -822,9 +545,10 @@ void handleData::see(const TcpConnectionPtr &conn, nlohmann::json &jsonData, red
             j["mystate"] = redis.getData(field, "mystate");
             j["degree"] = value;
         }
-        conn->send(MessageSplitter::encodeMessage(j.dump()));
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        sum += MessageSplitter::encodeMessage(j.dump());
+        
     }
+    conn->send(sum);
     conn->send(MessageSplitter::encodeMessage(sendMeg("--------------------------", Type::URETURN).dump()));
 }
 void handleData::sendOfflineMeg(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis)
@@ -876,5 +600,300 @@ void handleData::handleCmd(const TcpConnectionPtr &conn, nlohmann::json &jsonDat
     else
     {
         conn->send(MessageSplitter::encodeMessage(sendMeg("\033[1;33m用户不存在!\033[0m", Type::USAT).dump()));
+    }
+}
+void handleData::offMeg(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
+    int sum = 0;
+    int result1 = redis.see(jsonData["account"]);
+    int result2 = redis.see(jsonData["group"]);
+    std::string account = jsonData["account"];
+    std::string key = "mess:user:" + account.substr(5);
+    auto result3 = redis.getVerifyLen(key);
+    sum = result1 + result2;
+    nlohmann::json j;
+    std::string meg = "你有" + std::to_string(sum) + "条未读消息";
+    std::string meg2 = "你有" + std::to_string(result3) + "条验证消息";
+    LOG_INFO << meg;
+    if (sum != 0){
+        conn->send(MessageSplitter::encodeMessage(sendMeg(meg, Type::UEXECUTE).dump()));
+    }
+    if (result3 != 0){
+        conn->send(MessageSplitter::encodeMessage(sendMeg(meg2, Type::UEXECUTE).dump()));
+    }
+    else{
+        conn->send(MessageSplitter::encodeMessage(sendMeg("", Type::UEXECUTE).dump()));
+    }
+}
+void handleData::endChat(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
+    std::string key;
+    if (jsonData["return"] == "1"){
+        key = tool::spellName(jsonData["account"], jsonData["name"], "chat:");
+    }
+    else if (jsonData["return"] == "0"){
+        key = tool::spellName(jsonData["group"], jsonData["account"], "grop:");
+    }
+    LOG_INFO << "end key=" << key;
+    chatStatus_[key] = false;
+}
+void handleData::deleteEnd(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
+    if (redis.isfriend(jsonData["account"], jsonData["name"])){
+        redis.delFriend(jsonData["account"], jsonData["name"]);
+        conn->send(MessageSplitter::encodeMessage(sendMeg("删除成功！", Type::URETURN).dump()));
+    }
+    else{
+        conn->send(MessageSplitter::encodeMessage(sendMeg("好友或用户不存在！", Type::URETURN).dump()));
+    }
+}
+void handleData::balckName(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
+    if (jsonData.contains("return")){
+        if (redis.getData(jsonData["account"], jsonData["name"]) != "null"){
+            redis.hdel(jsonData["account"], jsonData["name"]);
+            conn->send(MessageSplitter::encodeMessage(sendMeg("已解除拉黑", Type::USAT).dump()));
+        }
+        else{
+            conn->send(MessageSplitter::encodeMessage(sendMeg("名单上不存在", Type::USAT).dump()));
+        }
+        return;
+    }
+    if (redis.isfriend(jsonData["account"], jsonData["name"])){
+        redis.black(jsonData["account"], jsonData["name"]);
+        conn->send(MessageSplitter::encodeMessage(sendMeg("已拉黑", Type::URETURN).dump()));
+    }
+    else{
+        conn->send(MessageSplitter::encodeMessage(sendMeg("好友或用户不存在！", Type::URETURN).dump()));
+    }
+}
+void handleData::createGroup(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
+    if (redis.isgroup(jsonData["name"]) == false){
+        redis.createGroup(jsonData);
+        conn->send(MessageSplitter::encodeMessage(sendMeg("创建成功！", Type::UEXECUTE).dump()));
+    }
+    else{
+        conn->send(MessageSplitter::encodeMessage(sendMeg("群聊已存在", Type::UEXECUTE).dump()));
+    }
+}
+void handleData::deleteGroup(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
+    std::string key = jsonData["name"];
+    if (redis.isgroup(jsonData["name"]) == false)
+    {
+        conn->send(MessageSplitter::encodeMessage(sendMeg("群聊不存在", Type::UWAIT).dump()));
+        return;
+    }
+    if (redis.getData("grop:" + key, jsonData["account"]) == "null")
+    {
+        conn->send(MessageSplitter::encodeMessage(sendMeg("你没有加入该群", Type::UWAIT).dump()));
+        return;
+    }
+    if ((redis.getData("grop:" + key, jsonData["account"]) == "member" || redis.getData("grop:" + key, jsonData["account"]) == "admin") && !jsonData.contains("return"))
+    {
+        conn->send(MessageSplitter::encodeMessage(sendMeg("你正在退出群聊", Type::URETURN).dump()));
+        return;
+    }
+    if (redis.getData("grop:" + key, jsonData["account"]) == "owner" && !jsonData.contains("return"))
+    {
+        conn->send(MessageSplitter::encodeMessage(sendMeg("你是群主，退出后将解散群聊", Type::URETURN).dump()));
+    }
+    else if (redis.getData("grop:" + key, jsonData["account"]) == "owner" && jsonData.contains("return"))
+    {
+        redis.delPerson(jsonData["name"], jsonData["account"], "owner");
+        conn->send(MessageSplitter::encodeMessage(sendMeg("解散成功", Type::URETURN).dump()));
+    }
+    else
+    {
+        redis.delPerson(jsonData["name"], jsonData["account"], "member");
+        conn->send(MessageSplitter::encodeMessage(sendMeg("退出成功", Type::URETURN).dump()));
+    }
+}
+void handleData::seeGroup(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
+    std::string sum;
+    auto result = redis.seeGroup(jsonData["account"]);
+    LOG_INFO << "退出seegroup";
+    if (result != cpp_redis::reply()){
+        const auto &arr = result.as_array();
+        LOG_INFO << "rank=" << jsonData["rank"];
+        if (jsonData["rank"] == "all"){
+            for (int i = 0; i + 1 < arr.size(); i += 2)
+            {
+                nlohmann::json j;
+                j["name"] = arr[i].as_string();
+                j["amount"] = arr[i + 1].as_string();
+                j["type"] = "seegroup";
+                LOG_INFO << "发送:" << j.dump();
+                sum += MessageSplitter::encodeMessage(j.dump());
+            }
+        }
+        else if (jsonData["rank"] == "owner"){
+            std::string account = jsonData["account"];
+            std::string field = "user:" + account.substr(5);
+            for (int i = 0; i + 1 < arr.size(); i += 2)
+            {
+                nlohmann::json j;
+                j["name"] = arr[i].as_string();
+                if (redis.getData("grop:" + arr[i].as_string(), field) == "owner")
+                {
+                    j["type"] = "seegroup";
+                    LOG_INFO << "发送:" << j.dump();
+                    sum += MessageSplitter::encodeMessage(j.dump());
+                }
+            }
+        }
+        else{
+            std::string account = jsonData["account"];
+            std::string field = "user:" + account.substr(5);
+            for (int i = 0; i + 1 < arr.size(); i += 2)
+            {
+                nlohmann::json j;
+                j["name"] = arr[i].as_string();
+                if (redis.getData("grop:" + arr[i].as_string(), field) != "owner")
+                {
+                    j["type"] = "seegroup";
+                    LOG_INFO << "发送:" << j.dump();
+                    sum += MessageSplitter::encodeMessage(j.dump());
+                }
+            }
+        }
+        conn->send(sum);
+    }
+    conn->send(MessageSplitter::encodeMessage(sendMeg("----------------------", Type::URETURN).dump()));
+}
+void handleData::gChat(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
+    if (redis.ismygroup(jsonData["name"], jsonData["account"])){
+        redis.getGroupMeg(jsonData["name"], jsonData["account"], conn, -100);
+        std::string key = tool::spellName(jsonData["name"], jsonData["account"], "grop:");
+        chatStatus_[key] = true;
+        conn->send(MessageSplitter::encodeMessage(sendMeg("开始聊天", Type::UCHAT).dump()));
+    }
+    else{
+        conn->send(MessageSplitter::encodeMessage(sendMeg("群聊不存在", Type::URETURN).dump()));
+    }
+}
+void handleData::handlegMessage(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
+    std::string account = jsonData["account"];
+    if (redis.getData(jsonData["from"], account) != "null")
+    {
+        redis.storeGroupMeg(jsonData, jsonData.dump());
+
+        std::string groupname = jsonData["from"];
+        auto result = redis.seeGroup(jsonData["from"]);
+        if (result != cpp_redis::reply())
+        {
+            const auto &arr = result.as_array();
+            for (int i = 0; i + 1 < arr.size(); i += 2)
+            {
+                if (arr[i].as_string() != account)
+                {
+                    LOG_INFO << jsonData.dump();
+                    std::string key = tool::spellName(jsonData["from"], arr[i].as_string(), "grop:");
+                    if (chatStatus_[key])
+                    {
+                        connectionmanger_.getConn(arr[i].as_string())->send(MessageSplitter::encodeMessage(jsonData.dump()));
+                    }
+                    else
+                    {
+                        std::string account1 = arr[i].as_string();
+                        std::string key = "mygp:" + account1.substr(5);
+                        {
+                            std::unique_lock lock(storeMtx2);
+                            int count = std::stoi(redis.getData(key, groupname.substr(5)));
+                            LOG_INFO << "key=" << key << "count=" << count;
+                            count++;
+                            redis.hset(key, groupname.substr(5), std::to_string(count));
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        conn->send(MessageSplitter::encodeMessage(sendMeg("\33[2K\r你已被移除群聊，无法发消息\n", Type::UserStatus::USAT, "1").dump()));
+    }
+}
+void handleData::handleFile(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
+    std::string key = jsonData["value"];
+    LOG_INFO << "FILE::key = " << key;
+    redis.hset(key, jsonData["fileName"], jsonData["size"]);
+}
+void handleData::lookFile(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
+    if (redis.getData(jsonData["key"], jsonData["name"]) != "null")
+    {
+        LOG_INFO << "存在文件";
+        conn->send(MessageSplitter::encodeMessage(sendMeg("", Type::URETURN).dump()));
+    }
+    else
+    {
+        conn->send(MessageSplitter::encodeMessage(sendMeg("", Type::USAT).dump()));
+    }
+}
+void handleData::list(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
+    auto result = redis.seeGroup(jsonData["key"]);
+    std::string sum;
+    if (result != cpp_redis::reply())
+    {
+        const auto &arr = result.as_array();
+        std::string pan = jsonData["account"];
+        if (pan[0] == '1')
+        {
+            for (int i = 0; i + 1 < arr.size(); i += 2)
+            {
+                std::string fileName = arr[i].as_string();
+                std::string fileSize = arr[i + 1].as_string();
+                sum += MessageSplitter::encodeMessage(sendMeg(fileName + "   " + fileSize, Type::UWAIT).dump());
+            }
+            conn->send(sum);
+        }
+        else if (pan[0] == '2')
+        {
+            std::vector<std::string> admin;
+            std::vector<std::string> member;
+            std::string owner;
+            for (int i = 0; i + 1 < arr.size(); i += 2)
+            {
+                std::string name = arr[i].as_string();
+                std::string rank = arr[i + 1].as_string();
+                std::string myname = redis.getData(name, "myname");
+                if (rank == "owner")
+                {
+                    owner = "\033[1;33m" + myname + "(" + name.substr(5) + ")" + " [群主]\033[0m";
+                }
+                else if (rank == "admin")
+                {
+                    admin.push_back("\033[1;32m" + myname + "(" + name.substr(5) + ")" + " [管理员]\033[0m");
+                }
+                else if (rank == "member")
+                {
+                    member.push_back("\033[1;38m" + myname + "(" + name.substr(5) + ")" + " [成员]\033[0m");
+                }
+            }
+            conn->send(MessageSplitter::encodeMessage(sendMeg(owner, Type::UWAIT).dump()));
+            for (auto ad : admin){
+                sum += MessageSplitter::encodeMessage(sendMeg(ad, Type::UWAIT).dump());
+            }
+            for (auto mem : member){
+                sum += MessageSplitter::encodeMessage(sendMeg(mem, Type::UWAIT).dump());
+            }
+            conn->send(sum);
+        }
+    }
+    conn->send(MessageSplitter::encodeMessage(sendMeg("----------------------", Type::URETURN).dump()));
+}
+void handleData::seeHistory(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis){
+    std::string key = jsonData["account"];
+    if (key.substr(0, 5) == "read:")
+    {
+        redis.sendHistoryMeg(jsonData, conn);
+    }
+    else
+    {
+        redis.getGroupMeg(key, jsonData["name"], conn, 0);
+        conn->send(MessageSplitter::encodeMessage(sendMeg("以上为历史消息", Type::USAT).dump()));
+    }
+}
+void handleData::heartTcp(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis, mulib::base::Timestamp recviveTime)
+{
+    {
+        std::lock_guard<std::mutex> lock(timeMutex);
+        lastActiveTime[conn] = recviveTime.now().secondsSinceEpoch();
+        LOG_INFO << "收到heartbeat来自->" << conn;
     }
 }

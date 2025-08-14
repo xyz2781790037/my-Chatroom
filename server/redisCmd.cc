@@ -462,7 +462,6 @@ void redisCmd::sendBlackMeg(nlohmann::json &data, const TcpConnectionPtr conn)
         auto meg = item.as_string();
         LOG_INFO << "历史消息：" << meg;
         conn->send(MessageSplitter::encodeMessage(item.as_string()));
-        // std::this_thread::sleep_for(std::chrono::microseconds(300));
     }
 }
 void redisCmd::joinGroup(std::string key, std::string account, std::string rank)
@@ -548,16 +547,16 @@ void redisCmd::storeGroupMeg(nlohmann::json &data, std::string msg)
 }
 void redisCmd::getGroupMeg(std::string key, std::string name, const TcpConnectionPtr conn,int amount)
 {
-    int count = 0;
+    std::string sum;
     std::string nkey = "regp:" + key.substr(5);
     auto reply = redisClient.lrange(nkey, amount, -1);
     redisClient.sync_commit();
     auto result = reply.get();
     for (const auto &item : result.as_array())
     {
-        conn->send(MessageSplitter::encodeMessage(item.as_string()));
-        LOG_INFO << ++count;
+        sum += MessageSplitter::encodeMessage(item.as_string());
     }
+    conn->send(sum);
     redisClient.hset(name, key.substr(5), "0");
     redisClient.sync_commit();
 }
