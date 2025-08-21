@@ -9,6 +9,7 @@
 #include "../base/verCode.h"
 #include "ConnectionManager.h"
 #include "../base/tool.h"
+#include <unordered_map>
 class handleData
 {
 public:
@@ -44,6 +45,6 @@ private:
     void seeHistory(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis);
     void heartTcp(const TcpConnectionPtr &conn, nlohmann::json &jsonData, redisCmd &redis, mulib::base::Timestamp recviveTime);
 
-    std::string code;
+    std::unordered_map<mulib::net::TcpConnectionPtr, std::string> codes_;
 };
 #endif

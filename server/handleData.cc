@@ -224,10 +224,10 @@ void handleData::returnPwd(const TcpConnectionPtr& conn,
                            redisCmd& redis) {
     verCode vercode_;
     if (jsonData["return"] == "register") {
-        code = vercode_.verify(jsonData["account"]);
+        codes_[conn] = vercode_.verify(jsonData["account"]);
         return;
     } else if (jsonData["return"] == "code") {
-        if (code == jsonData["vcode"]) {
+        if (codes_[conn] == jsonData["vcode"]) {
             conn->send(MessageSplitter::encodeMessage(
                 sendMeg("绑定成功", Type::RETURNS).dump()));
         } else {
@@ -241,15 +241,15 @@ void handleData::returnPwd(const TcpConnectionPtr& conn,
     if (result == 1) {
         conn->send(MessageSplitter::encodeMessage(jsonData.dump()));
     } else if (result == 0) {
-        code = vercode_.verify(redis.getData(jsonData["account"], "email"));
-        LOG_INFO << "验证码已发送为：" << code;
+        codes_[conn] = vercode_.verify(redis.getData(jsonData["account"], "email"));
+        LOG_INFO << "验证码已发送为：" << codes_[conn];
         conn->send(MessageSplitter::encodeMessage(jsonData.dump()));
     } else if (result == -1) {
         LOG_INFO << "result == -1";
         conn->send(MessageSplitter::encodeMessage(
             sendMeg("账号不存在", Type::RETURNS).dump()));
     } else if (result == 2) {
-        if (code == jsonData["vcode"]) {
+        if (codes_[conn] == jsonData["vcode"]) {
             LOG_INFO << "客户验证码正确";
             jsonData["return"] = "true";
             jsonData["state"] = Type::RETURNS;
